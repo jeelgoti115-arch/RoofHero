@@ -26,7 +26,7 @@ router.post('/login', async (req, res) => {
   if (user) {
     const isValid = await bcrypt.compare(password, user.password)
     if (!isValid) {
-      return res.status(401).json({ message: 'Invalid username or password.' })
+      return res.status(401).json({ message: 'Invalid credential.' })
     }
 
     if (user.role === 'contractor' && user.status !== 'approved') {
@@ -57,7 +57,7 @@ router.post('/login', async (req, res) => {
   }).select('+password')
 
   if (!homeowner || !(await bcrypt.compare(password, homeowner.password))) {
-    return res.status(401).json({ message: 'Invalid username or password.' })
+    return res.status(401).json({ message: 'Invalid credential.' })
   }
 
   const token = jwt.sign({ id: homeowner._id, role: 'homeowner', username: homeowner.username }, JWT_SECRET, {

@@ -3,6 +3,29 @@ import User from '../models/User.js'
 import ContractorApplication from '../models/ContractorApplication.js'
 import Homeowner from '../models/Homeowner.js'
 import QuoteRequest from '../models/QuoteRequest.js'
+
+const createDashboardSample = (application) => {
+  const region = Array.isArray(application.regions) && application.regions.length ? application.regions[0] : 'Sydney';
+  return {
+    stats: {
+      bidsSubmitted: 8,
+      jobsAwarded: 3,
+      winRate: 38,
+    },
+    newLeads: [
+      { id: '#L1001', address: `12 ${region} Road, ${region}`, date: '24 Apr 2025', area: '140 m²', quote: '$11,000 – $13,500', status: 'New Inquiry' },
+      { id: '#L1004', address: `34 ${region} Avenue, ${region}`, date: '23 Apr 2025', area: '160 m²', quote: '$12,500 – $15,000', status: 'New Inquiry' },
+    ],
+    submittedQuotes: [
+      { id: 'Q-1001', address: `12 ${region} Road, ${region}`, date: '24 Apr 2025', area: '140 m²', quote: '$14,800', status: 'Pending Review' },
+      { id: 'Q-1002', address: `34 ${region} Avenue, ${region}`, date: '23 Apr 2025', area: '160 m²', quote: '$18,200', status: 'Accepted' },
+    ],
+    activeProjects: [
+      { id: 'P-1001', address: `5 ${region} Street, ${region}`, date: '22 Apr 2025', area: '100 m²', quote: '$15,000', status: 'In Progress' },
+      { id: 'P-1002', address: `18 ${region} Park, ${region}`, date: '20 Apr 2025', area: '180 m²', quote: '$18,500', status: 'Site Inspection Scheduled' },
+    ],
+  }
+}
 import bcrypt from 'bcrypt'
 
 const router = express.Router()
@@ -16,6 +39,39 @@ router.get('/users', async (req, res, next) => {
     }
     const users = await User.find(filter).select('-password')
     res.json(users)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.patch('/users/:id/reviews', async (req, res, next) => {
+  try {
+    const { name, text, stars, photo } = req.body
+    if (!text) {
+      return res.status(400).json({ message: 'Review text is required.' })
+    }
+
+    const contractor = await User.findById(req.params.id)
+    if (!contractor) {
+      return res.status(404).json({ message: 'Contractor not found.' })
+    }
+
+    if (!Array.isArray(contractor.reviews)) {
+      contractor.reviews = []
+    }
+
+    const review = {
+      name: name || 'Anonymous User',
+      text,
+      stars: typeof stars === 'number' ? stars : 5,
+      photo: photo || '/dashboard1-profile.png',
+      createdAt: new Date(),
+    }
+
+    contractor.reviews.unshift(review)
+    await contractor.save()
+
+    res.json({ reviews: contractor.reviews })
   } catch (error) {
     next(error)
   }
@@ -74,6 +130,8 @@ router.patch('/contractor-applications/:id/status', async (req, res, next) => {
         services: application.services,
         regions: application.regions,
         avatarUrl: application.avatarUrl,
+        workPhotos: application.workPhotos || [],
+        dashboard: createDashboardSample(application),
       }
 
       if (existingUser) {

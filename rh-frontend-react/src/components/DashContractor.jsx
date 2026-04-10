@@ -263,26 +263,54 @@ const DashContractor = () => {
   const [activeTab, setActiveTab] = useState('New Leads');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [allLeads, setAllLeads] = useState([]);
+  const [dashboardStats, setDashboardStats] = useState({ bidsSubmitted: 0, jobsAwarded: 0, winRate: 0 });
+  const [contractorInfo, setContractorInfo] = useState(null);
+  const [loadingDashboard, setLoadingDashboard] = useState(true);
   const itemsPerPage = 5;
 
-  const [allLeads, setAllLeads] = useState([
-    { id: '#L1001', address: '21 Rosewood Ave, Parramatta, Sydney', date: '24 Apr 2025', area: '140 m²', quote: '$11,000 – $13,500', status: 'New Inquiry' },
-    { id: '#L1002', address: '88 Clarence St, CBD, Sydney', date: '23 Apr 2025', area: '160 m²', quote: '$12,500 – $15,000', status: 'New Inquiry' },
-    { id: '#L1003', address: '5 Kingsford Rd, Strathfield, Sydney', date: '22 Apr 2025', area: '100 m²', quote: '$9,000 – $11,000', status: 'New Inquiry' },
-    { id: 'Q-1001', address: '21 Rosewood Ave, Parramatta, Sydney', date: '24 Apr 2025', area: '140 m²', quote: '$14,800', status: 'Pending Review' },
-    { id: 'Q-1002', address: '88 Clarence St, CBD, Sydney', date: '23 Apr 2025', area: '160 m²', quote: '$18,200', status: 'Accepted' },
-    { id: 'Q-1003', address: '5 Kingsford Rd, Strathfield, Sydney', date: '22 Apr 2025', area: '100 m²', quote: '$15,000', status: 'Rejected' },
-    { id: 'Q-1004', address: '21 Rosewood Ave, Parramatta, Sydney', date: '24 Apr 2025', area: '140 m²', quote: '$14,800', status: 'In Progress' },
-    { id: 'Q-1005', address: '88 Clarence St, CBD, Sydney', date: '23 Apr 2025', area: '160 m²', quote: '$18,200', status: 'Site Inspection Scheduled' },
-    { id: 'Q-1006', address: '5 Kingsford Rd, Strathfield, Sydney', date: '22 Apr 2025', area: '100 m²', quote: '$15,000', status: 'Materials Ordered' },
-  ]);
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      const token = window.localStorage.getItem('roofheroToken');
+      if (!token) {
+        setLoadingDashboard(false);
+        return;
+      }
 
-  // Dynamic Stats Calculation
-  //const bidsCount = allLeads.filter(l => l.status !== 'New Inquiry').length;
-  //const jobsCount = allLeads.filter(l => ['Accepted', 'In Progress', 'Site Inspection Scheduled', 'Materials Ordered'].includes(l.status)).length;
-  const bidsCount = 12;
-  const jobsCount = 4;
-  const winRate = bidsCount > 0 ? Math.round((jobsCount * 100) / bidsCount) : 0;
+      try {
+        const response = await fetch('/api/contractors/me', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!response.ok) {
+          setLoadingDashboard(false);
+          return;
+        }
+
+        const data = await response.json();
+        setContractorInfo(data);
+
+        if (data.dashboard) {
+          setDashboardStats(data.dashboard.stats || { bidsSubmitted: 0, jobsAwarded: 0, winRate: 0 });
+          setAllLeads([
+            ...(data.dashboard.newLeads || []),
+            ...(data.dashboard.submittedQuotes || []),
+            ...(data.dashboard.activeProjects || []),
+          ]);
+        }
+      } catch (error) {
+        console.error('Failed to load contractor dashboard', error);
+      } finally {
+        setLoadingDashboard(false);
+      }
+    };
+
+    fetchDashboard();
+  }, []);
+
+  const bidsCount = dashboardStats.bidsSubmitted;
+  const jobsCount = dashboardStats.jobsAwarded;
+  const winRate = dashboardStats.winRate;
 
   const stats = [
     { title: 'Bids Submitted', value: bidsCount.toString().padStart(2, '0'), img: 'public/fact_check_ic.svg', color: '#Fa5a25' },
@@ -330,9 +358,22 @@ const DashContractor = () => {
     return <ProposalDetailsView item={selectedItem} onBack={() => setSelectedItem(null)} onUpdateStatus={handleUpdateStatus} />;
   }
 
+  if (loadingDashboard) {
+    return (
+      <div className="con-dash-container animate-fade">
+        <h1 className="page-title">Loading Contractor Dashboard...</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="con-dash-container animate-fade">
-      <h1 className="page-title">Contractor Dashboard</h1>
+      <div className="con-dash-header-row">
+        <div>
+          <h1 className="page-title">Contractor Dashboard</h1>
+          {contractorInfo?.name && <p className="con-dash-subtitle">Welcome back, {contractorInfo.name}</p>}
+        </div>
+      </div>
       {/* Stats Section */}
       <div className="con-dash-stats-grid">
         {stats.map((stat, idx) => (

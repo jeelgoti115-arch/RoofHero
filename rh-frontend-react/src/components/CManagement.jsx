@@ -4,6 +4,7 @@ import {
   RiDeleteBin6Fill, 
   RiUploadCloud2Line,
   RiCloseCircleLine,
+  RiCameraFill,
   RiStarSFill,
   RiStarHalfSLine,
   RiArrowLeftLine,
@@ -11,6 +12,7 @@ import {
   RiArrowLeftSLine,
   RiStarFill,
   RiSearchLine,
+  RiCloseLine,
 } from '@remixicon/react';
 
 const CManagement = () => {
@@ -37,12 +39,7 @@ const CManagement = () => {
   
   // Review Logic States
   const [newReview, setNewReview] = useState({ name: '', text: '', photo: '/dashboard1-profile.png' });
-  const [reviewList, setReviewList] = useState([
-    { name: 'Eunice J. Williams', text: 'The team was punctual, professional, and finished the project before deadline. ', stars: 4.7, photo: 'public/eunice.jpg' },
-    { name: 'Nancy N. Ellis', text: 'Fantastic job overall. They followed the quote and maintained good workmanship. ', stars: 4.7, photo: 'public/nancy.jpg' },
-    { name: 'James R. Okelly', text: 'Work was well done and priced fairly.', stars: 4.7, photo: 'public/james.jpg' },
-    { name: 'Derek J. Youngquist', text: 'Very smooth experience. The team communicated well, handled everything quickly, and showed us progress photos. ', stars: 4.7, photo: 'public/contractor2.jpg' },
-  ]);
+  const [reviewList, setReviewList] = useState([]);
 
   // --- HANDLERS ---
   const handlePhotoUpload = (e) => {
@@ -56,19 +53,37 @@ const CManagement = () => {
     }
   };
 
-  const handleAddReview = () => {
+  const handleAddReview = async () => {
     if (!newReview.text) return alert("Please enter a review message.");
-    
+    if (!selectedContractor) return alert('No contractor selected.')
+
     const reviewToAdd = {
       name: newReview.name || "Anonymous User",
       text: newReview.text,
       stars: rating || 5,
-      photo: newReview.photo
+      photo: newReview.photo,
     };
 
-    setReviewList(prev => [reviewToAdd, ...prev]); 
+    try {
+      const response = await fetch(`/api/admin/users/${selectedContractor.mongoId}/reviews`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reviewToAdd),
+      });
 
-    // Reset and Close
+      if (!response.ok) {
+        throw new Error('Unable to save review.')
+      }
+
+      const { reviews } = await response.json();
+      setReviewList(reviews);
+      setSelectedContractor(prev => ({ ...prev, reviews }));
+    } catch (error) {
+      console.error(error);
+      alert('Failed to save review. Please try again.')
+      return;
+    }
+
     setIsModalOpen(false);
     setRating(0);
     setNewReview({ name: '', text: '', photo: '/dashboard1-profile.png' });
@@ -135,6 +150,7 @@ const CManagement = () => {
         }
         const data = await response.json();
         setContractors(data.map((item) => ({
+          mongoId: item._id,
           id: item.username || item._id,
           username: item.username || item._id,
           name: item.name || item.email,
@@ -151,6 +167,8 @@ const CManagement = () => {
           experience: item.experience || '',
           avatar: item.avatarUrl || '/dashboard1-profile.png',
           password: item.generatedPassword || item.password || '',
+          workPhotos: item.workPhotos || [],
+          reviews: item.reviews || [],
         })));
       } catch (error) {
         console.error(error);
@@ -208,7 +226,7 @@ const CManagement = () => {
         />
       </div>
       <div className="da-cm-gallery-grid">
-         {galleryImages.map((src, i) => (
+         {(data.workPhotos && data.workPhotos.length > 0 ? data.workPhotos : galleryImages).map((src, i) => (
             <div key={i} className="da-cm-gallery-item">
                 <img src={src} alt='work' />
                 <button className="da-cm-gallery-del" onClick={() => setGalleryImages(prev => prev.filter((_, idx) => idx !== i))}><RiDeleteBin6Fill /></button>
@@ -224,7 +242,7 @@ const CManagement = () => {
         <button className="da-cm-btn-orange" onClick={() => setIsModalOpen(true)}>Add Contractor Reviews <RiArrowRightUpLine size={18} /></button>
       </div>
       <div className="da-cm-reviews-grid">
-        {reviewList.map((rev, i) => (
+        {reviewList.length > 0 ? reviewList.map((rev, i) => (
           <div key={i} className="da-cm-review-card">
             <button className="da-cm-card-del" onClick={() => handleDeleteReview(i)}><RiCloseCircleLine /></button>
             <div className="da-cm-rev-user">
@@ -239,7 +257,9 @@ const CManagement = () => {
             </div>
             <p className="da-cm-rev-text">{rev.text}</p>
           </div>
-        ))}
+        )) : (
+          <div className="da-cm-empty-state">No reviews yet for this contractor.</div>
+        )}
       </div>
     </div>
   );
@@ -483,7 +503,7 @@ const CManagement = () => {
                   <tr key={idx}>
                     <td className="da-cm-id-text">{item.id}</td><td className="da-cm-name-text">{item.name}</td><td>{item.mobile}</td><td>{item.suburbs}</td><td>{item.date}</td>
                     <td><span className={item.status === 'Active' ? 'da-cm-pill-active' : 'da-cm-pill-pending'}>{item.status}</span></td>
-                    <td><button className="da-cm-btn-action" onClick={() => setSelectedContractor(item)}>View Details <RiArrowRightUpLine size={16}/></button></td>
+                    <td><button className="da-cm-btn-action" onClick={() => { setSelectedContractor(item); setReviewList(item.reviews || []); }}>View Details <RiArrowRightUpLine size={16}/></button></td>
                   </tr>
                 ))
               ) : (

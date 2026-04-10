@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ContractorApplication from '../models/ContractorApplication.js'
+import { authenticate, authorize } from '../middleware/auth.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const router = express.Router()
@@ -77,6 +78,14 @@ router.post('/apply', upload.fields([
       message: 'Contractor application submitted successfully.',
       applicationId: application._id,
     })
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/me', authenticate, authorize('contractor'), async (req, res, next) => {
+  try {
+    return res.json(req.user)
   } catch (error) {
     next(error)
   }
