@@ -218,7 +218,7 @@ const AwaitingAssignmentView = ({ job, onBack, availableContractors, loadingCont
   );
 };
 
-const BiddingInProgressView = ({ job, onBack }) => {
+const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContractors, contractorError }) => {
   const [expandedSection, setExpandedSection] = useState('basic');
   const navigate = useNavigate(); // Initialize navigation
   const scrollRef = useRef(null);
@@ -373,37 +373,40 @@ const BiddingInProgressView = ({ job, onBack }) => {
           <div className="jb-card jb-p-24">
             <h2 className="jb-section-title">Contractor Assignment</h2>
             <div className="jb-search-box-side">
-              <input type="text" placeholder="Search Contractor" />
+              <input type="text" placeholder="Search Contractor" disabled />
             </div>
             <div className="jb-contractor-list">
-              {[
-                { name: 'Toby Adamson', status: 'Assigned', img: 'public/toby.jpg' },
-                { name: 'Angus Klein', status: 'Assigned', img: 'public/angus.jpg' },
-                { name: 'Beau Gledson', status: 'Assigned', img: 'public/beau.jpg' },
-                { name: 'Riley Blanc', status: 'check', img: 'public/riley.jpg' },
-                { name: 'Zane Vlamingh', status: 'check', img: 'public/zane.jpg' },
-                { name: 'Aidan Heymann', status: 'check', img: 'public/aidan.jpg' },
-                { name: 'Archer McCorkindale', status: 'check', img: 'public/archer.jpg' }
-              ].map((c, i) => (
-                <div key={i} className="jb-contractor-item">
-                  <div className="jb-flex-row">
-                    <img src={c.img} className="jb-avatar-sm" alt="C" />
-                    <div className="jb-c-info">
-                      <p className="jb-c-name">{c.name}</p>
-                      <p className="jb-c-loc">Parramatta, Blacktown</p>
+              {loadingContractors ? (
+                <div className="jb-loading-message">Loading available contractors...</div>
+              ) : contractorError ? (
+                <div className="jb-error-message">{contractorError}</div>
+              ) : availableContractors.length === 0 ? (
+                <div className="jb-no-data">No available contractors found.</div>
+              ) : (
+                availableContractors.map((contractor) => {
+                  const isAssigned = job.assignedContractor?.id?.toString() === contractor._id?.toString();
+                  return (
+                    <div key={contractor._id} className="jb-contractor-item">
+                      <div className="jb-flex-row">
+                        <img src={contractor.avatarUrl || 'public/contractor2.jpg'} className="jb-avatar-sm" alt="C" />
+                        <div className="jb-c-info">
+                          <p className="jb-c-name">{contractor.name || contractor.username}</p>
+                          <p className="jb-c-loc">{contractor.regions?.join(', ') || 'Available contractor'}</p>
+                        </div>
+                        {isAssigned ? (
+                          <span className="jb-assigned-text">Assigned</span>
+                        ) : (
+                          <input type="checkbox" className="jb-checkbox" disabled />
+                        )}
+                      </div>
                     </div>
-                    {c.status === 'Assigned' ? (
-                      <span className="jb-assigned-text">Assigned</span>
-                    ) : (
-                      <input type="checkbox" className="jb-checkbox" />
-                    )}
-                  </div>
-                </div>
-              ))}
+                  )
+                })
+              )}
             </div>
-            <button className="jb-btn-assign-ghost mt-24">
-              Contractor Assigned <RiArrowRightUpLine size={18} />
-            </button>
+            <div className="jb-info-note mt-24">
+              Assignment is locked once the job moves to Bidding In Progress.
+            </div>
           </div>
         </div>
       </div>
@@ -863,7 +866,7 @@ const JobBidding = () => {
 
   if (selectedJob) {
     if (selectedJob.status === 'Awaiting Assignment') return <AwaitingAssignmentView job={selectedJob} onBack={() => setSelectedJob(null)} availableContractors={availableContractors} loadingContractors={contractorLoading} contractorError={contractorError} onAssign={assignContractorToJob} />;
-    if (selectedJob.status === 'Bidding In Progress') return <BiddingInProgressView job={selectedJob} onBack={() => setSelectedJob(null)} />;
+    if (selectedJob.status === 'Bidding In Progress') return <BiddingInProgressView job={selectedJob} onBack={() => setSelectedJob(null)} availableContractors={availableContractors} loadingContractors={contractorLoading} contractorError={contractorError} />;
     if (selectedJob.status === 'Bid Accepted') return <BidAcceptedView job={selectedJob} onBack={() => setSelectedJob(null)} />;
   }
 
