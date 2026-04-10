@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   role: { type: String, enum: ['admin', 'contractor', 'homeowner'], required: true },
   name: { type: String, default: '' },
   status: { type: String, enum: ['approved', 'pending', 'rejected'], default: 'approved' },
+  generatedPassword: { type: String, default: null },
   phone: { type: String, default: '' },
   bio: { type: String, default: '' },
   licenseNumber: { type: String, default: '' },

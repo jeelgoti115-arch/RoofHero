@@ -142,7 +142,7 @@ const DashAdmin = () => {
         </div>
 
         <div className="da-profile-card">
-          <h3 className="da-card-title">Personal Information</h3>
+          <h3 className="da-card-title">Contarctor Information</h3>
           
           <div className="da-personal-info-grid">
             <div className="da-avatar-section">

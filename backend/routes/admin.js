@@ -79,14 +79,17 @@ router.patch('/contractor-applications/:id/status', async (req, res, next) => {
       if (existingUser) {
         existingUser.set({
           ...contractorData,
+          password: hashedPassword,
+          generatedPassword: password,
           status: 'approved',
         })
         await existingUser.save()
-        generatedCredentials = { username: existingUser.username, password: 'unchanged' }
+        generatedCredentials = { username: existingUser.username, password }
       } else {
         await User.create({
           username,
           password: hashedPassword,
+          generatedPassword: password,
           ...contractorData,
         })
         generatedCredentials = { username, password }

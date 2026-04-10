@@ -136,17 +136,21 @@ const CManagement = () => {
         const data = await response.json();
         setContractors(data.map((item) => ({
           id: item.username || item._id,
+          username: item.username || item._id,
           name: item.name || item.email,
           mobile: item.phone || '',
           email: item.email || '',
           suburbs: Array.isArray(item.regions) ? item.regions.join(', ') : item.regions || '',
+          regions: item.regions || [],
           date: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '',
           status: item.status === 'approved' ? 'Active' : item.status || 'Pending',
           license: item.licenseNumber || 'N/A',
           qualification: item.licenseNumber ? 'Licensed Roofer' : 'Roofing Contractor',
           bio: item.bio || 'No description provided.',
           servicesOffered: item.services || [],
+          experience: item.experience || '',
           avatar: item.avatarUrl || '/dashboard1-profile.png',
+          password: item.generatedPassword || item.password || '',
         })));
       } catch (error) {
         console.error(error);
@@ -277,7 +281,7 @@ const CManagement = () => {
         <div className="da-cm-edit-card">
           <h3 className="da-cm-section-title">Personal Information</h3>
           <div className="da-cm-edit-personal-grid">
-            <img src="/dashboard1-profile.png" alt="Edit" className="da-cm-edit-avatar" />
+            <img src={editedData?.avatar || selectedContractor.avatar || '/dashboard1-profile.png'} alt="Edit" className="da-cm-edit-avatar" />
             <div className="da-cm-edit-inputs-grid">
               <div className="da-cm-edit-group"><label>Full Name</label><input type="text" value={editedData?.name || ''} onChange={(e) => setEditedData(prev => ({...prev, name: e.target.value}))} /></div>
               <div className="da-cm-edit-group"><label>Mobile Number</label><input type="text" value={editedData?.mobile || ''} onChange={(e) => setEditedData(prev => ({...prev, mobile: e.target.value}))} /></div>
@@ -294,7 +298,7 @@ const CManagement = () => {
             </div>
             <div className="da-cm-edit-group">
               <label>Years of Roofing Experience</label>
-              <input type="text" value={editedData?.yearsExperience || ''} onChange={(e) => setEditedData(prev => ({...prev, yearsExperience: e.target.value}))} />
+              <input type="text" value={editedData?.experience || editedData?.yearsExperience || ''} onChange={(e) => setEditedData(prev => ({...prev, experience: e.target.value, yearsExperience: e.target.value}))} />
             </div>
           </div>
           <div className="da-cm-edit-services">
@@ -325,9 +329,9 @@ const CManagement = () => {
         <div className="da-cm-edit-card" style={{marginTop:'25px'}}>
           <h3 className="da-cm-section-title">Login Credentials (Auto-Generated)</h3>
           <div className="da-cm-edit-inputs-grid">
-            <div className="da-cm-edit-group"><label>Contractor ID</label><input type="text" readOnly defaultValue="CTR-SYD-00245" /></div>
+            <div className="da-cm-edit-group"><label>Contractor ID</label><input type="text" readOnly defaultValue={selectedContractor.username || selectedContractor.id} /></div>
             <div className="da-cm-edit-group"><label>Email</label><input type="text" readOnly defaultValue={selectedContractor.email} /></div>
-            <div className="da-cm-edit-group"><label>Password</label><input type="text" readOnly defaultValue="Js#4729Syd!" /></div>
+            <div className="da-cm-edit-group"><label>Password</label><input type="text" readOnly defaultValue={selectedContractor.password || 'Generated on approval'} /></div>
           </div>
           <button className="da-cm-btn-revoke">Revoke Contractor Access <RiArrowRightUpLine size={18}/></button>
         </div>
@@ -421,7 +425,15 @@ const CManagement = () => {
                 </div>
               </div>
             </div>
-            <button className="da-cm-btn-orange" onClick={() => { setEditedData(selectedContractor); setServicesOffered(selectedContractor.servicesOffered || ['Roof Replacements']); setIsEditing(true); }}>Edit Contractor Profile <RiArrowRightUpLine size={18}/></button>
+            <button className="da-cm-btn-orange" onClick={() => {
+              setEditedData({
+                ...selectedContractor,
+                yearsExperience: selectedContractor.experience || '',
+                suburbs: selectedContractor.suburbs || '',
+              });
+              setServicesOffered(selectedContractor.servicesOffered || []);
+              setIsEditing(true);
+            }}>Edit Contractor Profile <RiArrowRightUpLine size={18}/></button>
           </div>
           <div className="da-cm-tabs">
             {['About the Contractor', 'Contractor Reviews', 'Documents'].map(tab => (
