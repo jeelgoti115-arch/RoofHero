@@ -1,0 +1,1095 @@
+/* ============================================================
+   1. GLOBAL VARIABLES & RESET
+   ============================================================ */
+:root {
+  --sidebar-bg: #12201d;       /* Dark Green Sidebar */
+  --body-bg: #f8f9fa;          /* Page Background */
+  --text-dark: #122621;        /* Primary Text */
+  --text-gray: #676767;        /* Secondary Text */
+  --white: #ffffff;
+  --border-color: #eee;
+  --bg-gradient-from: #f8fafc;
+  --primary: #1d3b34;
+  --secondary: #4f7c70;
+  --accent: #fa5a25;
+  --support: #f6f2e6;
+  --regular: #ffffff;
+}
+
+/* ============================================================
+   2. MAIN LAYOUT STRUCTURE
+   (Handles the Sidebar and Content side-by-side)
+   ============================================================ */
+.dashboard-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--body-bg);
+  font-family: 'Inter', sans-serif;
+}
+
+.dashboard-main-content {
+  flex: 1;
+  overflow-x: hidden; /* Prevents the horizontal scroll of the whole page */
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-body {
+  padding: 30px 40px;
+  width: 100%;
+  max-width: 1300px; /* Adjust this to your preferred max dashboard width */
+  margin: 0 auto;    /* Centers the dashboard content */
+  box-sizing: border-box;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 25px;
+}
+
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Optional: Highlight the notification button when active */
+.notification-badge.active {
+  background: rgba(18, 38, 33, 0.1);
+  border-radius: 50px;
+}
+
+.animate-fade {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   3. SIDEBAR SECTION (Sidebar.jsx)
+   ============================================================ */
+.sidebar-container {
+  width: 260px;
+  height: 100vh;
+  background-color: #FAF8F5;
+  border-right: 1px solid #eee;
+  position: fixed; /* Fixes it to the left */
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth Slide Animation */
+.sidebar-container.closed {
+  transform: translateX(-100%); /* Slides completely out of view */
+}
+
+.sidebar-container.open {
+  transform: translateX(0); /* Slides into view */
+}
+
+.sidebar-logo {
+  padding: 25px 20px 10px 20px; /* Reduced bottom padding */
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-logo img {
+  width: 150px; /* Adjusted to match scale */
+}
+
+.sidebar-menu {
+  padding: 10px 15px;
+  /* Removed flex: 1; to stop it from pushing the footer to the bottom */
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.nav-item img{
+  height: 24px;
+  width: 24px;
+}
+
+/* The dark "Dashboard" button style */
+.nav-item.active {
+  background-color: #122621; /* Matches the dark button in your image */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.nav-item span {
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.sidebar-footer {
+  /* Removed margin-top: auto; to pull the logout button up */
+  padding: 10px 25px 30px 25px; 
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #FF3B30;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  padding-left: 10px;
+  transition: opacity 0.2s;
+}
+
+.logout-btn:hover {
+  opacity: 0.8;
+}
+
+/* Optional: Matching the logout icon color specifically */
+.logout-btn svg {
+  color: #FF3B30;
+}
+
+/* ============================================================
+   4. HEADER SECTION (DashboardHeader.jsx)
+   ============================================================ */
+.dashboard-header {
+  height: 70px;
+  background: #FAF8F5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Adjust gap to match your design */
+}
+
+.notification-badge {
+  position: relative;
+  background: #e8eceb; /* Matches the light gray/greenish tint in image */
+  width: 40px;  /* Same as profile picture */
+  height: 40px; /* Same as profile picture */
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.notification-badge img {
+    width: 16px;
+    height: 20px;
+}
+
+/* The Bell Icon inside the badge */
+.notification-badge svg {
+  color: #122621; /* Dark forest green color of the bell */
+  width: 20px;
+  height: 20px;
+}
+
+.dot {
+  position: absolute;
+  top: 0;      /* Adjusted to sit on the edge of the circle */
+  right: 0;    /* Adjusted to sit on the edge of the circle */
+  width: 15px;
+  height: 15px;
+  background: var(--accent); /* RoofHero Orange */
+  border-radius: 50%;
+}
+
+.header-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block; /* Removes any baseline spacing */
+}
+
+/* ============================================================
+   5. PROJECT DETAILS SECTION (ProjectDetails.jsx)
+   ============================================================ */
+.dashboard-grid-top {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.project-details-card {
+  background: var(--white);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.card-user-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.user-img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.user-info{
+  display: flex;
+  align-items: center;
+}
+
+.user-info h3 {
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.user-info p {
+  font-size: 11px;
+  color: var(--text-gray);
+  align-items: center;
+  display: flex;
+  gap: 5px;
+}
+.user-icons{
+  width: 20px;
+  height: 20px;
+}
+.status-tag {
+  background: #e9f7ef;
+  color: #27ae60;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  height: fit-content;
+}
+
+.side-info{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.side-info p{
+  font-weight: 600;
+  font-size: 10px;
+  color: #676767;
+}
+
+.project-images-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 25px 0 35px 0;
+}
+
+.project-images-grid img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* ============================================================
+   6. ACCOUNT MANAGER SECTION (AccountManager.jsx)
+   ============================================================ */
+.account-manager-card {
+  background: var(--white);
+  border-radius: 15px;
+  padding: 25px;
+}
+
+.account-manager-card h4 {
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.manager-profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.manager-profile img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.manager-details{
+  color: #676767;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.manager-details img{
+  height: 14px;
+  width: 14px;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+}
+
+/* ============================================================
+   6. ACCOUNT MANAGER SECTION (AccountManager.jsx)
+   ============================================================ */
+.contractor-status-container {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.contractor-status-container img{
+  height: 150px;
+  width: 150px;
+}
+
+/* --- Status Text --- */
+.status-text h3 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #122621;
+  margin-bottom: 15px;
+}
+
+.status-text p {
+  font-size: 14px;
+  color: #676767;
+  line-height: 1.6;
+  padding: 0 10px;
+}
+
+/* --- Contractor Bids Container --- */
+.contractor-bids-section {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.bids-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #122621;
+}
+
+/* --- Carousel Buttons --- */
+.carousel-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-arrow {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-arrow:hover {
+  background: #fa5a25;
+  color: white;
+  border: none;
+}
+
+/* --- The Slider Track --- */
+.bids-slider-track {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  padding: 5px;
+}
+
+.bids-slider-track::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* --- The Card Item --- */
+.bid-card-item {
+  min-width: calc(33.333% - 14px); /* Show exactly 3 cards */
+  background: white;
+  border-radius: 15px;
+  padding: 22px;
+  border: 1px solid #f0f0f0;
+  flex-shrink: 0; /* Prevents squishing */
+}
+
+.card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.user-profile {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+}
+
+.user-profile img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.user-text h4 {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+}
+
+/* ============================================================
+   RESPONSIVE DESIGN - DASHBOARD
+   ============================================================ */
+@media (max-width: 1024px) {
+  .sidebar-container {
+    width: 220px;
+  }
+
+  .dashboard-body {
+    padding: 25px;
+  }
+
+  .project-images-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .page-title {
+    font-size: 24px;
+  }
+
+  .bid-card-item {
+    min-width: calc(50% - 10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-container {
+    width: 180px;
+    position: fixed;
+    transform: translateX(-100%);
+    z-index: 999;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-container.open {
+    transform: translateX(0);
+  }
+
+  .dashboard-main-content {
+    margin-left: 0 !important;
+  }
+
+  .dashboard-body {
+    padding: 15px;
+  }
+
+  .page-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .dashboard-header {
+    padding: 0 15px;
+  }
+
+  .header-right {
+    gap: 10px;
+  }
+
+  .dashboard-grid-top {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .project-details-card {
+    padding: 15px;
+  }
+
+  .account-manager-card {
+    padding: 15px;
+  }
+
+  .project-images-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .project-images-grid img {
+    height: 100px;
+  }
+
+  .bid-card-item {
+    min-width: calc(100% - 0px);
+    padding: 15px;
+  }
+
+  .card-user-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-info {
+    flex-direction: column;
+  }
+
+  .bids-slider-track {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .carousel-nav {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .nav-arrow {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-container {
+    width: 100%;
+  }
+
+  .dashboard-body {
+    padding: 10px;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+
+  .section-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .dashboard-grid-top {
+    grid-template-columns: 1fr;
+  }
+
+  .project-images-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .project-details-card {
+    padding: 12px;
+  }
+
+  .user-info h3 {
+    font-size: 16px;
+  }
+
+  .bid-card-item {
+    padding: 12px;
+  }
+
+  .card-top-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bids-slider-track {
+    padding: 0;
+  }
+
+  .nav-item {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+.rating-row img{
+  height: 14px;
+  width: 14px;
+}
+
+.star { 
+  height: 14px;
+  width: 14px;
+}
+
+.card-price {
+  font-size: 22px;
+  font-weight: 900;
+  color: #fa5a25;
+}
+
+.service-tag {
+  background: #f4f4f4;
+  color: #676767;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  width: fit-content;
+  margin-bottom: 15px;
+}
+
+.divider { border: 0; border-top: 1px solid #f2f2f2; margin-bottom: 20px; }
+
+.card-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 25px;
+}
+
+.col label {
+  display: block;
+  font-size: 9px;
+  font-weight: 800;
+  color: #b0b0b0;
+  margin-bottom: 4px;
+}
+
+.col span { font-size: 13px; font-weight: 800; }
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.card-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.btn-white {
+  flex: 1;
+  background: white;
+  border: 1px solid #12201d;
+  border-radius: 50px;
+  padding: 10px;
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-orange {
+  flex: 1.3;
+  background: #fa5a25;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 11px;
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.rejected-label {
+  flex: 1.3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #777;
+  font-weight: 600;
+}
+
+.info-circle {
+  width: 18px;
+  height: 18px;
+  background: #fa5a25;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+/* --- Success Modal Styling --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Dim background */
+  backdrop-filter: blur(4px); /* Soft blur effect */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000; /* Ensure it sits above everything */
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-box {
+  background: white;
+  width: 90%;
+  max-width: 450px;
+  padding: 40px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease;
+}
+
+.modal-icon-container {
+  margin-bottom: 25px;
+}
+
+.modal-icon-container img {
+  width: 100px;
+}
+
+.modal-box h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #122621;
+  margin-bottom: 15px;
+}
+
+.modal-box p {
+  font-size: 14px;
+  color: #676767;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.modal-btn {
+  background: #fa5a25;
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modal-btn:hover {
+  background: #fa5a25;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ============================================================
+   8. REUSABLE ACCORDION (Shared)
+   ============================================================ */
+.accordion-wrapper {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.accordion-header {
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  background: #fff;
+}
+
+.accordion-header h4 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #122621;
+}
+
+/* Arrow Circle Colors based on State */
+.arrow-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fa5a25; /* Orange when closed */
+  color: #fff;
+}
+
+.arrow-circle.active {
+  background: #122621; /* Dark Green when open */
+  transform: rotate(0deg);
+}
+
+/* --- 1. Basic Info Grid --- */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns like image */
+  gap: 15px 40px;
+  padding: 10px 24px 24px 24px;
+}
+
+.info-item-pd {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  align-items: center;
+}
+
+.info-item-pd p {
+  font-weight: 800;
+  color: #122621;
+  white-space: nowrap;
+}
+
+.info-item-pd span {
+  color: #676767;
+}
+
+/* --- 2. Automated Quoting Row --- */
+.quoting-grid {
+  padding: 10px 24px 24px 24px;
+}
+
+.quote-row {
+  display: flex;
+  align-items: center;
+  gap: 60px; /* Space between the text items */
+  font-size: 14px;
+}
+
+.quote-row p {
+  font-weight: 800;
+  color: #122621;
+}
+
+.quote-row .price, .quote-row .provider {
+  color: #676767;
+}
+
+/* --- 3. Documents Grid --- */
+.documents-grid {
+  display: flex;
+  gap: 15px;
+  padding: 10px 24px 24px 24px;
+  flex-wrap: wrap;
+}
+
+.doc-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 12px 15px;
+  gap: 12px;
+  min-width: 280px;
+  position: relative;
+}
+
+.doc-icon-box {
+  background: #F5F1EB; /* Light orange tint */
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.doc-icon-box img {
+  width: 24px;
+  height: 24px;
+}
+
+.doc-info h4 {
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.doc-info p {
+  font-size: 11px;
+  color: #676767;
+}
+
+.doc-remove-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+/* ============================================================
+   9. Notification Container
+   ============================================================ */
+
+.notifications-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.notification-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0f0f0;
+  transition: transform 0.2s ease;
+}
+
+.notification-card:hover {
+  border-color: #ff5c2833;
+}
+
+.noti-left-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.noti-icon-circle {
+  width: 44px;
+  height: 44px;
+  background: #122621; /* Dark green from your image */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.noti-icon-circle img {
+  width: 24px;
+  height: auto;
+}
+
+.noti-text-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.noti-message {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+  line-height: 1.4;
+}
+
+.noti-date {
+  font-size: 12px;
+  color: #999;
+  font-weight: 500;
+}
+
+/* Action Button Styling */
+.noti-action-btn {
+  background: #ff5c28;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px; /* Pill shape */
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+  margin-left: 20px;
+}
+
+.noti-action-btn:hover {
+  background: #e54d1c;
+}
+
+/* Responsive for mobile */
+@media (max-width: 768px) {
+  .notification-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .noti-action-btn {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+}

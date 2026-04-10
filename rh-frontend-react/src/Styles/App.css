@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* COLOURS */
+:root {
+  --bg-gradient-from: #f8fafc;
+  --primary: #1d3b34;
+  --secondary: #4f7c70;
+  --accent: #fa5a25;
+  --support: #f6f2e6;
+  --regular: #ffffff;
+}
+
+body{
+  font-family: Inter !important;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
