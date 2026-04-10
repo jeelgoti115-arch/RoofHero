@@ -54,7 +54,7 @@ const ProjectDetails = () => {
       <h2>Project details</h2>
       <div className="card-user-header">
         <div className="user-info">
-          <img src="public/dashboard1-profile.png" alt={homeowner?.fullName || 'Homeowner'} className="user-img" />
+          <img src="public/user-image.png" alt={homeowner?.fullName || 'Homeowner'} className="user-img" />
           <div>
             <h3>{homeowner?.fullName || 'Homeowner Name'}</h3>
             <p>

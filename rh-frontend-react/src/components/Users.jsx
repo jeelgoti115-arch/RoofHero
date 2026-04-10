@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { 
   RiSearchLine, RiArrowLeftSLine, RiArrowRightSLine, RiArrowRightUpLine,
   RiArrowLeftLine, RiMailLine, RiPhoneLine, RiDeleteBin7Line,
@@ -155,11 +154,18 @@ const ProjectEditView = ({ project, onCancel }) => {
 // --- SUB-COMPONENT: PROJECT DETAILS VIEW ---
 const ProjectDetailsView = ({ project, onBack }) => {
   // Added state for Tab switching
-  const [activeTab, setActiveTab] = useState('property'); 
+  const [activeTab, setActiveTab] = useState('property');
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef(null);
   const docInputRef = useRef(null);
-  const [projectImages, setProjectImages] = useState(['public/r1.jpg', 'public/r2.jpg', 'public/r3.jpg', 'public/r4.jpg', 'public/r5.jpg']);
+
+  const details = project.serviceDetails || {};
+  const [projectImages, setProjectImages] = useState(() => {
+  return details.roofImages?.length 
+    ? details.roofImages 
+    : ['public/r1.jpg', 'public/r2.jpg', 'public/r3.jpg', 'public/r4.jpg', 'public/r5.jpg'];
+  });
+
   const [documents, setDocuments] = useState([
     { name: 'RooferCoinsurance.pdf', type: 'Public Liability Insurance' },
     { name: 'RooferCoinsurance.pdf', type: 'Public Liability Insurance' },
@@ -203,13 +209,13 @@ const ProjectDetailsView = ({ project, onBack }) => {
         <div className="adm-ho-profile-section">
           <div className="adm-ho-profile-info">
             <div className="adm-ho-avatar">
-              <img src="public/contractor2.jpg" alt="Profile" />
+              <img src="public/user-image.png" alt="Profile" />
             </div>
             <div className="adm-ho-name-contact">
-              <h2>{project.name}</h2>
+              <h2>{project.name || details.fullName || project.homeowner?.fullName || 'Homeowner'}</h2>
               <div className="adm-ho-contact-links">
-                <span><img src='public/mail_ic.png' alt='mail-ic' /> {project.email}</span>
-                <span><img src='public/Call_ic.png' alt='call-ic' /> {project.mobile}</span>
+                <span><img src='public/mail_ic.png' alt='mail-ic' /> {project.email || details.email || project.homeowner?.email || 'No email'}</span>
+                <span><img src='public/Call_ic.png' alt='call-ic' /> {project.mobile || details.phone || project.homeowner?.phone || 'No phone'}</span>
               </div>
             </div>
           </div>
@@ -237,7 +243,7 @@ const ProjectDetailsView = ({ project, onBack }) => {
         {/* --- CONDITIONAL TAB CONTENT --- */}
         {activeTab === 'property' ? (
           <div className="animate-fade">
-            <h3 className="adm-ho-address-title">{project.address}</h3>
+            <h3 className="adm-ho-address-title">{details.propertyAddress || details.address || 'No property address provided'}</h3>
 
             <div className="adm-ho-section-header">
               <h4>Project Images</h4>
@@ -261,31 +267,41 @@ const ProjectDetailsView = ({ project, onBack }) => {
             </div>
 
             <div className="adm-ho-info-grid">
-              <div><label>Project ID:</label><p>{project.id}-2025-0148</p></div>
-              <div><label>Property Address:</label><p>{project.address}</p></div>
-              <div><label>Approx. Roof Area:</label><p>180 m²</p></div>
-              <div><label>Roof Type:</label><p>Tile Roof</p></div>
-              <div><label>Pitch Type:</label><p>Medium Pitch (25-35°)</p></div>
-              <div><label>Stories:</label><p>2</p></div>
+              <div><label>Project ID:</label><p>{project.id}</p></div>
+              <div><label>Property Address:</label><p>{details.propertyAddress || details.address || 'Not provided'}</p></div>
+              <div><label>Service Type:</label><p>{details.serviceType || details.serviceRequested || 'Not provided'}</p></div>
+              <div><label>Current Roof Material:</label><p>{details.currentRoofMaterial || details.currentMaterial || details.currentRoof || 'Not provided'}</p></div>
+              <div><label>Material Requested:</label><p>{details.materialRequested || details.requestedMaterial || 'Not provided'}</p></div>
+              <div><label>Roof Faces:</label><p>{details.roofFaces || details.faces || 'Not provided'}</p></div>
             </div>
 
             <div className="adm-ho-info-grid mt-4">
                 <div>
-                    <label>When would you like the project to start?</label>
-                    <p>Within 30 days</p>
+                    <label>Pitch Type:</label>
+                    <p>{details.roofPitchType || details.steep || details.roofSlope || 'Not provided'}</p>
                 </div>
                 <div>
-                    <label>Any Deadlines or Timing Notes</label>
-                    <p>Not during school holidays, flexible before June</p>
+                    <label>Storey:</label>
+                    <p>{details.stories || details.storey || details.story || 'Not provided'}</p>
+                </div>
+                <div>
+                    <label>Approx. Roof Area:</label>
+                    <p>{details.roofArea || details.approxRoofArea || 'Not provided'}</p>
+                </div>
+                <div>
+                    <label>Timeline:</label>
+                    <p>{details.timeline || details.timeLine || 'Not provided'}</p>
                 </div>
             </div>
 
-            <div className="adm-ho-notes-section">
-              <label>Any Notes for Admin or Contractors</label>
-              <p>
-                Please ensure that the contractors are aware of the water leak issue at the back gutter area...
-              </p>
-            </div>
+            {details.notes && (
+              <div className="adm-ho-info-grid mt-4">
+                <div style={{ width: '100%' }}>
+                  <label>Notes / Damage Details</label>
+                  <p>{details.notes || details.issues || details.existingDamage || 'No notes provided'}</p>
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           /* --- DOCUMENTS VIEW --- */
@@ -332,26 +348,60 @@ const Users = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProject, setSelectedProject] = useState(null);
+  const [quoteRequests, setQuoteRequests] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  // --- MOCK DATA ---
-  const homeowners = [
-    { id: '#H001', name: 'Samantha Hollick', mobile: '937-304-8161', email: 'JasperCanning@dayrep.com', address: '27 Rosebay Street, Bondi NSW 2026', date: '15-03-2025', status: 'Active' },
-    { id: '#H002', name: 'James Thompson', mobile: '0401 234 567', email: 'james.t@email.com', address: '85 Castlereagh St, Sydney NSW', date: '15-03-2025', status: 'Active' },
-    { id: '#H003', name: 'Priya Patel', mobile: '0401 234 567', email: 'priya.p@email.com', address: '7 Clarence St, Sydney NSW 2000', date: '15-03-2025', status: 'Active' },
-    { id: '#H004', name: 'Daniel Nguyen', mobile: '0401 234 567', email: 'daniel.n@email.com', address: '150 King St, Sydney NSW 2000', date: '15-03-2025', status: 'Active' },
-    { id: '#H005', name: 'Emily Zhang', mobile: '0401 234 567', email: 'emily.z@email.com', address: '2 Elizabeth St, Sydney NSW 2000', date: '15-03-2025', status: 'Active' },
-    { id: '#H006', name: 'Michael Brown', mobile: '0401 234 567', email: 'michael.b@email.com', address: '55 Sussex St, Sydney NSW 2000', date: '15-03-2025', status: 'Active' },
-    { id: '#H007', name: 'Aisha Khan', mobile: '0401 234 567', email: 'aisha.k@email.com', address: '22 George St, Sydney NSW 2000', date: '15-03-2025', status: 'Active' },
-    { id: '#H008', name: 'Thomas Lee', mobile: '0401 234 567', email: 'thomas.l@email.com', address: '3 Macquarie St, Sydney NSW', date: '15-03-2025', status: 'Active' },
-  ];
+  useEffect(() => {
+    const fetchQuoteRequests = async () => {
+      setLoading(true);
+      setError('');
+
+      try {
+        const token = localStorage.getItem('roofheroToken');
+        const response = await fetch('/api/admin/quote-requests', {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : '',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to load quote requests');
+        }
+
+        const data = await response.json();
+        const normalized = data.map((quote) => ({
+          id: quote._id,
+          name: quote.fullName || quote.homeowner?.fullName || 'Unknown',
+          mobile: quote.phone || quote.homeowner?.phone || 'Unknown',
+          email: quote.email || quote.homeowner?.email || 'Unknown',
+          address: quote.serviceDetails?.propertyAddress || quote.serviceDetails?.address || 'Not provided',
+          date: quote.requestedAt ? new Date(quote.requestedAt).toLocaleDateString() : 'Unknown',
+          status: quote.status || 'Submitted',
+          serviceDetails: quote.serviceDetails || {},
+          homeowner: quote.homeowner || null,
+        }));
+
+        setQuoteRequests(normalized);
+      } catch (err) {
+        setError(err.message || 'Unable to fetch quote requests');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuoteRequests();
+  }, []);
 
   // --- LOGIC ---
   const filteredData = useMemo(() => {
-    return homeowners.filter(user => 
+    return quoteRequests.filter((user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.id.toLowerCase().includes(searchQuery.toLowerCase())
+      user.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.address.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [searchQuery]);
+  }, [quoteRequests, searchQuery]);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const visibleData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -402,41 +452,53 @@ const Users = () => {
         </div>
 
         <div className="adm-ho-table-wrapper">
-          <table className="adm-ho-table">
-            <thead>
-              <tr>
-                <th style={{ width: '8%' }}>Homeowner ID</th>
-                <th style={{ width: '15%' }}>Full Name</th>
-                <th style={{ width: '13%' }}>Mobile Number</th>
-                <th style={{ width: '18%' }}>Email</th>
-                <th style={{ width: 'auto' }}>Address</th>
-                <th style={{ width: '12%' }}>Request Date</th>
-                <th style={{ width: '10%' }}>Status</th>
-                <th style={{ width: '12%' }}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {visibleData.map((user, index) => (
-                <tr key={index}>
-                  <td className="adm-ho-text-dim">{user.id}</td>
-                  <td className="adm-ho-font-bold">{user.name}</td>
-                  <td>{user.mobile}</td>
-                  <td>{user.email}</td>
-                  <td className="adm-ho-address-cell">{user.address}</td>
-                  <td>{user.date}</td>
-                  <td><span className="adm-ho-pill-active">{user.status}</span></td>
-                  <td>
-                    <button 
-                        className="adm-ho-btn-view"
-                        onClick={() => setSelectedProject(user)}
-                    >
-                      View Details <RiArrowRightUpLine size={16} />
-                    </button>
-                  </td>
+          {loading ? (
+            <div className="adm-ho-loading">Loading homeowner quote requests...</div>
+          ) : error ? (
+            <div className="adm-ho-error">{error}</div>
+          ) : (
+            <table className="adm-ho-table">
+              <thead>
+                <tr>
+                  <th style={{ width: '8%' }}>Homeowner ID</th>
+                  <th style={{ width: '15%' }}>Full Name</th>
+                  <th style={{ width: '13%' }}>Mobile Number</th>
+                  <th style={{ width: '18%' }}>Email</th>
+                  <th style={{ width: 'auto' }}>Address</th>
+                  <th style={{ width: '12%' }}>Request Date</th>
+                  <th style={{ width: '10%' }}>Status</th>
+                  <th style={{ width: '12%' }}>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {visibleData.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="adm-ho-no-data">No quote requests found.</td>
+                  </tr>
+                ) : (
+                  visibleData.map((user) => (
+                    <tr key={user.id}>
+                      <td className="adm-ho-text-dim">{user.id}</td>
+                      <td className="adm-ho-font-bold">{user.name}</td>
+                      <td>{user.mobile}</td>
+                      <td>{user.email}</td>
+                      <td className="adm-ho-address-cell">{user.address}</td>
+                      <td>{user.date}</td>
+                      <td><span className="adm-ho-pill-active">{user.status}</span></td>
+                      <td>
+                        <button 
+                            className="adm-ho-btn-view"
+                            onClick={() => setSelectedProject(user)}
+                        >
+                          View Details <RiArrowRightUpLine size={16} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
 
         <div className="adm-ho-pagination">

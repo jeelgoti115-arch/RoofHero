@@ -10,6 +10,7 @@ const quoteRequestSchema = new mongoose.Schema({
   email: { type: String, required: true },
   phone: { type: String, required: true },
   serviceDetails: { type: Object, required: true, default: {} },
+  status: { type: String, enum: ['Awaiting Assignment', 'Bidding In Progress', 'Bid Accepted'], default: 'Awaiting Assignment' },
   credentials: {
     username: { type: String, required: true },
     password: { type: String, required: true },

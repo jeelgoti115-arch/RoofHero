@@ -81,6 +81,7 @@ router.post('/quote', upload.array('roofImages', 4), async (req, res, next) => {
       email,
       phone,
       serviceDetails: parsedDetails,
+      status: 'Awaiting Assignment',
       credentials: { username, password },
     })
 

@@ -16,8 +16,8 @@ import {
 } from '@remixicon/react';
 
 const AwaitingAssignmentView = ({ job, onBack }) => {
-
   const [expandedSection, setExpandedSection] = useState('basic');
+  const details = job.serviceDetails || {};
 
   const toggleSection = (section) => {
     setExpandedSection(expandedSection === section ? null : section);
@@ -42,33 +42,25 @@ const AwaitingAssignmentView = ({ job, onBack }) => {
             <div className="jb-profile-row">
               <img src="public/contractor2.jpg" alt="Profile" className="jb-avatar" />
               <div className="jb-profile-info">
-                <h3>{job.name}</h3>
+                <h3>{job.fullName || job.name || 'Homeowner'}</h3>
                 <div className="jb-contact-row">
-                  <span><RiMailFill size={14} className="jb-icon-orange" /> JasperCanning@dayrep.com</span>
+                  <span><RiMailFill size={14} className="jb-icon-orange" /> {job.email || 'No email'}</span>
                   <span className="jb-divider">|</span>
-                  <span><RiPhoneFill size={14} className="jb-icon-orange" /> 937-304-8161</span>
+                  <span><RiPhoneFill size={14} className="jb-icon-orange" /> {job.phone || 'No phone'}</span>
                 </div>
               </div>
               <div className="jb-status-container">
                 <div className="jb-status-tag jb-tag-open">
-                   <span className="jb-dot"></span> No Bids
+                  <span className="jb-dot"></span> {job.status || 'Awaiting Assignment'}
                 </div>
-                <p className="jb-bids-count">Waiting for Assignment</p>
+                <p className="jb-bids-count">{job.status === 'Awaiting Assignment' ? 'Waiting for Assignment' : ''}</p>
               </div>
             </div>
-
             <h2 className="jb-section-title mt-24">Project Images</h2>
             <div className="jb-image-grid-4">
-              <img src="public/r1.jpg" alt="Job" />
-              <img src="public/r2.jpg" alt="Job" />
-              <img src="public/r3.jpg" alt="Job" />
-              <div className="jb-image-card-more">
-                <img src="public/r4.jpg" alt="Job" />
-                <div className="jb-image-overlay">
-                  <span>View More</span>
-                  <RiAddCircleFill size={16} />
-                </div>
-              </div>
+              {(details.roofImages?.length ? details.roofImages : ['public/r1.jpg', 'public/r2.jpg', 'public/r3.jpg', 'public/r4.jpg']).slice(0, 4).map((src, index) => (
+                <img key={index} src={src} alt={`Job ${index + 1}`} />
+              ))}
             </div>
 
             {/* Accordion Sections */}
@@ -240,11 +232,12 @@ const AwaitingAssignmentView = ({ job, onBack }) => {
   );
 };
 
-const BiddingInProgressView = ({ onBack }) => {
+const BiddingInProgressView = ({ job, onBack }) => {
   const [expandedSection, setExpandedSection] = useState('basic');
   const navigate = useNavigate(); // Initialize navigation
   const scrollRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
+  const details = job.serviceDetails || {};
 
   const toggleSection = (section) => {
     setExpandedSection(expandedSection === section ? null : section);
@@ -287,33 +280,26 @@ const BiddingInProgressView = ({ onBack }) => {
             <div className="jb-profile-row">
               <img src="public/contractor2.jpg" alt="Profile" className="jb-avatar" />
               <div className="jb-profile-info">
-                <h3>Samantha Hollick</h3>
+                <h3>{job.fullName || job.name || 'Homeowner'}</h3>
                 <div className="jb-contact-row">
-                  <span><RiMailFill size={14} className="jb-icon-orange" /> JasperCanning@dayrep.com</span>
+                  <span><RiMailFill size={14} className="jb-icon-orange" /> {job.email || 'No email'}</span>
                   <span className="jb-divider">|</span>
-                  <span><RiPhoneFill size={14} className="jb-icon-orange" /> 937-304-8161</span>
+                  <span><RiPhoneFill size={14} className="jb-icon-orange" /> {job.phone || 'No phone'}</span>
                 </div>
               </div>
               <div className="jb-status-container">
                 <div className="jb-status-tag jb-tag-open-green">
-                  <span className="jb-dot-green"></span> Open For Bids
+                  <span className="jb-dot-green"></span> {job.status || 'Bidding In Progress'}
                 </div>
-                <p className="jb-bids-count">12 Contractor Bids Received</p>
+                <p className="jb-bids-count">{job.bidsCount ? `${job.bidsCount} Contractor Bids Received` : 'Contractor bids in progress'}</p>
               </div>
             </div>
 
             <h2 className="jb-section-title mt-24">Project Images</h2>
             <div className="jb-image-grid-4">
-              <img src="public/r1.jpg" alt="Job" />
-              <img src="public/r2.jpg" alt="Job" />
-              <img src="public/r3.jpg" alt="Job" />
-              <div className="jb-image-card-more">
-                <img src="public/r4.jpg" alt="Job" />
-                <div className="jb-image-overlay">
-                  <span>View More</span>
-                  <RiArrowRightUpLine size={16} />
-                </div>
-              </div>
+              {(details.roofImages?.length ? details.roofImages : ['public/r1.jpg', 'public/r2.jpg', 'public/r3.jpg', 'public/r4.jpg']).slice(0, 4).map((src, index) => (
+                <img key={index} src={src} alt={`Job ${index + 1}`} />
+              ))}
             </div>
 
             {/* Accordion Sections */}
@@ -520,9 +506,10 @@ const BiddingInProgressView = ({ onBack }) => {
   );
 };
 
-const BidAcceptedView = ({ onBack }) => {
+const BidAcceptedView = ({ job, onBack }) => {
   const [expandedSection, setExpandedSection] = useState('basic');
   const scrollRef = useRef(null);
+  const details = job.serviceDetails || {};
 
   const contractors = [
     { id: 1, name: "Matthew Plunkett", image: "public/contractor1.jpg", price: "9,200", rating: "4.7", contractorId: "#RPH-2025-00123", pricePerSq: "143" },
@@ -564,33 +551,26 @@ const BidAcceptedView = ({ onBack }) => {
             <div className="jb-profile-row">
               <img src="public/contractor2.jpg" alt="Profile" className="jb-avatar" />
               <div className="jb-profile-info">
-                <h3>Samantha Hollick</h3>
+                <h3>{job.fullName || job.name || 'Homeowner'}</h3>
                 <div className="jb-contact-row">
-                  <span><RiMailFill size={14} className="jb-icon-orange" /> JasperCanning@dayrep.com</span>
+                  <span><RiMailFill size={14} className="jb-icon-orange" /> {job.email || 'No email'}</span>
                   <span className="jb-divider">|</span>
-                  <span><RiPhoneFill size={14} className="jb-icon-orange" /> 937-304-8161</span>
+                  <span><RiPhoneFill size={14} className="jb-icon-orange" /> {job.phone || 'No phone'}</span>
                 </div>
               </div>
               <div className="jb-status-container">
                 <div className="jb-status-tag jb-tag-open-green">
-                  <span className="jb-dot-green"></span> Job Awarded
+                  <span className="jb-dot-green"></span> {job.status || 'Bid Accepted'}
                 </div>
-                <p className="jb-bids-count">12 Contractor Bids Received</p>
+                <p className="jb-bids-count">{job.bidsCount ? `${job.bidsCount} Contractor Bids Received` : 'Bid accepted'}</p>
               </div>
             </div>
 
             <h2 className="jb-section-title mt-24">Project Images</h2>
             <div className="jb-image-grid-4">
-              <img src="public/r1.jpg" alt="Job" />
-              <img src="public/r2.jpg" alt="Job" />
-              <img src="public/r3.jpg" alt="Job" />
-              <div className="jb-image-card-more">
-                <img src="public/r4.jpg" alt="Job" />
-                <div className="jb-image-overlay">
-                  <span>View More</span>
-                  <RiArrowRightUpLine size={16} />
-                </div>
-              </div>
+              {(details.roofImages?.length ? details.roofImages : ['public/r1.jpg', 'public/r2.jpg', 'public/r3.jpg', 'public/r4.jpg']).slice(0, 4).map((src, index) => (
+                <img key={index} src={src} alt={`Job ${index + 1}`} />
+              ))}
             </div>
 
             {/* Accordion Sections */}
@@ -772,20 +752,53 @@ const JobBidding = () => {
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [jobsData, setJobsData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const jobsData = [
-    { id: '#H001', name: 'Michael Turner', address: '22 George St, Sydney NSW 2000', date: '15-03-2025', area: '140 m²', status: 'Awaiting Assignment' },
-    { id: '#H002', name: 'James Burfitt', address: '458 Ocean Ave, Bondi, NSW 2026', date: '15-03-2025', area: '140 m²', contractor: 'Jai Dunshea', status: 'Bid Accepted' },
-    { id: '#H003', name: 'Michael Turner', address: '22 George St, Sydney NSW 2000', date: '15-03-2025', area: '140 m²', assignedCount: 5, status: 'Bidding In Progress' },
-  ];
+  useEffect(() => {
+    const fetchJobs = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const token = localStorage.getItem('roofheroToken');
+        const response = await fetch('/api/admin/quote-requests', {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : '',
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Unable to load quote requests');
+        }
+        const data = await response.json();
+        setJobsData(data.map((quote) => ({
+          ...quote,
+          status: quote.status || 'Awaiting Assignment',
+          id: quote._id,
+          date: quote.requestedAt ? new Date(quote.requestedAt).toLocaleDateString() : 'Unknown',
+          area: quote.serviceDetails?.roofArea || quote.serviceDetails?.approxRoofArea || 'Not specified',
+          address: quote.serviceDetails?.propertyAddress || quote.serviceDetails?.address || 'Not specified',
+          name: quote.fullName || 'Homeowner',
+          contractor: quote.contractor || 'TBD',
+          assignedCount: quote.assignedCount || 0,
+        })));
+      } catch (err) {
+        setError(err.message || 'Error loading jobs');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
 
   const filteredJobs = useMemo(() => {
     return jobsData.filter(job => {
       const matchesTab = job.status === activeTab;
-      const matchesSearch = job.name.toLowerCase().includes(searchQuery.toLowerCase()) || job.id.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = (job.name || '').toLowerCase().includes(searchQuery.toLowerCase()) || (job.id || '').toLowerCase().includes(searchQuery.toLowerCase());
       return matchesTab && matchesSearch;
     });
-  }, [activeTab, searchQuery]);
+  }, [activeTab, searchQuery, jobsData]);
 
   useEffect(() => { setCurrentPage(1); }, [searchQuery, activeTab, itemsPerPage]);
 
@@ -835,31 +848,39 @@ const JobBidding = () => {
         </div>
 
         <div className="jb-table-wrapper">
-          <table className="jb-table">
-            <thead>
-              <tr>
-                <th>Job ID</th><th>Homeowner Name</th><th>Address</th><th>Request Date</th><th>Roof Area</th>
-                {activeTab === 'Bidding In Progress' && <th>Contractor Assigned</th>}
-                {activeTab === 'Bid Accepted' && <th>Contractor Name</th>}
-                <th>Status</th><th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {visibleData.map((job) => (
-                <tr key={job.id}>
-                  <td className="jb-text-dim">{job.id}</td>
-                  <td className="jb-font-bold">{job.name}</td>
-                  <td className="jb-address-cell">{job.address}</td>
-                  <td>{job.date}</td>
-                  <td>{job.area}</td>
-                  {activeTab === 'Bidding In Progress' && <td>{job.assignedCount}</td>}
-                  {activeTab === 'Bid Accepted' && <td>{job.contractor}</td>}
-                  <td><span className={`jb-status-pill ${activeTab.toLowerCase().replace(/\s+/g, '-')}`}>{job.status}</span></td>
-                  <td><button className="jb-btn-view" onClick={() => setSelectedJob(job)}>View Details <RiArrowRightUpLine size={16} /></button></td>
+          {loading ? (
+            <div className="jb-loading-message">Loading quote requests...</div>
+          ) : error ? (
+            <div className="jb-error-message">{error}</div>
+          ) : (
+            <table className="jb-table">
+              <thead>
+                <tr>
+                  <th>Job ID</th><th>Homeowner Name</th><th>Address</th><th>Request Date</th><th>Roof Area</th>
+                  {activeTab === 'Bidding In Progress' && <th>Assigned Count</th>}
+                  {activeTab === 'Bid Accepted' && <th>Contractor Name</th>}
+                  <th>Status</th><th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {visibleData.length === 0 ? (
+                  <tr><td colSpan={activeTab === 'Bidding In Progress' ? 8 : 7} className="jb-no-data">No quote requests found.</td></tr>
+                ) : visibleData.map((job) => (
+                  <tr key={job.id}>
+                    <td className="jb-text-dim">{job.id}</td>
+                    <td className="jb-font-bold">{job.name}</td>
+                    <td className="jb-address-cell">{job.address}</td>
+                    <td>{job.date}</td>
+                    <td>{job.area}</td>
+                    {activeTab === 'Bidding In Progress' && <td>{job.assignedCount}</td>}
+                    {activeTab === 'Bid Accepted' && <td>{job.contractor}</td>}
+                    <td><span className={`jb-status-pill ${job.status.toLowerCase().replace(/\s+/g, '-')}`}>{job.status}</span></td>
+                    <td><button className="jb-btn-view" onClick={() => setSelectedJob(job)}>View Details <RiArrowRightUpLine size={16} /></button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
         <div className="jb-pagination">
           <button className="jb-pagi-arrow" onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}><RiArrowLeftSLine size={20} /></button>
