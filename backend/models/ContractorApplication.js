@@ -6,6 +6,7 @@ const contractorApplicationSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   bio: { type: String, default: '' },
   licenseNumber: { type: String, default: '' },
+  insurancePolicyNumber: { type: String, default: '' },
   experience: { type: String, default: '' },
   services: { type: [String], default: [] },
   regions: { type: [String], default: [] },

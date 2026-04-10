@@ -5,7 +5,12 @@ import {
   RiUploadCloud2Line,
   RiCloseCircleLine,
   RiStarSFill,
-  RiStarHalfSLine
+  RiStarHalfSLine,
+  RiArrowLeftLine,
+  RiArrowRightSLine,
+  RiArrowLeftSLine,
+  RiStarFill,
+  RiSearchLine,
 } from '@remixicon/react';
 
 const CManagement = () => {

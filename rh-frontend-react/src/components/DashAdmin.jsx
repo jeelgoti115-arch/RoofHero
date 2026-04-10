@@ -8,25 +8,25 @@ import {
   RiArrowUpSLine,
   RiArrowDownSLine,
 } from '@remixicon/react';
-import { 
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, 
-  ResponsiveContainer, BarChart, Bar 
-} from 'recharts';
+// import { 
+//   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, 
+//   ResponsiveContainer, BarChart, Bar 
+// } from 'recharts';
 
-// --- MOCK DATA ---
-const jobLeadsData = [
-  { name: 'Jan', value: 15 }, { name: 'Feb', value: 25 }, { name: 'Mar', value: 18 },
-  { name: 'Apr', value: 70 }, { name: 'May', value: 35 }, { name: 'Jun', value: 50 },
-  { name: 'Jul', value: 45 }, { name: 'Aug', value: 40 }, { name: 'Sep', value: 95 },
-  { name: 'Oct', value: 25 }, { name: 'Nov', value: 65 }, { name: 'Dec', value: 60 },
-];
+// // --- MOCK DATA ---
+// const jobLeadsData = [
+//   { name: 'Jan', value: 15 }, { name: 'Feb', value: 25 }, { name: 'Mar', value: 18 },
+//   { name: 'Apr', value: 70 }, { name: 'May', value: 35 }, { name: 'Jun', value: 50 },
+//   { name: 'Jul', value: 45 }, { name: 'Aug', value: 40 }, { name: 'Sep', value: 95 },
+//   { name: 'Oct', value: 25 }, { name: 'Nov', value: 65 }, { name: 'Dec', value: 60 },
+// ];
 
-const contractorsData = [
-  { name: 'Jan', value: 35 }, { name: 'Feb', value: 25 }, { name: 'Mar', value: 18 },
-  { name: 'Apr', value: 45 }, { name: 'May', value: 75 }, { name: 'Jun', value: 30 },
-  { name: 'Jul', value: 50 }, { name: 'Aug', value: 15 }, { name: 'Sep', value: 40 },
-  { name: 'Oct', value: 75 }, { name: 'Nov', value: 30 }, { name: 'Dec', value: 35 },
-];
+// const contractorsData = [
+//   { name: 'Jan', value: 35 }, { name: 'Feb', value: 25 }, { name: 'Mar', value: 18 },
+//   { name: 'Apr', value: 45 }, { name: 'May', value: 75 }, { name: 'Jun', value: 30 },
+//   { name: 'Jul', value: 50 }, { name: 'Aug', value: 15 }, { name: 'Sep', value: 40 },
+//   { name: 'Oct', value: 75 }, { name: 'Nov', value: 30 }, { name: 'Dec', value: 35 },
+// ];
 
 // --- CUSTOM TOOLTIPS ---
 const CustomTooltip = ({ active, payload, label }) => {
@@ -190,8 +190,8 @@ const DashAdmin = () => {
                       <input type="text" value={selectedContractor.licenseNumber || ''} readOnly />
                     </div>
                     <div className="da-input-group">
-                      <label>Full Name</label>
-                      <input type="text" value={selectedContractor.fullName || selectedContractor.name || ''} readOnly />
+                      <label>Insurance Policy Number</label>
+                      <input type="text" value={selectedContractor.insurancePolicyNumber || selectedContractor.name || ''} readOnly />
                     </div>
                   </div>
                   <div className="da-upload-list">
@@ -220,7 +220,7 @@ const DashAdmin = () => {
                 <div className="da-accordion-body">
                   <div className="da-doc-grid">
                      <div className="da-input-group">
-                        <label>Suburbs or Regions You Serve</label>
+                        <label>Suburbs or Regions Served</label>
                         <input type="text" value={(selectedContractor.regions || []).join(', ')} readOnly />
                      </div>
                      <div className="da-input-group">
@@ -229,7 +229,7 @@ const DashAdmin = () => {
                      </div>
                   </div>
                   <div className="da-services-offered">
-                     <label className="da-label-bold">Roofing Services You Offer</label>
+                     <label className="da-label-bold">Roofing Services Offered</label>
                      <div className="da-checkbox-group">
                         {['Roof Replacements','Roof Repairs','Gutter Repairs','Skylight Installation','Roof Painting','Leak Inspections'].map((service) => (
                           <label key={service}>
@@ -245,7 +245,7 @@ const DashAdmin = () => {
             {/* 3. PHOTOS */}
             <div className={`da-accordion-item ${activeAccordion === 'photos' ? 'open' : ''}`}>
               <div className="da-accordion-header" onClick={() => setActiveAccordion(activeAccordion === 'photos' ? '' : 'photos')}>
-                <span>Upload Past Work Photos</span>
+                <span>Uploaded Past Work Photos</span>
                 <div className={`da-acc-icon-circle ${activeAccordion === 'photos' ? 'active' : ''}`}>
                     {activeAccordion === 'photos' ? <RiArrowUpSLine size={20}/> : <RiArrowDownSLine size={20}/>}
                 </div>
@@ -264,12 +264,12 @@ const DashAdmin = () => {
                       <p className="da-text-dim">No work photos uploaded.</p>
                     )}
                   </div>
-                  <div className="da-confirmation-check">
-                     <input type="checkbox" checked readOnly />
-                     <label>I confirm that all information provided is accurate and I agree to the platform's terms and conditions.</label>
-                  </div>
                 </div>
               )}
+            </div>
+            <div className="da-confirmation-check">
+              <input type="checkbox" required checked/>
+              <label>I confirm that all information provided is accurate and I agree to the platform's terms and conditions.</label>
             </div>
           </div>
 
@@ -302,7 +302,7 @@ const DashAdmin = () => {
         </div>
       </div>
 
-      <div className="da-charts-container">
+      {/* <div className="da-charts-container">
         <div className="da-chart-box">
           <h3 className="da-section-subtitle">Job Leads</h3>
           <div className="da-chart-visual">
@@ -332,7 +332,7 @@ const DashAdmin = () => {
             </ResponsiveContainer>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="da-table-section">
         <h3 className="da-section-subtitle">Contractor Onboarding Request</h3>

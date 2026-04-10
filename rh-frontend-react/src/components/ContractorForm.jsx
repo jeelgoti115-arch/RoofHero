@@ -15,6 +15,7 @@ const ContractorForm = () => {
   const [email, setEmail] = useState('');
   const [bio, setBio] = useState('');
   const [licenseNumber, setLicenseNumber] = useState('');
+  const [insurancePolicyNumber, setInsurancePolicyNumber] = useState('');
   const [regions, setRegions] = useState('');
   const [experience, setExperience] = useState('');
   const [selectedServices, setSelectedServices] = useState([]);
@@ -79,6 +80,7 @@ const ContractorForm = () => {
       formData.append('phone', phone);
       formData.append('bio', bio);
       formData.append('licenseNumber', licenseNumber);
+      formData.append('insurancePolicyNumber', insurancePolicyNumber);
       formData.append('experience', experience);
       formData.append('services', JSON.stringify(selectedServices));
       formData.append('regions', JSON.stringify(regions.split(',').map((item) => item.trim()).filter(Boolean)));
@@ -114,6 +116,7 @@ const ContractorForm = () => {
       setPhone('');
       setBio('');
       setLicenseNumber('');
+      setInsurancePolicyNumber('');
       setRegions('');
       setExperience('');
       setSelectedServices([]);
@@ -237,6 +240,8 @@ const ContractorForm = () => {
                 <input
                   type="text"
                   placeholder="e.g., GBE #9876543"
+                  value={insurancePolicyNumber}
+                  onChange={(e) => setInsurancePolicyNumber(e.target.value)}
                 />
               </div>
               <div className="input-group">
