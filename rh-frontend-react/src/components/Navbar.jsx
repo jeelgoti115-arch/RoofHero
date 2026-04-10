@@ -16,22 +16,19 @@ const Navbar = () => {
 
   // Check authentication status on mount
   useEffect(() => {
-    const authStatus = localStorage.getItem('isAuthenticated');
-    if (authStatus === 'true') {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setIsLoggedIn(true);
-    }
+    const token = localStorage.getItem('roofheroToken');
+    const user = localStorage.getItem('roofheroUser');
+    setIsLoggedIn(Boolean(token && user));
   }, []);
 
   // Handle CTA button logic
   const handleButtonClick = () => {
-    const authStatus = localStorage.getItem('isAuthenticated');
+    const token = localStorage.getItem('roofheroToken');
+    const user = localStorage.getItem('roofheroUser');
   
-    if (authStatus === 'true') {
-      // If logged in, take them to the actual User Dashboard
+    if (token && user) {
       navigate('/dashboard');
     } else {
-      // If not logged in, take them to Login
       navigate('/login');
     }
   };

@@ -6,8 +6,10 @@ const Sidebar = ({ isOpen }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    localStorage.removeItem('roofheroToken');
+    localStorage.removeItem('roofheroUser');
     localStorage.removeItem('isAuthenticated');
-      navigate('/');
+    navigate('/login');
   };
 
   return (

@@ -16,8 +16,10 @@ const AdminSidebar = ({ isOpen, activeTab, setActiveTab }) => {
 
   const handleLogout = () => {
     setShowToast(true);
+    localStorage.removeItem('roofheroToken');
+    localStorage.removeItem('roofheroUser');
     localStorage.removeItem('isAuthenticated');
-    navigate('/', { state: { logoutSuccess: true } });
+    navigate('/login', { state: { logoutSuccess: true } });
     setTimeout(() => {
       setShowToast(false);
     }, 1500);

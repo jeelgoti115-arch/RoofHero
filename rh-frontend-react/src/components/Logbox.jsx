@@ -31,6 +31,7 @@ const Logbox = () => {
 
       localStorage.setItem('roofheroToken', result.token);
       localStorage.setItem('roofheroUser', JSON.stringify(result.user));
+      localStorage.setItem('isAuthenticated', 'true');
 
       if (result.user.role === 'admin') {
         navigate('/admin');
