@@ -9,7 +9,7 @@ const quoteRequestSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: true },
-  serviceDetails: { type: Object, default: {} },
+  serviceDetails: { type: Object, required: true, default: {} },
   credentials: {
     username: { type: String, required: true },
     password: { type: String, required: true },

@@ -35,7 +35,7 @@ const ServiceCard4 = ({ onNext }) => {
         </div>
 
         <div className='sc4-footer'>
-          <button className='sc4-continue-btn' onClick={onNext}>
+          <button className='sc4-continue-btn' onClick={() => onNext({ steep: selectedPitch })}>
             Continue <RiArrowRightUpLine size={20} />
           </button>
         </div>

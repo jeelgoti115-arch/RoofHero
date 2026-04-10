@@ -1,35 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Accordion from './Accordion';
 import { RiCloseCircleLine } from '@remixicon/react';
 
 const ProjectDetails = () => {
   // Track which section is open by its title string
   const [openSection, setOpenSection] = useState('Basic Information');
+  const [homeowner, setHomeowner] = useState(null);
+  const [quoteInfo, setQuoteInfo] = useState(null);
+  const [_loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHomeownerData = async () => {
+      const token = window.localStorage.getItem('roofheroToken');
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/homeowner/me', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!response.ok) {
+          setLoading(false);
+          return;
+        }
+
+        const data = await response.json();
+        setHomeowner(data.homeowner);
+        setQuoteInfo(data.quote);
+      } catch (error) {
+        console.error('Unable to fetch homeowner details', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHomeownerData();
+  }, []);
 
   const handleToggle = (title) => {
     // If clicking the one already open, close it (set to null), otherwise open the new one
     setOpenSection(openSection === title ? null : title);
   };
 
-  const images = ['/roof1.jpg', '/roof2.jpg', '/roof3.jpg', '/roof4.jpg'];
+  const images = quoteInfo?.serviceDetails?.roofImages?.length
+    ? quoteInfo.serviceDetails.roofImages
+    : ['/roof1.jpg', '/roof2.jpg', '/roof3.jpg', '/roof4.jpg'];
 
   return (
     <div className="project-details-card">
       <h2>Project details</h2>
       <div className="card-user-header">
         <div className="user-info">
-          <img src="public/dashboard1-profile.png" alt="Samantha" className="user-img" />
+          <img src="public/dashboard1-profile.png" alt={homeowner?.fullName || 'Homeowner'} className="user-img" />
           <div>
-            <h3>Samantha Hollick</h3>
+            <h3>{homeowner?.fullName || 'Homeowner Name'}</h3>
             <p>
-              <img src='public/mail_ic.png' alt='mail' className='user-icons' /> JasperCanning@dayrep.com | 
-              <img src='public/Call_ic.png' alt='call' className='user-icons' /> 937-304-8161
+              <img src='public/mail_ic.png' alt='mail' className='user-icons' /> {homeowner?.email || 'email@example.com'} | 
+              <img src='public/Call_ic.png' alt='call' className='user-icons' /> {homeowner?.phone || '000-000-0000'}
             </p>
           </div>
         </div>
         <div className='side-info'>
           <div className="status-tag">● Open For Bids</div>
-          <p>12 Contractor Bids Received</p>
+          <p>{quoteInfo ? 'Contractors reviewing your quote' : 'No quote submitted yet'}</p>
         </div>
       </div>
 
@@ -46,15 +82,15 @@ const ProjectDetails = () => {
         onToggle={() => handleToggle("Basic Information")}
       >
         <div className="info-grid">
-          <div className="info-item-pd"><p>Project ID:</p> <span>RH-JOB-2025-0148</span></div>
-          <div className="info-item-pd"><p>Property Address:</p> <span>27 Rosebay Street, Bondi, NSW 2026</span></div>
-          <div className="info-item-pd"><p>Roof Type:</p> <span>Tile Roof</span></div>
-          <div className="info-item-pd"><p>Approx. Roof Area:</p> <span>180 m²</span></div>
-          <div className="info-item-pd"><p>Pitch Type:</p> <span>Medium Pitch (25-35°)</span></div>
-          <div className="info-item-pd"><p>Stories:</p> <span>2</span></div>
-          <div className="info-item-pd"><p>Access Difficulty:</p> <span>Moderate</span></div>
-          <div className="info-item-pd"><p>Material Requested:</p> <span>Colorbond Metal</span></div>
-          <div className="info-item-pd"><p>Urgency Level:</p> <span>Flexible (within 30 days)</span></div>
+          <div className="info-item-pd"><p>Project ID:</p> <span>{quoteInfo ? `RH-${quoteInfo.id?.toString().slice(-6).toUpperCase()}` : 'RH-JOB-2025-0148'}</span></div>
+          <div className="info-item-pd"><p>Property Address:</p> <span>{quoteInfo?.serviceDetails?.propertyAddress || quoteInfo?.serviceDetails?.address || '27 Rosebay Street, Bondi, NSW 2026'}</span></div>
+          <div className="info-item-pd"><p>Service Type:</p> <span>{quoteInfo?.serviceDetails?.serviceType || quoteInfo?.serviceDetails?.serviceRequested || 'Roof Replacement'}</span></div>
+          <div className="info-item-pd"><p>Current Roof Material:</p> <span>{quoteInfo?.serviceDetails?.currentRoofMaterial || quoteInfo?.serviceDetails?.currentMaterial || quoteInfo?.serviceDetails?.currentRoof || 'Slate'}</span></div>
+          <div className="info-item-pd"><p>Material Requested:</p> <span>{quoteInfo?.serviceDetails?.materialRequested || quoteInfo?.serviceDetails?.requestedMaterial || 'Metal'}</span></div>
+          <div className="info-item-pd"><p>Steep:</p> <span>{quoteInfo?.serviceDetails?.steep || quoteInfo?.serviceDetails?.roofSlope || 'Flat'}</span></div>
+          <div className="info-item-pd"><p>Roof Faces:</p> <span>{quoteInfo?.serviceDetails?.roofFaces || quoteInfo?.serviceDetails?.faces || 'Medium (3-4 faces, valleys)'}</span></div>
+          <div className="info-item-pd"><p>Storey:</p> <span>{quoteInfo?.serviceDetails?.storey || quoteInfo?.serviceDetails?.story || 'Double Storey'}</span></div>
+          <div className="info-item-pd"><p>TimeLine:</p> <span>{quoteInfo?.serviceDetails?.timeline || quoteInfo?.serviceDetails?.timeLine || 'Within the Next Month'}</span></div>
         </div>
       </Accordion>
 

@@ -34,7 +34,7 @@ const ServiceCard5 = ({ onNext }) => {
         </div>
 
         <div className='sc5-footer'>
-          <button className='sc5-continue-btn' onClick={onNext}>
+          <button className='sc5-continue-btn' onClick={() => onNext({ roofFaces: selectedComplexity })}>
             Continue <RiArrowRightUpLine size={20} />
           </button>
         </div>

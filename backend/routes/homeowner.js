@@ -1,9 +1,29 @@
 import express from 'express'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import multer from 'multer'
+import fs from 'node:fs'
+import path, { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import Homeowner from '../models/Homeowner.js'
 import QuoteRequest from '../models/QuoteRequest.js'
+import { authenticate, authorize } from '../middleware/auth.js'
 
+const __dirname = dirname(fileURLToPath(import.meta.url))
 const router = express.Router()
+const uploadPath = path.join(__dirname, '..', 'uploads', 'homeowner-quotes')
+fs.mkdirSync(uploadPath, { recursive: true })
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadPath),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname)
+    const name = `${file.fieldname}-${Date.now()}${ext}`
+    cb(null, name)
+  },
+})
+
+const upload = multer({ storage })
 
 const generateUsername = (fullName) => {
   const base = fullName
@@ -21,9 +41,20 @@ const generatePassword = () => {
   return Math.random().toString(36).slice(-8) + Math.floor(100 + Math.random() * 900)
 }
 
-router.post('/quote', async (req, res, next) => {
+router.post('/quote', upload.array('roofImages', 4), async (req, res, next) => {
   try {
-    const { fullName, email, phone, ...serviceDetails } = req.body
+    const { fullName, email, phone, serviceDetails = '{}' } = req.body
+    let parsedDetails = {}
+
+    if (typeof serviceDetails === 'string') {
+      try {
+        parsedDetails = JSON.parse(serviceDetails)
+      } catch {
+        parsedDetails = {}
+      }
+    } else if (typeof serviceDetails === 'object' && serviceDetails !== null) {
+      parsedDetails = serviceDetails
+    }
 
     if (!fullName || !email || !phone) {
       return res.status(400).json({ message: 'Full name, email, and phone are required.' })
@@ -41,18 +72,49 @@ router.post('/quote', async (req, res, next) => {
       password: hashedPassword,
     })
 
+    const roofImages = (req.files || []).map((file) => `/uploads/homeowner-quotes/${file.filename}`)
+    parsedDetails.roofImages = roofImages
+
     await QuoteRequest.create({
       homeowner: homeowner._id,
       fullName,
       email,
       phone,
-      serviceDetails,
+      serviceDetails: parsedDetails,
       credentials: { username, password },
     })
 
     return res.status(201).json({
       message: 'Quote request received successfully.',
       credentials: { username, password },
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/me', authenticate, authorize('homeowner'), async (req, res, next) => {
+  try {
+    const homeowner = await Homeowner.findById(req.user._id).select('-password')
+    if (!homeowner) {
+      return res.status(404).json({ message: 'Homeowner not found.' })
+    }
+
+    const latestQuote = await QuoteRequest.findOne({ homeowner: homeowner._id }).sort({ requestedAt: -1 })
+
+    return res.json({
+      homeowner: {
+        id: homeowner._id,
+        fullName: homeowner.fullName,
+        email: homeowner.email,
+        phone: homeowner.phone,
+        username: homeowner.username,
+      },
+      quote: latestQuote ? {
+        id: latestQuote._id,
+        requestedAt: latestQuote.requestedAt,
+        serviceDetails: latestQuote.serviceDetails || {},
+      } : null,
     })
   } catch (error) {
     next(error)

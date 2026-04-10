@@ -32,7 +32,7 @@ const ServiceCard1 = ({ onNext }) => {
               <p>Roof Repair</p>
             </div>
           </div>
-          <button className='sc1-continue-btn' onClick={onNext}>
+          <button className='sc1-continue-btn' onClick={() => onNext({ serviceType: selected === 'replacement' ? 'Roof Replacement' : 'Roof Repair' })}>
             Continue <RiArrowRightUpLine size={20} />
           </button>
         </div>

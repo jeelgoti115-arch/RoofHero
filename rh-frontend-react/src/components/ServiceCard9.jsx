@@ -4,15 +4,22 @@ import { useNavigate } from 'react-router-dom'
 
 const API_BASE = '/api';
 
-const ServiceCard9 = () => {
+const ServiceCard9 = ({ serviceDetails, onSubmit }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [propertyAddress, setPropertyAddress] = useState('');
+  const [roofImages, setRoofImages] = useState([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [credentials, setCredentials] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleRoofImagesChange = (e) => {
+    const files = Array.from(e.target.files || []).slice(0, 4)
+    setRoofImages(files)
+  }
 
   const handleGetQuotes = async (e) => {
     e.preventDefault();
@@ -20,10 +27,22 @@ const ServiceCard9 = () => {
     setIsLoading(true);
 
     try {
+      const formData = new FormData()
+      formData.append('fullName', fullName)
+      formData.append('email', email)
+      formData.append('phone', phone)
+      formData.append('serviceDetails', JSON.stringify({
+        ...serviceDetails,
+        propertyAddress,
+      }))
+
+      roofImages.forEach((file) => {
+        formData.append('roofImages', file)
+      })
+
       const response = await fetch(`${API_BASE}/homeowner/quote`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fullName, email, phone }),
+        body: formData,
       });
 
       const result = await response.json();
@@ -37,6 +56,14 @@ const ServiceCard9 = () => {
       setFullName('');
       setEmail('');
       setPhone('');
+      setPropertyAddress('');
+      setRoofImages([]);
+      onSubmit({
+        fullName,
+        email,
+        phone,
+        serviceDetails: { ...serviceDetails, propertyAddress, roofImages: roofImages.map((file) => file.name) },
+      });
     } catch (error) {
       setErrorMessage('Unable to submit quote request. Please try again.');
       console.error(error);
@@ -80,7 +107,7 @@ const ServiceCard9 = () => {
           </div>
 
           <div className='sc9-input-row'>
-            <div className='sc9-input-group single-col'>
+            <div className='sc9-input-group'>
               <label htmlFor='phone'>Phone Number</label>
               <input
                 type='tel'
@@ -92,6 +119,32 @@ const ServiceCard9 = () => {
                 onChange={(e) => setPhone(e.target.value)}
                 required
               />
+            </div>
+            <div className='sc9-input-group'>
+              <label htmlFor='propertyAddress'>Property Address</label>
+              <input
+                type='text'
+                id='propertyAddress'
+                placeholder='e.g., 27 Rosebay Street, Bondi NSW 2026'
+                value={propertyAddress}
+                onChange={(e) => setPropertyAddress(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className='sc9-input-row'>
+            <div className='sc9-input-group'>
+              <label htmlFor='roofImages'>Roof Images (up to 4)</label>
+              <input
+                type='file'
+                id='roofImages'
+                accept='image/*'
+                multiple
+                onChange={handleRoofImagesChange}
+              />
+              {roofImages.length > 0 && (
+                <p className='image-count'>Selected {roofImages.length} image(s)</p>
+              )}
             </div>
           </div>
 

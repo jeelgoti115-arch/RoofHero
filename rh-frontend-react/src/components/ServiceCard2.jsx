@@ -36,8 +36,8 @@ const ServiceCard2 = ({ onNext }) => {
           ))}
         </div>
 
-        <div className='sc2-footer' onClick={onNext}>
-          <button className='sc-continue-btn'>
+        <div className='sc2-footer'>
+          <button className='sc-continue-btn' onClick={() => onNext({ currentRoofMaterial: selectedMaterial })}>
             Continue <RiArrowRightUpLine size={20} />
           </button>
         </div>

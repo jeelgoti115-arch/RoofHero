@@ -32,7 +32,7 @@ const ServiceCard7 = ({ onNext }) => {
         </div>
 
         <div className='sc7-footer'>
-          <button className='sc7-continue-btn' onClick={onNext}>
+          <button className='sc7-continue-btn' onClick={() => onNext({ timeline: selectedTimeline })}>
             Continue <RiArrowRightUpLine size={20} />
           </button>
         </div>

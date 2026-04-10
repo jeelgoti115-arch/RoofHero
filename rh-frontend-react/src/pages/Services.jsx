@@ -18,14 +18,24 @@ import '../Styles/Services.css'
 
 const Services = () => {
   const [step, setStep] = useState(1);
+  const [serviceDetails, setServiceDetails] = useState({
+    serviceType: 'Roof Replacement',
+    currentRoofMaterial: 'Asphalt Shingle',
+    materialRequested: 'Asphalt Shingle',
+    steep: 'Flat',
+    roofFaces: 'Simple (1-2 faces)',
+    storey: 'Single Storey',
+    timeline: 'As soon as possible',
+  });
 
-  const nextStep = () => {
+  const nextStep = (nextData = {}) => {
+    setServiceDetails((prev) => ({ ...prev, ...nextData }));
     setStep((prev) => prev + 1);
   };
 
   const handleFinalSubmit = (formData) => {
-    console.log("Form Submitted Successfully:", formData);
-    alert("Quotes Requested!");
+    console.log('Form Submitted Successfully:', formData);
+    alert('Quotes Requested!');
   };
 
   return (
@@ -42,7 +52,7 @@ const Services = () => {
         {step === 6 && <ServiceCard6 onNext={nextStep} />}
         {step === 7 && <ServiceCard7 onNext={nextStep} />}
         {step === 8 && <ServiceCard8 onNext={nextStep} />}
-        {step === 9 && <ServiceCard9 onSubmit={handleFinalSubmit} />}
+        {step === 9 && <ServiceCard9 serviceDetails={serviceDetails} onSubmit={handleFinalSubmit} />}
       </div>
 
       <FooterCards />

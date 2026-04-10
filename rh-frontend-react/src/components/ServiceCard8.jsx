@@ -38,7 +38,7 @@ const ServiceCard8 = ({ onNext }) => {
         </div>
 
         <div className='sc8-footer'>
-          <button className='sc8-request-btn' onClick={onNext}>
+          <button className='sc8-request-btn' onClick={() => onNext({})}>
               Request My Quote <RiArrowRightUpLine size={20} />
           </button>
         </div>

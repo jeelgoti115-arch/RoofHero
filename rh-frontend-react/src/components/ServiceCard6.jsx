@@ -34,7 +34,7 @@ const ServiceCard6 = ({ onNext }) => {
         </div>
 
         <div className='sc6-footer'>
-          <button className='sc6-continue-btn' onClick={onNext}>
+          <button className='sc6-continue-btn' onClick={() => onNext({ storey: selectedLevel })}>
             Continue <RiArrowRightUpLine size={20} />
           </button>
         </div>
