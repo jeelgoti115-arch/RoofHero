@@ -173,6 +173,44 @@ router.get('/quote-requests', async (req, res, next) => {
   }
 })
 
+router.patch('/quote-requests/:id/assign', async (req, res, next) => {
+  try {
+    const { contractorId } = req.body
+    if (!contractorId) {
+      return res.status(400).json({ message: 'Contractor selection is required.' })
+    }
+
+    const quote = await QuoteRequest.findById(req.params.id)
+    if (!quote) {
+      return res.status(404).json({ message: 'Quote request not found.' })
+    }
+
+    if (quote.status !== 'Awaiting Assignment') {
+      return res.status(400).json({ message: 'Quote request is not awaiting assignment.' })
+    }
+
+    const contractor = await User.findOne({ _id: contractorId, role: 'contractor', status: 'approved' }).select('-password')
+    if (!contractor) {
+      return res.status(404).json({ message: 'Approved contractor not found.' })
+    }
+
+    quote.assignedContractor = {
+      id: contractor._id,
+      name: contractor.name || contractor.username,
+      email: contractor.email,
+      phone: contractor.phone,
+      username: contractor.username,
+    }
+    quote.status = 'Bidding In Progress'
+    quote.assignedAt = new Date()
+    await quote.save()
+
+    res.json(quote)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.get('/homeowners', async (req, res, next) => {
   try {
     const homeowners = await Homeowner.find().sort({ createdAt: -1 })

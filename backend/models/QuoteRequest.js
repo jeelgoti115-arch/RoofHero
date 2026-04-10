@@ -11,10 +11,18 @@ const quoteRequestSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   serviceDetails: { type: Object, required: true, default: {} },
   status: { type: String, enum: ['Awaiting Assignment', 'Bidding In Progress', 'Bid Accepted'], default: 'Awaiting Assignment' },
+  assignedContractor: {
+    id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+    name: { type: String, default: '' },
+    email: { type: String, default: '' },
+    phone: { type: String, default: '' },
+    username: { type: String, default: '' },
+  },
   credentials: {
     username: { type: String, required: true },
     password: { type: String, required: true },
   },
+  assignedAt: { type: Date },
   requestedAt: { type: Date, default: Date.now },
 })
 

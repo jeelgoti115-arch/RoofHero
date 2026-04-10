@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+// eslint-disable react-hooks/exhaustive-deps 
 import React, { useRef, useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -15,12 +15,41 @@ import {
   RiPhoneFill,
 } from '@remixicon/react';
 
-const AwaitingAssignmentView = ({ job, onBack }) => {
+const AwaitingAssignmentView = ({ job, onBack, availableContractors, loadingContractors, contractorError, onAssign }) => {
   const [expandedSection, setExpandedSection] = useState('basic');
+  const [selectedContractorId, setSelectedContractorId] = useState(null);
+  const [assigning, setAssigning] = useState(false);
+  const [assignError, setAssignError] = useState('');
+  const [assignSuccess, setAssignSuccess] = useState('');
   const details = job.serviceDetails || {};
 
   const toggleSection = (section) => {
     setExpandedSection(expandedSection === section ? null : section);
+  };
+
+  const handleContractorSelect = (contractorId) => {
+    setSelectedContractorId((currentId) => (currentId === contractorId ? null : contractorId));
+    setAssignError('');
+    setAssignSuccess('');
+  };
+
+  const handleAssign = async () => {
+    if (!selectedContractorId) {
+      setAssignError('Please select a contractor to assign.');
+      return;
+    }
+
+    setAssignError('');
+    setAssignSuccess('');
+    setAssigning(true);
+    try {
+      await onAssign(job.id, selectedContractorId);
+      setAssignSuccess('Contractor assigned successfully.');
+    } catch (error) {
+      setAssignError(error?.message || 'Failed to assign contractor.');
+    } finally {
+      setAssigning(false);
+    }
   };
 
   return (
@@ -79,15 +108,15 @@ const AwaitingAssignmentView = ({ job, onBack }) => {
                 </div>
                 {expandedSection === 'basic' && (
                   <div className="jb-accordion-content jb-grid-2 animate-fade">
-                    <div><label>Project ID:</label><p>RH-JOB-2025-0148</p></div>
-                    <div><label>Property Address:</label><p>27 Rosebay Street, Bondi, NSW 2026</p></div>
-                    <div><label>Roof Type:</label><p>Tile Roof</p></div>
-                    <div><label>Approx. Roof Area:</label><p>180 m²</p></div>
-                    <div><label>Pitch Type:</label><p>Medium Pitch (25-35°)</p></div>
-                    <div><label>Stories:</label><p>2</p></div>
-                    <div><label>Access Difficulty:</label><p>Moderate</p></div>
-                    <div><label>Material Requested:</label><p>Colorbond Metal</p></div>
-                    <div className="jb-col-span-2"><label>Urgency Level:</label><p>Flexible (within 30 days)</p></div>
+                    <div><label>Project ID:</label><p>{job.id}</p></div>
+                    <div><label>Property Address:</label><p>{details.propertyAddress || details.address || 'Not specified'}</p></div>
+                    <div><label>Roof Type:</label><p>{details.roofType || details.roofMaterial || 'Not specified'}</p></div>
+                    <div><label>Approx. Roof Area:</label><p>{details.roofArea || details.approxRoofArea || 'Not specified'}</p></div>
+                    <div><label>Pitch Type:</label><p>{details.pitchType || details.roofPitch || 'Not specified'}</p></div>
+                    <div><label>Stories:</label><p>{details.stories || details.levels || 'Not specified'}</p></div>
+                    <div><label>Access Difficulty:</label><p>{details.accessDifficulty || details.access || 'Not specified'}</p></div>
+                    <div><label>Material Requested:</label><p>{details.materialRequested || details.material || 'Not specified'}</p></div>
+                    <div className="jb-col-span-2"><label>Urgency Level:</label><p>{details.urgency || details.urgencyLevel || 'Not specified'}</p></div>
                   </div>
                 )}
               </div>
@@ -148,82 +177,39 @@ const AwaitingAssignmentView = ({ job, onBack }) => {
           <div className="jb-card jb-p-24">
             <h2 className="jb-section-title">Contractor Assignment</h2>
             <div className="jb-search-box-side">
-              <input type="text" placeholder="Search Contractor" />
+              <input type="text" placeholder="Search Contractor" disabled />
             </div>
             <div className="jb-contractor-list">
-                <div className="jb-contractor-item">
-                  <div className="jb-flex-row">
-                    <img src='public/toby.jpg' className="jb-avatar-sm" alt="C" />
-                    <div className="jb-c-info">
-                      <p className="jb-c-name">Toby Adamson</p>
-                      <p className="jb-c-loc">Parramatta, Blacktown</p>
+              {loadingContractors ? (
+                <div className="jb-loading-message">Loading available contractors...</div>
+              ) : contractorError ? (
+                <div className="jb-error-message">{contractorError}</div>
+              ) : availableContractors.length === 0 ? (
+                <div className="jb-no-data">No available contractors found.</div>
+              ) : (
+                availableContractors.map((contractor) => (
+                  <div key={contractor._id} className="jb-contractor-item">
+                    <div className="jb-flex-row">
+                      <img src={contractor.avatarUrl || 'public/contractor2.jpg'} className="jb-avatar-sm" alt="C" />
+                      <div className="jb-c-info">
+                        <p className="jb-c-name">{contractor.name || contractor.username}</p>
+                        <p className="jb-c-loc">{contractor.regions?.join(', ') || 'Available contractor'}</p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        className="jb-checkbox"
+                        checked={selectedContractorId === contractor._id}
+                        onChange={() => handleContractorSelect(contractor._id)}
+                      />
                     </div>
-                    <input type="checkbox" className="jb-checkbox" />
                   </div>
-                </div>
-                <div className="jb-contractor-item">
-                  <div className="jb-flex-row">
-                    <img src='public/angus.jpg' className="jb-avatar-sm" alt="C" />
-                    <div className="jb-c-info">
-                      <p className="jb-c-name">Angus Klein</p>
-                      <p className="jb-c-loc">Parramatta, Blacktown</p>
-                    </div>
-                    <input type="checkbox" className="jb-checkbox" />
-                  </div>
-                </div>
-                <div className="jb-contractor-item">
-                  <div className="jb-flex-row">
-                    <img src='public/beau.jpg' className="jb-avatar-sm" alt="C" />
-                    <div className="jb-c-info">
-                      <p className="jb-c-name">Beau Gledson</p>
-                      <p className="jb-c-loc">Parramatta, Blacktown</p>
-                    </div>
-                    <input type="checkbox" className="jb-checkbox" />
-                  </div>
-                </div>
-                <div className="jb-contractor-item">
-                  <div className="jb-flex-row">
-                    <img src='public/riley.jpg' className="jb-avatar-sm" alt="C" />
-                    <div className="jb-c-info">
-                      <p className="jb-c-name">Riley Blanc</p>
-                      <p className="jb-c-loc">Parramatta, Blacktown</p>
-                    </div>
-                    <input type="checkbox" className="jb-checkbox" />
-                  </div>
-                </div>
-                <div className="jb-contractor-item">
-                  <div className="jb-flex-row">
-                    <img src='public/zane.jpg' className="jb-avatar-sm" alt="C" />
-                    <div className="jb-c-info">
-                      <p className="jb-c-name">Zane Vlamingh</p>
-                      <p className="jb-c-loc">Parramatta, Blacktown</p>
-                    </div>
-                    <input type="checkbox" className="jb-checkbox" />
-                  </div>
-                </div>
-                <div className="jb-contractor-item">
-                  <div className="jb-flex-row">
-                    <img src='public/aidan.jpg' className="jb-avatar-sm" alt="C" />
-                    <div className="jb-c-info">
-                      <p className="jb-c-name">Aidan Heymann</p>
-                      <p className="jb-c-loc">Parramatta, Blacktown</p>
-                    </div>
-                    <input type="checkbox" className="jb-checkbox" />
-                  </div>
-                </div>
-                <div className="jb-contractor-item">
-                  <div className="jb-flex-row">
-                    <img src='public/archer.jpg' className="jb-avatar-sm" alt="C" />
-                    <div className="jb-c-info">
-                      <p className="jb-c-name">Archer McCorkindale</p>
-                      <p className="jb-c-loc">Parramatta, Blacktown</p>
-                    </div>
-                    <input type="checkbox" className="jb-checkbox" />
-                  </div>
-                </div>
+                ))
+              )}
             </div>
-            <button className="jb-btn-assign-main mt-24">
-              Assign Selected Contractor <RiArrowRightUpLine size={18} />
+            {assignError && <div className="jb-error-message mt-12">{assignError}</div>}
+            {assignSuccess && <div className="jb-success-message mt-12">{assignSuccess}</div>}
+            <button className="jb-btn-assign-main mt-24" onClick={handleAssign} disabled={!selectedContractorId || assigning || loadingContractors || availableContractors.length === 0}>
+              {assigning ? 'Assigning...' : 'Assign Selected Contractor'} <RiArrowRightUpLine size={18} />
             </button>
           </div>
         </div>
@@ -291,7 +277,7 @@ const BiddingInProgressView = ({ job, onBack }) => {
                 <div className="jb-status-tag jb-tag-open-green">
                   <span className="jb-dot-green"></span> {job.status || 'Bidding In Progress'}
                 </div>
-                <p className="jb-bids-count">{job.bidsCount ? `${job.bidsCount} Contractor Bids Received` : 'Contractor bids in progress'}</p>
+                <p className="jb-bids-count">{job.assignedContractor?.name ? 'Contractor assigned' : 'Contractor bids in progress'}</p>
               </div>
             </div>
 
@@ -318,15 +304,15 @@ const BiddingInProgressView = ({ job, onBack }) => {
                 </div>
                 {expandedSection === 'basic' && (
                   <div className="jb-accordion-content jb-grid-2 animate-fade">
-                    <div><label>Project ID:</label><p>RH-JOB-2025-0148</p></div>
-                    <div><label>Property Address:</label><p>27 Rosebay Street, Bondi, NSW 2026</p></div>
-                    <div><label>Roof Type:</label><p>Tile Roof</p></div>
-                    <div><label>Approx. Roof Area:</label><p>180 m²</p></div>
-                    <div><label>Pitch Type:</label><p>Medium Pitch (25-35°)</p></div>
-                    <div><label>Stories:</label><p>2</p></div>
-                    <div><label>Access Difficulty:</label><p>Moderate</p></div>
-                    <div><label>Material Requested:</label><p>Colorbond Metal</p></div>
-                    <div className="jb-col-span-2"><label>Urgency Level:</label><p>Flexible (within 30 days)</p></div>
+                    <div><label>Project ID:</label><p>{job.id}</p></div>
+                    <div><label>Property Address:</label><p>{details.propertyAddress || details.address || 'Not specified'}</p></div>
+                    <div><label>Roof Type:</label><p>{details.roofType || details.roofMaterial || 'Not specified'}</p></div>
+                    <div><label>Approx. Roof Area:</label><p>{details.roofArea || details.approxRoofArea || 'Not specified'}</p></div>
+                    <div><label>Pitch Type:</label><p>{details.pitchType || details.roofPitch || 'Not specified'}</p></div>
+                    <div><label>Stories:</label><p>{details.stories || details.levels || 'Not specified'}</p></div>
+                    <div><label>Access Difficulty:</label><p>{details.accessDifficulty || details.access || 'Not specified'}</p></div>
+                    <div><label>Material Requested:</label><p>{details.materialRequested || details.material || 'Not specified'}</p></div>
+                    <div className="jb-col-span-2"><label>Urgency Level:</label><p>{details.urgency || details.urgencyLevel || 'Not specified'}</p></div>
                   </div>
                 )}
               </div>
@@ -562,7 +548,7 @@ const BidAcceptedView = ({ job, onBack }) => {
                 <div className="jb-status-tag jb-tag-open-green">
                   <span className="jb-dot-green"></span> {job.status || 'Bid Accepted'}
                 </div>
-                <p className="jb-bids-count">{job.bidsCount ? `${job.bidsCount} Contractor Bids Received` : 'Bid accepted'}</p>
+                <p className="jb-bids-count">{job.assignedContractor?.name ? `Assigned to ${job.assignedContractor.name}` : 'Bid accepted'}</p>
               </div>
             </div>
 
@@ -589,15 +575,15 @@ const BidAcceptedView = ({ job, onBack }) => {
                 </div>
                 {expandedSection === 'basic' && (
                   <div className="jb-accordion-content jb-grid-2 animate-fade">
-                    <div><label>Project ID:</label><p>RH-JOB-2025-0148</p></div>
-                    <div><label>Property Address:</label><p>27 Rosebay Street, Bondi, NSW 2026</p></div>
-                    <div><label>Roof Type:</label><p>Tile Roof</p></div>
-                    <div><label>Approx. Roof Area:</label><p>180 m²</p></div>
-                    <div><label>Pitch Type:</label><p>Medium Pitch (25-35°)</p></div>
-                    <div><label>Stories:</label><p>2</p></div>
-                    <div><label>Access Difficulty:</label><p>Moderate</p></div>
-                    <div><label>Material Requested:</label><p>Colorbond Metal</p></div>
-                    <div className="jb-col-span-2"><label>Urgency Level:</label><p>Flexible (within 30 days)</p></div>
+                    <div><label>Project ID:</label><p>{job.id}</p></div>
+                    <div><label>Property Address:</label><p>{details.propertyAddress || details.address || 'Not specified'}</p></div>
+                    <div><label>Roof Type:</label><p>{details.roofType || details.roofMaterial || 'Not specified'}</p></div>
+                    <div><label>Approx. Roof Area:</label><p>{details.roofArea || details.approxRoofArea || 'Not specified'}</p></div>
+                    <div><label>Pitch Type:</label><p>{details.pitchType || details.roofPitch || 'Not specified'}</p></div>
+                    <div><label>Stories:</label><p>{details.stories || details.levels || 'Not specified'}</p></div>
+                    <div><label>Access Difficulty:</label><p>{details.accessDifficulty || details.access || 'Not specified'}</p></div>
+                    <div><label>Material Requested:</label><p>{details.materialRequested || details.material || 'Not specified'}</p></div>
+                    <div className="jb-col-span-2"><label>Urgency Level:</label><p>{details.urgency || details.urgencyLevel || 'Not specified'}</p></div>
                   </div>
                 )}
               </div>
@@ -753,8 +739,11 @@ const JobBidding = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedJob, setSelectedJob] = useState(null);
   const [jobsData, setJobsData] = useState([]);
+  const [availableContractors, setAvailableContractors] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [contractorLoading, setContractorLoading] = useState(false);
   const [error, setError] = useState('');
+  const [contractorError, setContractorError] = useState('');
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -779,8 +768,8 @@ const JobBidding = () => {
           area: quote.serviceDetails?.roofArea || quote.serviceDetails?.approxRoofArea || 'Not specified',
           address: quote.serviceDetails?.propertyAddress || quote.serviceDetails?.address || 'Not specified',
           name: quote.fullName || 'Homeowner',
-          contractor: quote.contractor || 'TBD',
           assignedCount: quote.assignedCount || 0,
+          assignedContractor: quote.assignedContractor || null,
         })));
       } catch (err) {
         setError(err.message || 'Error loading jobs');
@@ -789,7 +778,30 @@ const JobBidding = () => {
       }
     };
 
+    const fetchContractors = async () => {
+      setContractorLoading(true);
+      setContractorError('');
+      try {
+        const token = localStorage.getItem('roofheroToken');
+        const response = await fetch('/api/admin/users?role=contractor', {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : '',
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Unable to load contractors');
+        }
+        const data = await response.json();
+        setAvailableContractors(data);
+      } catch (err) {
+        setContractorError(err.message || 'Error loading contractors');
+      } finally {
+        setContractorLoading(false);
+      }
+    };
+
     fetchJobs();
+    fetchContractors();
   }, []);
 
   const filteredJobs = useMemo(() => {
@@ -816,8 +828,41 @@ const JobBidding = () => {
   };
 
   // --- RENDER TOGGLE LOGIC ---
+  const assignContractorToJob = async (quoteId, contractorId) => {
+    if (!contractorId) {
+      throw new Error('Please select a contractor first.')
+    }
+    const token = localStorage.getItem('roofheroToken')
+    const response = await fetch(`/api/admin/quote-requests/${quoteId}/assign`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token ? `Bearer ${token}` : '',
+      },
+      body: JSON.stringify({ contractorId }),
+    })
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null)
+      throw new Error(errorData?.message || 'Failed to assign contractor')
+    }
+    const updated = await response.json()
+    const normalized = {
+      ...updated,
+      status: updated.status || 'Bidding In Progress',
+      id: updated._id,
+      date: updated.requestedAt ? new Date(updated.requestedAt).toLocaleDateString() : 'Unknown',
+      area: updated.serviceDetails?.roofArea || updated.serviceDetails?.approxRoofArea || 'Not specified',
+      address: updated.serviceDetails?.propertyAddress || updated.serviceDetails?.address || 'Not specified',
+      name: updated.fullName || 'Homeowner',
+      assignedContractor: updated.assignedContractor || null,
+    }
+    setJobsData((prev) => prev.map((job) => (job.id === quoteId ? normalized : job)))
+    setSelectedJob(normalized)
+    return normalized
+  }
+
   if (selectedJob) {
-    if (selectedJob.status === 'Awaiting Assignment') return <AwaitingAssignmentView job={selectedJob} onBack={() => setSelectedJob(null)} />;
+    if (selectedJob.status === 'Awaiting Assignment') return <AwaitingAssignmentView job={selectedJob} onBack={() => setSelectedJob(null)} availableContractors={availableContractors} loadingContractors={contractorLoading} contractorError={contractorError} onAssign={assignContractorToJob} />;
     if (selectedJob.status === 'Bidding In Progress') return <BiddingInProgressView job={selectedJob} onBack={() => setSelectedJob(null)} />;
     if (selectedJob.status === 'Bid Accepted') return <BidAcceptedView job={selectedJob} onBack={() => setSelectedJob(null)} />;
   }
@@ -857,14 +902,13 @@ const JobBidding = () => {
               <thead>
                 <tr>
                   <th>Job ID</th><th>Homeowner Name</th><th>Address</th><th>Request Date</th><th>Roof Area</th>
-                  {activeTab === 'Bidding In Progress' && <th>Assigned Count</th>}
-                  {activeTab === 'Bid Accepted' && <th>Contractor Name</th>}
+                  {(activeTab === 'Bidding In Progress' || activeTab === 'Bid Accepted') && <th>Contractor</th>}
                   <th>Status</th><th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {visibleData.length === 0 ? (
-                  <tr><td colSpan={activeTab === 'Bidding In Progress' ? 8 : 7} className="jb-no-data">No quote requests found.</td></tr>
+                  <tr><td colSpan={(activeTab === 'Bidding In Progress' || activeTab === 'Bid Accepted') ? 8 : 7} className="jb-no-data">No quote requests found.</td></tr>
                 ) : visibleData.map((job) => (
                   <tr key={job.id}>
                     <td className="jb-text-dim">{job.id}</td>
@@ -872,8 +916,9 @@ const JobBidding = () => {
                     <td className="jb-address-cell">{job.address}</td>
                     <td>{job.date}</td>
                     <td>{job.area}</td>
-                    {activeTab === 'Bidding In Progress' && <td>{job.assignedCount}</td>}
-                    {activeTab === 'Bid Accepted' && <td>{job.contractor}</td>}
+                    {(activeTab === 'Bidding In Progress' || activeTab === 'Bid Accepted') && (
+                      <td>{job.assignedContractor?.name || 'Not assigned'}</td>
+                    )}
                     <td><span className={`jb-status-pill ${job.status.toLowerCase().replace(/\s+/g, '-')}`}>{job.status}</span></td>
                     <td><button className="jb-btn-view" onClick={() => setSelectedJob(job)}>View Details <RiArrowRightUpLine size={16} /></button></td>
                   </tr>
