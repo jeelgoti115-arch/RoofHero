@@ -135,4 +135,45 @@ router.get('/me', authenticate, authorize('homeowner'), async (req, res, next) =
   }
 })
 
+router.patch('/quote-requests/:id/accept', authenticate, authorize('homeowner'), async (req, res, next) => {
+  try {
+    const { contractorId } = req.body
+    if (!contractorId) {
+      return res.status(400).json({ message: 'Contractor ID is required.' })
+    }
+
+    const quote = await QuoteRequest.findOne({ _id: req.params.id, homeowner: req.user._id })
+    if (!quote) {
+      return res.status(404).json({ message: 'Quote request not found.' })
+    }
+
+    if (quote.status === 'Bid Accepted') {
+      return res.status(400).json({ message: 'A bid has already been accepted for this quote.' })
+    }
+
+    let acceptedFound = false
+
+    quote.assignedContractors = (quote.assignedContractors || []).map((entry) => {
+      const isAccepted = entry.id?.toString() === contractorId.toString()
+      if (isAccepted) {
+        acceptedFound = true
+        return { ...entry, status: 'Accepted' }
+      }
+      return { ...entry, status: 'Rejected' }
+    })
+
+    if (!acceptedFound) {
+      return res.status(404).json({ message: 'Selected contractor is not assigned to this quote.' })
+    }
+
+    quote.assignedContractor = quote.assignedContractors.find((entry) => entry.status === 'Accepted') || null
+    quote.status = 'Bid Accepted'
+    await quote.save()
+
+    return res.json({ quote })
+  } catch (error) {
+    next(error)
+  }
+})
+
 export default router

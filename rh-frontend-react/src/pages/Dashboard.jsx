@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../Styles/Dashboard.css';
 import ProjectDetails from '../components/ProjectDetails';
 import AccountManager from '../components/AccountManager';
@@ -10,6 +10,43 @@ import Notifications from '../components/Notifications'; // Assuming this exists
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [homeownerQuote, setHomeownerQuote] = useState(null);
+  const [homeownerLoading, setHomeownerLoading] = useState(true);
+  const [homeownerError, setHomeownerError] = useState(null);
+
+  const refreshHomeownerData = async () => {
+    setHomeownerLoading(true);
+    setHomeownerError(null);
+
+    const token = window.localStorage.getItem('roofheroToken');
+    if (!token) {
+      setHomeownerError('Authentication required.');
+      setHomeownerLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/homeowner/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data?.message || 'Unable to load homeowner details.');
+      }
+
+      const data = await response.json();
+      setHomeownerQuote(data.quote || null);
+    } catch (error) {
+      setHomeownerError(error.message);
+    } finally {
+      setHomeownerLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refreshHomeownerData();
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -49,13 +86,13 @@ const Dashboard = () => {
               {/* 3. Top Section */}
               <div className="dashboard-grid-top">
                 <ProjectDetails />
-                <AccountManager />
+                <AccountManager quote={homeownerQuote} loading={homeownerLoading} error={homeownerError} />
               </div>
 
               {/* 4. Bottom Section */}
               <div className="dashboard-bids-section">
                 <div className="bids-grid">
-                  <BidCard />
+                  <BidCard quote={homeownerQuote} onQuoteUpdated={refreshHomeownerData} />
                 </div>
               </div>
             </div>

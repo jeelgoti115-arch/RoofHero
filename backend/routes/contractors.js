@@ -159,4 +159,49 @@ router.patch('/quote-requests/:id/submit-quote', authenticate, authorize('contra
   }
 })
 
+router.patch('/quote-requests/:id/update-status', authenticate, authorize('contractor'), async (req, res, next) => {
+  try {
+    const contractor = req.user
+    const { status } = req.body
+    const allowedStatuses = ['Site Inspection Scheduled', 'Materials Ordered', 'Completed']
+
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).json({ message: 'Invalid status update.' })
+    }
+
+    const quote = await QuoteRequest.findById(req.params.id)
+    if (!quote) {
+      return res.status(404).json({ message: 'Quote request not found.' })
+    }
+
+    const contractorEntry = (quote.assignedContractors || []).find((entry) => entry.id?.toString() === contractor._id.toString())
+    if (!contractorEntry) {
+      return res.status(403).json({ message: 'Contractor not assigned to this quote.' })
+    }
+
+    const transitionMap = {
+      Accepted: ['Site Inspection Scheduled', 'Materials Ordered', 'Completed'],
+      'Site Inspection Scheduled': ['Materials Ordered', 'Completed'],
+      'Materials Ordered': ['Completed'],
+    }
+
+    if (contractorEntry.status === 'Completed') {
+      return res.status(400).json({ message: 'No further updates allowed after completion.' })
+    }
+
+    const allowedNext = transitionMap[contractorEntry.status] || []
+    if (!allowedNext.includes(status)) {
+      return res.status(400).json({ message: 'Invalid status transition.' })
+    }
+
+    contractorEntry.status = status
+    quote.markModified('assignedContractors')
+    await quote.save()
+
+    return res.json({ quote })
+  } catch (error) {
+    next(error)
+  }
+})
+
 export default router

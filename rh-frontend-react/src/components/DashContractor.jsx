@@ -17,8 +17,18 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
   const [proposalMessage, setProposalMessage] = useState(item.serviceDetails?.proposalMessage || '')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(null)
+  const [statusUpdating, setStatusUpdating] = useState(false)
+  const [statusError, setStatusError] = useState(null)
+  const [selectedStatus, setSelectedStatus] = useState(item.status || 'Accepted')
 
   const details = item.serviceDetails || {};
+
+  const statusOptions = React.useMemo(() => {
+    if (item.status === 'Accepted') return ['Accepted', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed']
+    if (item.status === 'Site Inspection Scheduled') return ['Materials Ordered', 'Completed']
+    if (item.status === 'Materials Ordered') return ['Completed']
+    return [item.status]
+  }, [item.status])
   const homeownerName = item.homeowner || item.fullName || item.homeowner?.fullName || 'Homeowner';
   const homeownerEmail = item.homeowner?.email || item.email || 'No email';
   const homeownerPhone = item.homeowner?.phone || item.phone || 'No phone';
@@ -102,8 +112,8 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
       );
     }
 
-    // IMAGE 2: Pending Review or Accepted View
-    if (item.status === 'Pending Review' || item.status === 'Accepted') {
+    // IMAGE 2: Pending Review, Accepted, or Active Job Status View
+    if (['Pending Review', 'Accepted', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed'].includes(item.status)) {
       return (
         <div className="con-dash-sidebar-card animate-fade">
           <h2 className="con-dash-side-title">Quote Submission</h2>
@@ -121,9 +131,50 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
               {item.proposalMessage || details.proposalMessage || 'Thank you for considering us for your roofing project. We will carefully remove the existing tile roof and replace it with a new Colorbond metal roof, ensuring high-quality workmanship and full compliance with safety standards.'}
             </p>
           </div>
-          <div className={item.status === 'Accepted' ? 'jb-status-green-pill text-center w-full py-3 mt-4' : 'con-dash-status-indicator'}>
-            {item.status === 'Accepted' ? 'Proposal Accepted' : 'Pending Homeowner Review'}
-          </div>
+          {['Accepted', 'Site Inspection Scheduled', 'Materials Ordered'].includes(item.status) ? (
+            <div className="con-dash-status-update">
+              <div className="con-dash-form-group">
+                <label>Project Status</label>
+                <select
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
+                >
+                  {statusOptions.map((statusOption) => (
+                    <option key={statusOption} value={statusOption}>
+                      {statusOption}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {statusError && <div className="con-dash-error-text">{statusError}</div>}
+              <button
+                className="con-dash-btn-submit"
+                onClick={async () => {
+                  if (selectedStatus === item.status) return
+                  setStatusError(null)
+                  setStatusUpdating(true)
+                  try {
+                    await onUpdateStatus(item.id, selectedStatus)
+                  } catch (error) {
+                    setStatusError(error.message || 'Failed to update status.')
+                  } finally {
+                    setStatusUpdating(false)
+                  }
+                }}
+                disabled={statusUpdating || selectedStatus === item.status}
+              >
+                {statusUpdating ? 'Updating...' : 'Update Status'} <RiArrowRightUpLine size={18} />
+              </button>
+            </div>
+          ) : item.status === 'Completed' ? (
+            <div className="jb-status-green-pill text-center w-full py-3 mt-4">
+              Completed
+            </div>
+          ) : (
+            <div className="con-dash-status-indicator">
+              Pending Homeowner Review
+            </div>
+          )}
         </div>
       );
     }
@@ -377,7 +428,11 @@ const DashContractor = () => {
 
   const handleUpdateStatus = async (id, newStatus, payload = {}) => {
     const token = window.localStorage.getItem('roofheroToken')
-    if (token && newStatus === 'Pending Review') {
+    if (!token) {
+      throw new Error('Authentication required.')
+    }
+
+    if (newStatus === 'Pending Review') {
       const response = await fetch(`/api/contractors/quote-requests/${id}/submit-quote`, {
         method: 'PATCH',
         headers: {
@@ -400,7 +455,26 @@ const DashContractor = () => {
         serviceDetails: updatedQuote.serviceDetails || l.serviceDetails,
       } : l))
     } else {
-      setAllLeads(prev => prev.map(l => l.id === id ? { ...l, status: newStatus } : l))
+      const response = await fetch(`/api/contractors/quote-requests/${id}/update-status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: newStatus }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.message || 'Failed to update status.')
+      }
+
+      const { quote: updatedQuote } = await response.json()
+      setAllLeads(prev => prev.map(l => l.id === id ? ({
+        ...l,
+        status: newStatus,
+        serviceDetails: updatedQuote.serviceDetails || l.serviceDetails,
+      }) : l))
     }
 
     setSelectedItem(null)
@@ -410,7 +484,7 @@ const DashContractor = () => {
     return allLeads.filter(item => {
       if (activeTab === 'New Leads') return ['New Arrival', 'Bidding In Progress'].includes(item.status);
       if (activeTab === 'Submitted Quotes') return ['Pending Review', 'Accepted', 'Rejected'].includes(item.status);
-      if (activeTab === 'Active Projects') return ['In Progress', 'Site Inspection Scheduled', 'Materials Ordered'].includes(item.status);
+      if (activeTab === 'Active Projects') return ['In Progress', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed'].includes(item.status);
       return true;
     });
   }, [activeTab, allLeads]);

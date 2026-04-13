@@ -1,16 +1,53 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { RiArrowRightUpLine, RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react';
 import { useNavigate } from 'react-router-dom';
 
-const BidCard = () => {
+const BidCard = ({ quote, onQuoteUpdated }) => {
   const navigate = useNavigate();
   const scrollRef = useRef(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [contractors, setContractors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [acceptingId, setAcceptingId] = useState(null);
+  const [acceptError, setAcceptError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  const normalizeImagePath = useCallback((value) => {
+    if (!value) return '/contractor1.jpg';
+    if (/^(https?:|data:)/.test(value)) return value;
+    return `/${value.replace(/^\/+/, '').replace(/^public\//, '')}`;
+  }, []);
+
+  const mapContractors = useCallback(
+    (assignedContractors = []) =>
+      assignedContractors.map((contractor, index) => ({
+        id: contractor.id || contractor._id || `contractor-${index}`,
+        name: contractor.name || contractor.username || `Contractor ${index + 1}`,
+        image: normalizeImagePath(contractor.avatarUrl || contractor.image || 'contractor1.jpg'),
+        price: contractor.quoteAmount || contractor.pricePerSquare || 'N/A',
+        rating: contractor.rating || '4.7',
+        contractorId: contractor.username
+          ? `#${contractor.username.toUpperCase()}`
+          : contractor.id
+          ? `#RPH-${contractor.id.toString().slice(-6).toUpperCase()}`
+          : `#RPH-2025-00${index + 1}`,
+        pricePerSq: contractor.pricePerSquare || 'N/A',
+        status: contractor.status || 'New Arrival',
+        isRejected: contractor.status === 'Rejected',
+        proposalMessage: contractor.proposalMessage || '',
+        estimatedStartDate: contractor.estimatedStartDate || '',
+        quoteAmount: contractor.quoteAmount || '',
+      })),
+    [normalizeImagePath]
+  );
 
   useEffect(() => {
+    if (quote) {
+      setContractors(mapContractors(quote.assignedContractors));
+      setIsLoading(false);
+      return;
+    }
+
     const fetchHomeownerBids = async () => {
       const token = window.localStorage.getItem('roofheroToken');
       if (!token) {
@@ -25,30 +62,12 @@ const BidCard = () => {
         });
 
         if (!response.ok) {
-          const data = await response.json();
+          const data = await response.json().catch(() => ({}));
           throw new Error(data?.message || 'Unable to load contractor bids.');
         }
 
         const data = await response.json();
-        const assignedContractors = data.quote?.assignedContractors || [];
-
-        setContractors(
-          assignedContractors.map((contractor, index) => ({
-            id: contractor.id || `contractor-${index}`,
-            name: contractor.name || contractor.username || `Contractor ${index + 1}`,
-            image: contractor.image || 'public/contractor1.jpg',
-            price: contractor.quoteAmount || contractor.pricePerSquare || 'N/A',
-            rating: contractor.rating || '4.7',
-            contractorId: contractor.username
-              ? `#${contractor.username.toUpperCase()}`
-              : contractor.id
-              ? `#RPH-${contractor.id.toString().slice(-6).toUpperCase()}`
-              : `#RPH-2025-00${index + 1}`,
-            pricePerSq: contractor.pricePerSquare || 'N/A',
-            status: contractor.status || 'New Arrival',
-            isRejected: contractor.status === 'Rejected',
-          }))
-        );
+        setContractors(mapContractors(data.quote?.assignedContractors || []));
       } catch (fetchError) {
         setError(fetchError.message);
       } finally {
@@ -57,10 +76,51 @@ const BidCard = () => {
     };
 
     fetchHomeownerBids();
-  }, []);
+  }, [quote, mapContractors]);
+
+  const handleAcceptQuote = async (contractor) => {
+    if (!quote?.id) {
+      setAcceptError('Unable to accept this bid.');
+      return;
+    }
+
+    setAcceptError(null);
+    setSuccessMessage(null);
+    setAcceptingId(contractor.id);
+
+    try {
+      const token = window.localStorage.getItem('roofheroToken');
+      if (!token) {
+        throw new Error('Authentication required.');
+      }
+
+      const response = await fetch(`/api/homeowner/quote-requests/${quote.id}/accept`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contractorId: contractor.id }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data?.message || 'Failed to accept bid.');
+      }
+
+      const data = await response.json();
+      const updatedQuote = data.quote;
+      setContractors(mapContractors(updatedQuote.assignedContractors || []));
+      setSuccessMessage('Bid accepted successfully.');
+      onQuoteUpdated?.();
+    } catch (fetchError) {
+      setAcceptError(fetchError.message);
+    } finally {
+      setAcceptingId(null);
+    }
+  };
 
   const handleButtonClick = () => {
-    setIsModalOpen(false);
     navigate('/project-details');
   };
 
@@ -85,6 +145,9 @@ const BidCard = () => {
           <button className="nav-arrow" onClick={() => scroll('right')}><RiArrowRightSLine size={20} /></button>
         </div>
       </div>
+
+      {successMessage && <div className="bid-card-success">{successMessage}</div>}
+      {acceptError && <div className="bid-card-error">{acceptError}</div>}
 
       <div className="bids-slider-track" ref={scrollRef}>
         {isLoading ? (
@@ -116,7 +179,9 @@ const BidCard = () => {
                 <div className="card-price">${item.price}</div>
               </div>
 
-              <div className="service-tag">Roof Replacement</div>
+              <div className="service-tag">
+                {item.status === 'Pending Review' ? 'Bid Submitted' : item.status === 'Accepted' ? 'Bid Accepted' : item.status === 'Rejected' ? 'Bid Rejected' : 'Awaiting Bid'}
+              </div>
               <hr className="divider" />
 
               <div className="card-details-grid">
@@ -132,17 +197,28 @@ const BidCard = () => {
 
               <div className="card-actions">
                 <button className="btn-white" onClick={handleButtonClick}>View Details <RiArrowRightUpLine size={16} /></button>
-                {!item.isRejected ? (
-                  <button 
-                    className="btn-orange" 
-                    onClick={() => setIsModalOpen(true)}
+                {item.status === 'Pending Review' ? (
+                  <button
+                    className="btn-orange"
+                    onClick={() => handleAcceptQuote(item)}
+                    disabled={acceptingId === item.id}
                   >
-                    Accept Quote <RiArrowRightUpLine size={16} />
+                    {acceptingId === item.id ? 'Accepting...' : 'Accept Quote'} <RiArrowRightUpLine size={16} />
                   </button>
-                ) : (
+                ) : item.status === 'Accepted' ? (
+                  <div className="accepted-label">
+                    <span className="info-circle">✓</span>
+                    Accepted bid
+                  </div>
+                ) : item.status === 'Rejected' ? (
                   <div className="rejected-label">
                     <span className="info-circle">i</span>
                     Contractor has been rejected.
+                  </div>
+                ) : (
+                  <div className="pending-label">
+                    <span className="info-circle">⏳</span>
+                    Awaiting bid.
                   </div>
                 )}
               </div>
@@ -150,25 +226,6 @@ const BidCard = () => {
           ))
         )}
       </div>
-
-      {/* --- SUCCESS MODAL OVERLAY --- */}
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-            <div className="modal-icon-container">
-               <img src="public/bidcard-qa.svg" alt="Success" />
-            </div>
-            <h2>Quote Accepted Successfully</h2>
-            <p>
-              Your roofing project has been confirmed. The selected contractor 
-              will contact you soon to coordinate the next steps and schedule the site visit.
-            </p>
-            <button className="modal-btn" onClick={handleButtonClick}>
-              View Project <RiArrowRightUpLine size={18} />
-            </button>
-          </div>
-        </div>
-      )}
     </section>
   );
 };
