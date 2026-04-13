@@ -471,9 +471,9 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
                 </div>
               </div>
               {item.proposalMessage && (
-                <div className="card-note">
+                <div className="col">
                   <label>Proposal</label>
-                  <p>{item.proposalMessage}</p>
+                  <span>{item.proposalMessage}</span>
                 </div>
               )}
   
