@@ -175,9 +175,17 @@ router.get('/quote-requests', async (req, res, next) => {
 
 router.patch('/quote-requests/:id/assign', async (req, res, next) => {
   try {
-    const { contractorId } = req.body
-    if (!contractorId) {
-      return res.status(400).json({ message: 'Contractor selection is required.' })
+    const { contractorIds, contractorId } = req.body
+    const parsedIds = Array.isArray(contractorIds)
+      ? contractorIds
+      : typeof contractorIds === 'string'
+      ? contractorIds.split(',')
+      : null
+
+    const ids = (parsedIds || (contractorId ? [contractorId] : [])).map((id) => id?.toString()).filter(Boolean)
+
+    if (ids.length === 0) {
+      return res.status(400).json({ message: 'At least one contractor must be selected.' })
     }
 
     const quote = await QuoteRequest.findById(req.params.id)
@@ -189,18 +197,20 @@ router.patch('/quote-requests/:id/assign', async (req, res, next) => {
       return res.status(400).json({ message: 'Quote request is not awaiting assignment.' })
     }
 
-    const contractor = await User.findOne({ _id: contractorId, role: 'contractor', status: 'approved' }).select('-password')
-    if (!contractor) {
-      return res.status(404).json({ message: 'Approved contractor not found.' })
+    const contractors = await User.find({ _id: { $in: ids }, role: 'contractor', status: 'approved' }).select('-password')
+    if (!contractors.length) {
+      return res.status(404).json({ message: 'Approved contractors not found.' })
     }
 
-    quote.assignedContractor = {
+    quote.assignedContractors = contractors.map((contractor) => ({
       id: contractor._id,
       name: contractor.name || contractor.username,
       email: contractor.email,
       phone: contractor.phone,
       username: contractor.username,
-    }
+      status: 'New Arrival',
+    }))
+    quote.assignedContractor = quote.assignedContractors[0] || null
     quote.status = 'Bidding In Progress'
     quote.assignedAt = new Date()
     await quote.save()

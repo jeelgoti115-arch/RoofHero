@@ -17,7 +17,7 @@ import {
 
 const AwaitingAssignmentView = ({ job, onBack, availableContractors, loadingContractors, contractorError, onAssign }) => {
   const [expandedSection, setExpandedSection] = useState('basic');
-  const [selectedContractorId, setSelectedContractorId] = useState(null);
+  const [selectedContractorIds, setSelectedContractorIds] = useState([]);
   const [assigning, setAssigning] = useState(false);
   const [assignError, setAssignError] = useState('');
   const [assignSuccess, setAssignSuccess] = useState('');
@@ -28,14 +28,23 @@ const AwaitingAssignmentView = ({ job, onBack, availableContractors, loadingCont
   };
 
   const handleContractorSelect = (contractorId) => {
-    setSelectedContractorId((currentId) => (currentId === contractorId ? null : contractorId));
+    const id = contractorId?.toString()
+    if (!id) return
+
+    setSelectedContractorIds((currentIds) => {
+      const isSelected = currentIds.includes(id)
+      if (isSelected) {
+        return currentIds.filter((currentId) => currentId !== id)
+      }
+      return [...currentIds, id]
+    })
     setAssignError('');
     setAssignSuccess('');
   };
 
   const handleAssign = async () => {
-    if (!selectedContractorId) {
-      setAssignError('Please select a contractor to assign.');
+    if (!selectedContractorIds.length) {
+      setAssignError('Please select at least one contractor to assign.');
       return;
     }
 
@@ -43,10 +52,10 @@ const AwaitingAssignmentView = ({ job, onBack, availableContractors, loadingCont
     setAssignSuccess('');
     setAssigning(true);
     try {
-      await onAssign(job.id, selectedContractorId);
-      setAssignSuccess('Contractor assigned successfully.');
+      await onAssign(job.id, selectedContractorIds);
+      setAssignSuccess('Contractors assigned successfully.');
     } catch (error) {
-      setAssignError(error?.message || 'Failed to assign contractor.');
+      setAssignError(error?.message || 'Failed to assign contractors.');
     } finally {
       setAssigning(false);
     }
@@ -198,7 +207,8 @@ const AwaitingAssignmentView = ({ job, onBack, availableContractors, loadingCont
                       <input
                         type="checkbox"
                         className="jb-checkbox"
-                        checked={selectedContractorId === contractor._id}
+                        value={contractor._id}
+                        checked={selectedContractorIds.includes(contractor._id?.toString())}
                         onChange={() => handleContractorSelect(contractor._id)}
                       />
                     </div>
@@ -208,8 +218,8 @@ const AwaitingAssignmentView = ({ job, onBack, availableContractors, loadingCont
             </div>
             {assignError && <div className="jb-error-message mt-12">{assignError}</div>}
             {assignSuccess && <div className="jb-success-message mt-12">{assignSuccess}</div>}
-            <button className="jb-btn-assign-main mt-24" onClick={handleAssign} disabled={!selectedContractorId || assigning || loadingContractors || availableContractors.length === 0}>
-              {assigning ? 'Assigning...' : 'Assign Selected Contractor'} <RiArrowRightUpLine size={18} />
+            <button className="jb-btn-assign-main mt-24" onClick={handleAssign} disabled={!selectedContractorIds.length || assigning || loadingContractors || availableContractors.length === 0}>
+              {assigning ? 'Assigning...' : 'Assign Selected Contractors'} <RiArrowRightUpLine size={18} />
             </button>
           </div>
         </div>
@@ -234,11 +244,18 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
     navigate('/project-details'); // Navigate to the route path
   };
 
-  const contractors = [
-    { id: 1, name: "Matthew Plunkett", image: "public/contractor1.jpg", price: "9,200", rating: "4.7", contractorId: "#RPH-2025-00123", pricePerSq: "143", isRejected: false },
-    { id: 2, name: "Madeline Joyner", image: "public/contractor2.jpg", price: "9,200", rating: "4.7", contractorId: "#RPH-2025-00123", pricePerSq: "143", isRejected: true },
-    { id: 3, name: "Matthew Plunkett", image: "public/contractor1.jpg", price: "9,200", rating: "4.7", contractorId: "#RPH-2025-00123", pricePerSq: "143", isRejected: false },
-  ];
+  const contractors = (job.assignedContractors || []).map((contractor, index) => ({
+    id: contractor.id?.toString() || contractor._id?.toString() || index,
+    name: contractor.name || contractor.username || 'Contractor',
+    image: contractor.avatarUrl || 'public/contractor2.jpg',
+    price: contractor.quoteAmount || 'TBD',
+    rating: contractor.rating || '4.7',
+    contractorId: contractor.username ? `#${contractor.username}` : contractor.id?.toString().slice(-6) || `#${index + 1}`,
+    pricePerSq: contractor.pricePerSquare || 'N/A',
+    isRejected: contractor.status === 'Rejected',
+    status: contractor.status || 'New Arrival',
+    proposalMessage: contractor.proposalMessage || '',
+  }))
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -277,7 +294,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
                 <div className="jb-status-tag jb-tag-open-green">
                   <span className="jb-dot-green"></span> {job.status || 'Bidding In Progress'}
                 </div>
-                <p className="jb-bids-count">{job.assignedContractor?.name ? 'Contractor assigned' : 'Contractor bids in progress'}</p>
+                <p className="jb-bids-count">{job.assignedContractors?.length ? `${job.assignedContractors.length} contractors assigned` : 'Contractor bids in progress'}</p>
               </div>
             </div>
 
@@ -384,7 +401,9 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
                 <div className="jb-no-data">No available contractors found.</div>
               ) : (
                 availableContractors.map((contractor) => {
-                  const isAssigned = job.assignedContractor?.id?.toString() === contractor._id?.toString();
+                  const contractorId = contractor._id?.toString()
+                  const isAssigned = job.assignedContractors?.some((entry) => entry.id?.toString() === contractorId)
+                    || job.assignedContractor?.id?.toString() === contractorId
                   return (
                     <div key={contractor._id} className="jb-contractor-item">
                       <div className="jb-flex-row">
@@ -405,7 +424,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
               )}
             </div>
             <div className="jb-info-note mt-24">
-              Assignment is locked once the job moves to Bidding In Progress.
+              Assignment is locked.
             </div>
           </div>
         </div>
@@ -438,7 +457,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
                 <div className="card-price">${item.price}</div>
               </div>
   
-              <div className="service-tag">Roof Replacement</div>
+              <div className="service-tag">{item.status === 'Pending Review' ? 'Bid Submitted' : item.status === 'New Arrival' ? 'Awaiting Bid' : 'Roof Replacement'}</div>
               <hr className="divider" />
   
               <div className="card-details-grid">
@@ -451,13 +470,19 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
                   <span>${item.pricePerSq}</span>
                 </div>
               </div>
+              {item.proposalMessage && (
+                <div className="card-note">
+                  <label>Proposal</label>
+                  <p>{item.proposalMessage}</p>
+                </div>
+              )}
   
               <div className="card-actions">
                 <button className="btn-white" onClick={handleButtonClick}>View Details <RiArrowRightUpLine size={16} /></button>
                 {!item.isRejected ? (
                   <button 
                     className="btn-orange" 
-                    onClick={() => setIsModalOpen(true)} // Open Modal
+                    onClick={() => setIsModalOpen(true)}
                   >
                     Accept Quote <RiArrowRightUpLine size={16} />
                   </button>
@@ -500,15 +525,18 @@ const BidAcceptedView = ({ job, onBack }) => {
   const scrollRef = useRef(null);
   const details = job.serviceDetails || {};
 
-  const contractors = [
-    { id: 1, name: "Matthew Plunkett", image: "public/contractor1.jpg", price: "9,200", rating: "4.7", contractorId: "#RPH-2025-00123", pricePerSq: "143" },
-    { id: 2, name: "Madeline Joyner", image: "public/contractor2.jpg", price: "9,200", rating: "4.7", contractorId: "#RPH-2025-00123", pricePerSq: "143" },
-    { id: 3, name: "Matthew Plunkett", image: "public/contractor1.jpg", price: "9,200", rating: "4.7", contractorId: "#RPH-2025-00123", pricePerSq: "143" },
-    { id: 4, name: "Sarah Walker", image: "public/contractor2.jpg", price: "8,500", rating: "4.9", contractorId: "#RPH-2025-00124", pricePerSq: "130" },
-    { id: 5, name: "Kane Williamson", image: "public/contractor1.jpg", price: "9,800", rating: "4.5", contractorId: "#RPH-2025-00125", pricePerSq: "155" },
-    { id: 6, name: "Novak Djokovic", image: "public/contractor2.jpg", price: "9,300", rating: "5.0", contractorId: "#RPH-2025-00123", pricePerSq: "144" },
-    { id: 7, name: "Rafael Nadal", image: "public/contractor1.jpg", price: "8,200", rating: "4.7", contractorId: "#RPH-2025-00123", pricePerSq: "147" },
-  ];
+  const contractors = (job.assignedContractors || []).map((contractor, index) => ({
+    id: contractor.id?.toString() || contractor._id?.toString() || index,
+    name: contractor.name || contractor.username || 'Contractor',
+    image: contractor.avatarUrl || 'public/contractor2.jpg',
+    price: contractor.quoteAmount || contractor.pricePerSquare || 'TBD',
+    rating: contractor.rating || '4.7',
+    contractorId: contractor.username ? `#${contractor.username}` : contractor.id?.toString().slice(-6) || `#${index + 1}`,
+    pricePerSq: contractor.pricePerSquare || 'N/A',
+    isRejected: contractor.status === 'Rejected',
+    status: contractor.status || 'New Arrival',
+    proposalMessage: contractor.proposalMessage || '',
+  }))
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -551,7 +579,7 @@ const BidAcceptedView = ({ job, onBack }) => {
                 <div className="jb-status-tag jb-tag-open-green">
                   <span className="jb-dot-green"></span> {job.status || 'Bid Accepted'}
                 </div>
-                <p className="jb-bids-count">{job.assignedContractor?.name ? `Assigned to ${job.assignedContractor.name}` : 'Bid accepted'}</p>
+                <p className="jb-bids-count">{job.assignedContractors?.length ? `Assigned to ${job.assignedContractors.map((c) => c.name).join(', ')}` : 'Bid accepted'}</p>
               </div>
             </div>
 
@@ -713,7 +741,7 @@ const BidAcceptedView = ({ job, onBack }) => {
                 <div className="card-price">${item.price}</div>
               </div>
   
-              <div className="service-tag">Roof Replacement</div>
+              <div className="service-tag">{item.status === 'Pending Review' ? 'Bid Submitted' : item.status === 'New Arrival' ? 'Awaiting Bid' : 'Roof Replacement'}</div>
               <hr className="divider" />
   
               <div className="card-details-grid">
@@ -726,6 +754,12 @@ const BidAcceptedView = ({ job, onBack }) => {
                   <span>${item.pricePerSq}</span>
                 </div>
               </div>
+              {item.proposalMessage && (
+                <div className="card-note">
+                  <label>Proposal</label>
+                  <p>{item.proposalMessage}</p>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -773,6 +807,7 @@ const JobBidding = () => {
           name: quote.fullName || 'Homeowner',
           assignedCount: quote.assignedCount || 0,
           assignedContractor: quote.assignedContractor || null,
+          assignedContractors: quote.assignedContractors || (quote.assignedContractor ? [quote.assignedContractor] : []),
         })));
       } catch (err) {
         setError(err.message || 'Error loading jobs');
@@ -831,9 +866,13 @@ const JobBidding = () => {
   };
 
   // --- RENDER TOGGLE LOGIC ---
-  const assignContractorToJob = async (quoteId, contractorId) => {
-    if (!contractorId) {
-      throw new Error('Please select a contractor first.')
+  const assignContractorToJob = async (quoteId, contractorIds) => {
+    const ids = Array.isArray(contractorIds)
+      ? contractorIds.map((id) => id?.toString()).filter(Boolean)
+      : []
+
+    if (!ids.length) {
+      throw new Error('Please select at least one contractor first.')
     }
     const token = localStorage.getItem('roofheroToken')
     const response = await fetch(`/api/admin/quote-requests/${quoteId}/assign`, {
@@ -842,7 +881,7 @@ const JobBidding = () => {
         'Content-Type': 'application/json',
         Authorization: token ? `Bearer ${token}` : '',
       },
-      body: JSON.stringify({ contractorId }),
+      body: JSON.stringify({ contractorIds: ids }),
     })
     if (!response.ok) {
       const errorData = await response.json().catch(() => null)
@@ -858,6 +897,7 @@ const JobBidding = () => {
       address: updated.serviceDetails?.propertyAddress || updated.serviceDetails?.address || 'Not specified',
       name: updated.fullName || 'Homeowner',
       assignedContractor: updated.assignedContractor || null,
+      assignedContractors: updated.assignedContractors || (updated.assignedContractor ? [updated.assignedContractor] : []),
     }
     setJobsData((prev) => prev.map((job) => (job.id === quoteId ? normalized : job)))
     setSelectedJob(normalized)
@@ -920,7 +960,7 @@ const JobBidding = () => {
                     <td>{job.date}</td>
                     <td>{job.area}</td>
                     {(activeTab === 'Bidding In Progress' || activeTab === 'Bid Accepted') && (
-                      <td>{job.assignedContractor?.name || 'Not assigned'}</td>
+                      <td>{job.assignedContractors?.length ? job.assignedContractors.map((c) => c.name).join(', ') : job.assignedContractor?.name || 'Not assigned'}</td>
                     )}
                     <td><span className={`jb-status-pill ${job.status.toLowerCase().replace(/\s+/g, '-')}`}>{job.status}</span></td>
                     <td><button className="jb-btn-view" onClick={() => setSelectedJob(job)}>View Details <RiArrowRightUpLine size={16} /></button></td>
@@ -940,4 +980,4 @@ const JobBidding = () => {
   );
 };
 
-export default JobBidding;
+export default JobBidding

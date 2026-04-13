@@ -115,6 +115,19 @@ router.get('/me', authenticate, authorize('homeowner'), async (req, res, next) =
         id: latestQuote._id,
         requestedAt: latestQuote.requestedAt,
         serviceDetails: latestQuote.serviceDetails || {},
+        assignedContractors: (latestQuote.assignedContractors || []).map((contractor) => ({
+          id: contractor.id,
+          name: contractor.name,
+          email: contractor.email,
+          phone: contractor.phone,
+          username: contractor.username,
+          status: contractor.status,
+          quoteAmount: contractor.quoteAmount || '',
+          pricePerSquare: contractor.pricePerSquare || '',
+          estimatedStartDate: contractor.estimatedStartDate || '',
+          proposalMessage: contractor.proposalMessage || '',
+          bidSubmittedAt: contractor.bidSubmittedAt,
+        })),
       } : null,
     })
   } catch (error) {

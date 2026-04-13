@@ -1,34 +1,80 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { RiArrowRightUpLine, RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react';
 import { useNavigate } from 'react-router-dom';
 
 const BidCard = () => {
-  const navigate = useNavigate(); // Initialize navigation
+  const navigate = useNavigate();
   const scrollRef = useRef(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [contractors, setContractors] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchHomeownerBids = async () => {
+      const token = window.localStorage.getItem('roofheroToken');
+      if (!token) {
+        setError('Authentication required.');
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/homeowner/me', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data?.message || 'Unable to load contractor bids.');
+        }
+
+        const data = await response.json();
+        const assignedContractors = data.quote?.assignedContractors || [];
+
+        setContractors(
+          assignedContractors.map((contractor, index) => ({
+            id: contractor.id || `contractor-${index}`,
+            name: contractor.name || contractor.username || `Contractor ${index + 1}`,
+            image: contractor.image || 'public/contractor1.jpg',
+            price: contractor.quoteAmount || contractor.pricePerSquare || 'N/A',
+            rating: contractor.rating || '4.7',
+            contractorId: contractor.username
+              ? `#${contractor.username.toUpperCase()}`
+              : contractor.id
+              ? `#RPH-${contractor.id.toString().slice(-6).toUpperCase()}`
+              : `#RPH-2025-00${index + 1}`,
+            pricePerSq: contractor.pricePerSquare || 'N/A',
+            status: contractor.status || 'New Arrival',
+            isRejected: contractor.status === 'Rejected',
+          }))
+        );
+      } catch (fetchError) {
+        setError(fetchError.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchHomeownerBids();
+  }, []);
 
   const handleButtonClick = () => {
-    setIsModalOpen(false); // Close the modal first
-    navigate('/project-details'); // Navigate to the route path
+    setIsModalOpen(false);
+    navigate('/project-details');
   };
-
-  const contractors = [
-    { id: 1, name: "Matthew Plunkett", image: "public/contractor1.jpg", price: "9,200", rating: "4.7", contractorId: "#RPH-2025-00123", pricePerSq: "143", isRejected: false },
-    { id: 2, name: "Madeline Joyner", image: "public/contractor2.jpg", price: "9,200", rating: "4.7", contractorId: "#RPH-2025-00123", pricePerSq: "143", isRejected: true },
-    { id: 3, name: "Matthew Plunkett", image: "public/contractor1.jpg", price: "9,200", rating: "4.7", contractorId: "#RPH-2025-00123", pricePerSq: "143", isRejected: false },
-    { id: 4, name: "Sarah Walker", image: "public/contractor2.jpg", price: "8,500", rating: "4.9", contractorId: "#RPH-2025-00124", pricePerSq: "130", isRejected: true },
-    { id: 5, name: "Kane Williamson", image: "public/contractor1.jpg", price: "9,800", rating: "4.5", contractorId: "#RPH-2025-00125", pricePerSq: "155", isRejected: false },
-    { id: 6, name: "Novak Djokovic", image: "public/contractor2.jpg", price: "9,300", rating: "5.0", contractorId: "#RPH-2025-00123", pricePerSq: "144", isRejected: false },
-    { id: 7, name: "Rafael Nadal", image: "public/contractor1.jpg", price: "8,200", rating: "4.7", contractorId: "#RPH-2025-00123", pricePerSq: "147", isRejected: false },
-  ];
 
   const scroll = (direction) => {
     if (scrollRef.current) {
-      const cardWidth = scrollRef.current.querySelector('.bid-card-item').offsetWidth + 20;
+      const cardElement = scrollRef.current.querySelector('.bid-card-item');
+      if (!cardElement) return;
+      const cardWidth = cardElement.offsetWidth + 20;
       const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
       scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
+
+  const hasContractors = contractors.length > 0;
 
   return (
     <section className="contractor-bids-section">
@@ -41,54 +87,68 @@ const BidCard = () => {
       </div>
 
       <div className="bids-slider-track" ref={scrollRef}>
-        {contractors.map((item) => (
-          <div key={item.id} className={`bid-card-item ${item.isRejected ? 'rejected' : ''}`}>
-            <div className="card-top-row">
-              <div className="user-profile">
-                <img src={item.image} alt="avatar" />
-                <div className="user-text">
-                  <h4>{item.name}</h4>
-                  <div className="rating-row">
-                    <img src="public/star-ic-rating.png" alt="star" className='star'/>
-                    <span className="rating-label">{item.rating} (128 reviews)</span>
+        {isLoading ? (
+          <div className="bid-card-empty">
+            <p>Loading contractor bids...</p>
+          </div>
+        ) : error ? (
+          <div className="bid-card-empty">
+            <p>{error}</p>
+          </div>
+        ) : !hasContractors ? (
+          <div className="bid-card-empty">
+            <p>No contractor bids are available yet. Please check back once contractors submit proposals.</p>
+          </div>
+        ) : (
+          contractors.map((item) => (
+            <div key={item.id} className={`bid-card-item ${item.isRejected ? 'rejected' : ''}`}>
+              <div className="card-top-row">
+                <div className="user-profile">
+                  <img src={item.image} alt="avatar" />
+                  <div className="user-text">
+                    <h4>{item.name}</h4>
+                    <div className="rating-row">
+                      <img src="public/star-ic-rating.png" alt="star" className='star'/>
+                      <span className="rating-label">{item.rating} (128 reviews)</span>
+                    </div>
                   </div>
                 </div>
+                <div className="card-price">${item.price}</div>
               </div>
-              <div className="card-price">${item.price}</div>
-            </div>
 
-            <div className="service-tag">Roof Replacement</div>
-            <hr className="divider" />
+              <div className="service-tag">Roof Replacement</div>
+              <hr className="divider" />
 
-            <div className="card-details-grid">
-              <div className="col">
-                <label>CONTRACTOR ID:</label>
-                <span>{item.contractorId}</span>
-              </div>
-              <div className="col">
-                <label>PRICE PER SQUARE:</label>
-                <span>${item.pricePerSq}</span>
-              </div>
-            </div>
-
-            <div className="card-actions">
-              <button className="btn-white" onClick={handleButtonClick}>View Details <RiArrowRightUpLine size={16} /></button>
-              {!item.isRejected ? (
-                <button 
-                  className="btn-orange" 
-                  onClick={() => setIsModalOpen(true)} // Open Modal
-                >
-                  Accept Quote <RiArrowRightUpLine size={16} />
-                </button>
-              ) : (
-                <div className="rejected-label">
-                  <span className="info-circle">i</span>
-                  Contractor has been rejected.
+              <div className="card-details-grid">
+                <div className="col">
+                  <label>CONTRACTOR ID:</label>
+                  <span>{item.contractorId}</span>
                 </div>
-              )}
+                <div className="col">
+                  <label>PRICE PER SQUARE:</label>
+                  <span>${item.pricePerSq}</span>
+                </div>
+              </div>
+
+              <div className="card-actions">
+                <button className="btn-white" onClick={handleButtonClick}>View Details <RiArrowRightUpLine size={16} /></button>
+                {!item.isRejected ? (
+                  <button 
+                    className="btn-orange" 
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    Accept Quote <RiArrowRightUpLine size={16} />
+                  </button>
+                ) : (
+                  <div className="rejected-label">
+                    <span className="info-circle">i</span>
+                    Contractor has been rejected.
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {/* --- SUCCESS MODAL OVERLAY --- */}

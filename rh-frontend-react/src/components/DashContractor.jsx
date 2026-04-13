@@ -11,37 +11,88 @@ import {
 // --- SUB-COMPONENT: PROPOSAL DETAILS VIEW ---
 const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
   const [expandedSection, setExpandedSection] = useState('basic');
+  const [bidAmount, setBidAmount] = useState(item.serviceDetails?.quote || item.serviceDetails?.estimatedQuote || '')
+  const [pricePerSquare, setPricePerSquare] = useState(item.serviceDetails?.pricePerSquare || '')
+  const [estimatedStartDate, setEstimatedStartDate] = useState(item.serviceDetails?.estimatedStartDate || '')
+  const [proposalMessage, setProposalMessage] = useState(item.serviceDetails?.proposalMessage || '')
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState(null)
+
+  const details = item.serviceDetails || {};
+  const homeownerName = item.homeowner || item.fullName || item.homeowner?.fullName || 'Homeowner';
+  const homeownerEmail = item.homeowner?.email || item.email || 'No email';
+  const homeownerPhone = item.homeowner?.phone || item.phone || 'No phone';
+  const quotePrice = details.quote || details.estimatedQuote || item.quote || 'Pending';
+  const startDate = details.estimatedStartDate || item.estimatedStartDate || 'Not available';
+  const projectImages = details.roofImages?.length ? details.roofImages.slice(0, 4) : ['public/r1.jpg', 'public/r2.jpg', 'public/r3.jpg', 'public/r4.jpg'];
 
   const toggleSection = (section) => {
     setExpandedSection(expandedSection === section ? null : section);
   };
 
+  const handleSubmitQuote = async () => {
+    setSubmitError(null)
+    setSubmitting(true)
+    try {
+      await onUpdateStatus(item.id, 'Pending Review', {
+        quoteAmount: bidAmount,
+        pricePerSquare,
+        estimatedStartDate,
+        proposalMessage,
+      })
+    } catch (error) {
+      setSubmitError(error.message || 'Failed to submit quote.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   const renderSidebar = () => {
     // IMAGE 1: New Inquiry Submission Form
-    if (item.status === 'New Inquiry') {
+    if (['New Arrival', 'New Inquiry'].includes(item.status)) {
       return (
         <div className="con-dash-sidebar-card animate-fade">
           <h2 className="con-dash-side-title">Quote Submission</h2>
           <div className="con-dash-form-group">
             <label>Final Quote Price ($AUD)</label>
-            <input type="text" placeholder="e.g., 18,700" />
+            <input
+              type="text"
+              value={bidAmount}
+              onChange={(e) => setBidAmount(e.target.value)}
+              placeholder="e.g., 18,700"
+            />
           </div>
           <div className="con-dash-form-row">
             <div className="con-dash-form-group">
               <label>Price Per Square</label>
-              <input type="text" placeholder="$143.3" />
+              <input
+                type="text"
+                value={pricePerSquare}
+                onChange={(e) => setPricePerSquare(e.target.value)}
+                placeholder="$143.3"
+              />
             </div>
             <div className="con-dash-form-group">
               <label>Estimated Start Date</label>
-              <input type="date" />
+              <input
+                type="date"
+                value={estimatedStartDate}
+                onChange={(e) => setEstimatedStartDate(e.target.value)}
+              />
             </div>
           </div>
           <div className="con-dash-form-group">
             <label>Custom Proposal Message</label>
-            <textarea rows="6" placeholder="We'll handle tile removal and install..."></textarea>
+            <textarea
+              rows="6"
+              value={proposalMessage}
+              onChange={(e) => setProposalMessage(e.target.value)}
+              placeholder="We'll handle tile removal and install..."
+            />
           </div>
-          <button className="con-dash-btn-submit" onClick={() => onUpdateStatus(item.id, 'Pending Review')}>
-            Quotes Submit <RiArrowRightUpLine size={18} />
+          {submitError && <div className="con-dash-error-text">{submitError}</div>}
+          <button className="con-dash-btn-submit" onClick={handleSubmitQuote} disabled={submitting}>
+            {submitting ? 'Submitting...' : 'Submit Quote'} <RiArrowRightUpLine size={18} />
           </button>
           <div className="con-dash-info-box">
              <RiInformationFill size={18} color="#666" />
@@ -58,19 +109,16 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
           <h2 className="con-dash-side-title">Quote Submission</h2>
           <div className="con-dash-readonly-group">
             <label>Final Quote Price ($AUD)</label>
-            <p>$18,700 AUD</p>
+            <p>{quotePrice !== 'Pending' ? `AUD ${quotePrice}` : 'Pending'}</p>
           </div>
           <div className="con-dash-readonly-group">
             <label>Estimated Start Date</label>
-            <p>May 10, 2025</p>
+            <p>{startDate}</p>
           </div>
           <div className="con-dash-readonly-group">
             <label>Custom Proposal Message</label>
             <p className="con-dash-msg-text">
-              Thank you for considering us for your roofing project. We will carefully remove the existing tile roof and replace it with a new Colorbond metal roof, ensuring high-quality workmanship and full compliance with safety standards. Our team will also inspect the underlying structure and carry out any minor repairs if needed. We’ll maintain a clean worksite throughout and complete the job efficiently.
-            </p>
-            <p className="con-dash-msg-text">
-              Please feel free to reach out if you have any questions. We look forward to working on your home.
+              {item.proposalMessage || details.proposalMessage || 'Thank you for considering us for your roofing project. We will carefully remove the existing tile roof and replace it with a new Colorbond metal roof, ensuring high-quality workmanship and full compliance with safety standards.'}
             </p>
           </div>
           <div className={item.status === 'Accepted' ? 'jb-status-green-pill text-center w-full py-3 mt-4' : 'con-dash-status-indicator'}>
@@ -86,16 +134,16 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
           <h2 className="con-dash-side-title">Quote Submission</h2>
           <div className="con-dash-readonly-group">
             <label>Final Quote Price ($AUD)</label>
-            <p>$18,700 AUD</p>
+            <p>{quotePrice !== 'Pending' ? `AUD ${quotePrice}` : 'Pending'}</p>
           </div>
           <div className="con-dash-readonly-group">
             <label>Estimated Start Date</label>
-            <p>May 10, 2025</p>
+            <p>{startDate}</p>
           </div>
           <div className="con-dash-readonly-group">
             <label>Custom Proposal Message</label>
             <p className="con-dash-msg-text">
-              Your bid was not selected. Better luck on the next opportunity.
+              {item.proposalMessage || details.proposalMessage || 'Your bid was not selected. Better luck on the next opportunity.'}
             </p>
           </div>
           <div className="jb-status-red-pill">
@@ -120,11 +168,11 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
           </div>
         </div>
         <div className="con-dash-owner-grid">
-          <div><label>Status: </label><span className="jb-status-green-pill">approval by homeowner</span></div><br></br>
-          <div className="mt-12"><label>Project Address:</label><p>Street 12 Smith St, Bondi, NSW 2026</p></div>
+          <div><label>Status: </label><span className="jb-status-green-pill">{item.status}</span></div><br></br>
+          <div className="mt-12"><label>Project Address:</label><p>{details.propertyAddress || details.address || 'Not specified'}</p></div>
           <div className="mt-12">
           <label>Final Bid Amount: </label>
-          <span className="con-dash-price-badge">AUD $18,500</span>
+          <span className="con-dash-price-badge">AUD {quotePrice}</span>
           </div>
         </div>
       </div>
@@ -150,25 +198,22 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
             <div className="con-dash-profile-row">
               <img src="public/contractor2.jpg" alt="Mike" className="jb-avatar" />
               <div className="jb-profile-info">
-                <h3>Mike Bullot</h3>
+                <h3>{homeownerName}</h3>
                 <div className="jb-contact-row">
-                  <span className="jb-contact-row-span" ><img src='public/mail_ic.png' alt='mail_ic' ></img>team@roofhero.au</span>
+                  <span className="jb-contact-row-span"><img src='public/mail_ic.png' alt='mail_ic' />{homeownerEmail}</span>
                   <span>|</span>
-                  <span className="jb-contact-row-span"><img src='public/Call_ic.png' alt='call_ic' ></img>8565533446</span>
+                  <span className="jb-contact-row-span"><img src='public/Call_ic.png' alt='call_ic' />{homeownerPhone}</span>
                 </div>
               </div>
               <div className="jb-status-container">
                 <div className="con-dash-tag-open">{item.status}</div>
-                <p className="jb-bids-count">12 Contractor Bids Received</p>
+                <p className="jb-bids-count">{item.serviceDetails?.contractorBids || '12'} Contractor Bids Received</p>
               </div>
             </div>
 
             <h2 className="con-dash-sec-title mt-24">Project Images</h2>
             <div className="con-dash-img-grid">
-              <img src="public/r1.jpg" alt="roof" />
-              <img src="public/r2.jpg" alt="roof" />
-              <img src="public/r3.jpg" alt="roof" />
-              <img src="public/r4.jpg" alt="roof" />
+              {projectImages.map((src, index) => <img key={index} src={src} alt={`roof-${index}`} />)}
             </div>
 
             {/* Accordion Sections */}
@@ -187,15 +232,15 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
                 </div>
                 {expandedSection === 'basic' && (
                   <div className="jb-accordion-content jb-grid-2 animate-fade">
-                    <div><label>Project ID:</label><p>RH-JOB-2025-0148</p></div>
-                    <div><label>Property Address:</label><p>27 Rosebay Street, Bondi, NSW 2026</p></div>
-                    <div><label>Roof Type:</label><p>Tile Roof</p></div>
-                    <div><label>Approx. Roof Area:</label><p>180 m²</p></div>
-                    <div><label>Pitch Type:</label><p>Medium Pitch (25-35°)</p></div>
-                    <div><label>Stories:</label><p>2</p></div>
-                    <div><label>Access Difficulty:</label><p>Moderate</p></div>
-                    <div><label>Material Requested:</label><p>Colorbond Metal</p></div>
-                    <div className="jb-col-span-2"><label>Urgency Level:</label><p>Flexible (within 30 days)</p></div>
+                    <div><label>Project ID:</label><p>{item.id || item._id || 'Unknown'}</p></div>
+                    <div><label>Property Address:</label><p>{details.propertyAddress || details.address || 'Not specified'}</p></div>
+                    <div><label>Roof Type:</label><p>{details.roofType || details.roofMaterial || 'Not specified'}</p></div>
+                    <div><label>Approx. Roof Area:</label><p>{details.roofArea || details.approxRoofArea || 'Not specified'}</p></div>
+                    <div><label>Pitch Type:</label><p>{details.pitchType || details.roofPitch || 'Not specified'}</p></div>
+                    <div><label>Stories:</label><p>{details.stories || details.levels || 'Not specified'}</p></div>
+                    <div><label>Access Difficulty:</label><p>{details.accessDifficulty || details.access || 'Not specified'}</p></div>
+                    <div><label>Material Requested:</label><p>{details.materialRequested || details.material || 'Not specified'}</p></div>
+                    <div className="jb-col-span-2"><label>Urgency Level:</label><p>{details.urgency || details.urgencyLevel || 'Not specified'}</p></div>
                   </div>
                 )}
               </div>
@@ -213,8 +258,8 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
                 </div>
                 {expandedSection === 'quoting' && (
                   <div className="jb-accordion-content jb-grid-2 animate-fade">
-                    <div><label>Automated Quoting:</label><p>$8,000 — $9,500 AUD</p></div>
-                    <div><label>Provide by:</label><p>roofhero</p></div>
+                    <div><label>Automated Quoting:</label><p>{details.quoteRange || details.quote || details.estimatedQuote || '$8,000 — $9,500 AUD'}</p></div>
+                    <div><label>Provide by:</label><p>{details.quoteProvider || 'roofhero'}</p></div>
                   </div>
                 )}
               </div>
@@ -290,7 +335,19 @@ const DashContractor = () => {
         const data = await response.json();
         setContractorInfo(data);
 
-        if (data.dashboard) {
+        if (Array.isArray(data.assignedQuotes) && data.assignedQuotes.length > 0) {
+          const assignedLeads = data.assignedQuotes.map((quote) => ({
+            ...quote,
+            id: quote._id,
+            address: quote.serviceDetails?.propertyAddress || quote.serviceDetails?.address || 'Not specified',
+            date: quote.requestedAt ? new Date(quote.requestedAt).toLocaleDateString() : 'Unknown',
+            area: quote.serviceDetails?.roofArea || quote.serviceDetails?.approxRoofArea || 'Not specified',
+            quote: quote.serviceDetails?.quote || quote.serviceDetails?.estimatedQuote || 'Pending',
+            status: quote.contractorStatus || quote.status || 'New Arrival',
+            homeowner: quote.fullName || quote.homeowner?.fullName || 'Homeowner',
+          }))
+          setAllLeads(assignedLeads)
+        } else if (data.dashboard) {
           setDashboardStats(data.dashboard.stats || { bidsSubmitted: 0, jobsAwarded: 0, winRate: 0 });
           setAllLeads([
             ...(data.dashboard.newLeads || []),
@@ -318,14 +375,40 @@ const DashContractor = () => {
     { title: 'Win Rate', value: `${winRate}%`, img: 'public/trophy_ic.svg', color: '#Fa5a25' },
   ];
 
-  const handleUpdateStatus = (id, newStatus) => {
-    setAllLeads(prev => prev.map(l => l.id === id ? { ...l, status: newStatus } : l));
-    setSelectedItem(null);
+  const handleUpdateStatus = async (id, newStatus, payload = {}) => {
+    const token = window.localStorage.getItem('roofheroToken')
+    if (token && newStatus === 'Pending Review') {
+      const response = await fetch(`/api/contractors/quote-requests/${id}/submit-quote`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.message || 'Failed to submit quote.')
+      }
+
+      const { quote: updatedQuote } = await response.json()
+      setAllLeads(prev => prev.map(l => l.id === id ? {
+        ...l,
+        status: newStatus,
+        quote: updatedQuote.serviceDetails?.quote || updatedQuote.serviceDetails?.estimatedQuote || l.quote,
+        serviceDetails: updatedQuote.serviceDetails || l.serviceDetails,
+      } : l))
+    } else {
+      setAllLeads(prev => prev.map(l => l.id === id ? { ...l, status: newStatus } : l))
+    }
+
+    setSelectedItem(null)
   };
 
   const filteredData = useMemo(() => {
     return allLeads.filter(item => {
-      if (activeTab === 'New Leads') return item.status === 'New Inquiry';
+      if (activeTab === 'New Leads') return ['New Arrival', 'Bidding In Progress'].includes(item.status);
       if (activeTab === 'Submitted Quotes') return ['Pending Review', 'Accepted', 'Rejected'].includes(item.status);
       if (activeTab === 'Active Projects') return ['In Progress', 'Site Inspection Scheduled', 'Materials Ordered'].includes(item.status);
       return true;
@@ -349,7 +432,7 @@ const DashContractor = () => {
 
   const getStatusClass = (status) => {
     const s = status.toLowerCase();
-    if (s.includes('new') || s.includes('accepted') || s.includes('progress') || s.includes('scheduled') || s.includes('ordered') || s.includes('review')) return 'jb-status-green';
+    if (s.includes('new') || s.includes('accepted') || s.includes('progress') || s.includes('scheduled') || s.includes('ordered') || s.includes('review') || s.includes('bidding')) return 'jb-status-green';
     if (s.includes('rejected')) return 'jb-status-red';
     return '';
   };
@@ -420,7 +503,7 @@ const DashContractor = () => {
                   <td><span className={`con-dash-status-pill ${getStatusClass(item.status)}`}>{item.status}</span></td>
                   <td>
                     <button className="con-dash-btn-action" onClick={() => setSelectedItem(item)}>
-                      {item.status === 'New Inquiry' ? 'View & Submit Quote' : 'View Details'} <RiArrowRightUpLine size={20} />
+                      {['New Inquiry', 'New Arrival'].includes(item.status) ? 'View & Submit Quote' : 'View Details'} <RiArrowRightUpLine size={20} />
                     </button>
                   </td>
                 </tr>

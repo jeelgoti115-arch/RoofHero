@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ContractorApplication from '../models/ContractorApplication.js'
+import QuoteRequest from '../models/QuoteRequest.js'
 import { authenticate, authorize } from '../middleware/auth.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -85,7 +86,74 @@ router.post('/apply', upload.fields([
 
 router.get('/me', authenticate, authorize('contractor'), async (req, res, next) => {
   try {
-    return res.json(req.user)
+    const contractor = req.user
+    const assignedQuotes = await QuoteRequest.find({
+      $or: [
+        { 'assignedContractors.id': contractor._id },
+        { 'assignedContractor.id': contractor._id },
+      ],
+    }).sort({ requestedAt: -1 }).lean()
+
+    const normalizedQuotes = assignedQuotes.map((quote) => {
+      const contractorEntry = (quote.assignedContractors || []).find((entry) => entry.id?.toString() === contractor._id.toString())
+      return {
+        ...quote,
+        contractorStatus: contractorEntry?.status || (quote.assignedContractor?.id?.toString() === contractor._id.toString() ? quote.status : 'New Arrival'),
+      }
+    })
+
+    const safeContractor = contractor.toObject ? contractor.toObject() : { ...contractor }
+    delete safeContractor.password
+
+    return res.json({
+      ...safeContractor,
+      assignedQuotes: normalizedQuotes,
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.patch('/quote-requests/:id/submit-quote', authenticate, authorize('contractor'), async (req, res, next) => {
+  try {
+    const contractor = req.user
+    const { quoteAmount, pricePerSquare, estimatedStartDate, proposalMessage } = req.body
+
+    const quote = await QuoteRequest.findById(req.params.id)
+    if (!quote) {
+      return res.status(404).json({ message: 'Quote request not found.' })
+    }
+
+    const contractorEntry = (quote.assignedContractors || []).find((entry) => entry.id?.toString() === contractor._id.toString())
+    const fallbackEntry = quote.assignedContractor?.id?.toString() === contractor._id.toString() ? quote.assignedContractor : null
+
+    if (!contractorEntry && !fallbackEntry) {
+      return res.status(403).json({ message: 'Contractor not assigned to this quote.' })
+    }
+
+    const entryToUpdate = contractorEntry || fallbackEntry
+
+    if (['Pending Review', 'Accepted', 'Rejected'].includes(entryToUpdate.status)) {
+      return res.status(400).json({ message: 'Quote has already been submitted or reviewed.' })
+    }
+
+    entryToUpdate.status = 'Pending Review'
+    entryToUpdate.quoteAmount = quoteAmount ?? entryToUpdate.quoteAmount
+    entryToUpdate.pricePerSquare = pricePerSquare ?? entryToUpdate.pricePerSquare
+    entryToUpdate.estimatedStartDate = estimatedStartDate ?? entryToUpdate.estimatedStartDate
+    entryToUpdate.proposalMessage = proposalMessage ?? entryToUpdate.proposalMessage
+    entryToUpdate.bidSubmittedAt = new Date()
+
+    quote.serviceDetails = quote.serviceDetails || {}
+    if (quoteAmount !== undefined && quoteAmount !== null) quote.serviceDetails.quote = quoteAmount
+    if (pricePerSquare !== undefined && pricePerSquare !== null) quote.serviceDetails.pricePerSquare = pricePerSquare
+    if (estimatedStartDate !== undefined && estimatedStartDate !== null) quote.serviceDetails.estimatedStartDate = estimatedStartDate
+    if (proposalMessage !== undefined && proposalMessage !== null) quote.serviceDetails.proposalMessage = proposalMessage
+
+    quote.markModified('assignedContractors')
+    quote.markModified('serviceDetails')
+    await quote.save()
+    return res.json({ quote })
   } catch (error) {
     next(error)
   }
