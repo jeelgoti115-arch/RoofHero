@@ -131,6 +131,7 @@ const ServiceCard9 = ({ serviceDetails, onSubmit }) => {
                 placeholder='e.g., 27 Rosebay Street, Bondi NSW 2026'
                 value={propertyAddress}
                 onChange={(e) => setPropertyAddress(e.target.value)}
+                required
               />
             </div>
           </div>
@@ -157,6 +158,7 @@ const ServiceCard9 = ({ serviceDetails, onSubmit }) => {
                 accept='image/*'
                 multiple
                 onChange={handleRoofImagesChange}
+                required
               />
               {roofImages.length > 0 && (
                 <p className='image-count'>Selected {roofImages.length} image(s)</p>

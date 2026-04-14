@@ -53,15 +53,6 @@ router.patch('/users/:id/reviews', async (req, res, next) => {
       return res.status(400).json({ message: 'Review text is required.' })
     }
 
-    const contractor = await User.findById(req.params.id)
-    if (!contractor) {
-      return res.status(404).json({ message: 'Contractor not found.' })
-    }
-
-    if (!Array.isArray(contractor.reviews)) {
-      contractor.reviews = []
-    }
-
     const review = {
       name: name || 'Anonymous User',
       text,
@@ -70,8 +61,15 @@ router.patch('/users/:id/reviews', async (req, res, next) => {
       createdAt: new Date(),
     }
 
-    contractor.reviews.unshift(review)
-    await contractor.save()
+    const contractor = await User.findByIdAndUpdate(
+      req.params.id,
+      { $push: { reviews: { $each: [review], $position: 0 } } },
+      { new: true, runValidators: true }
+    )
+
+    if (!contractor) {
+      return res.status(404).json({ message: 'Contractor not found.' })
+    }
 
     res.json({ reviews: contractor.reviews })
   } catch (error) {

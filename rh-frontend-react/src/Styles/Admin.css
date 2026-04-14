@@ -1,8 +1,21 @@
+:root {
+  --main-header: #122621;
+  --primary: #1D3B34;
+  --secondary: #4F7C70;
+  --accent: #FA5A28;
+  --support: #F6F2EC;
+  --optional-hero-blue: #004E7C;
+  --des: #676767;
+  --red: #FF3B30; /* adjusted standard red */
+  --white: #ffffff;
+  --border: #eee;
+}
+
 .dashboard-main-content {
   flex: 1;
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 100vh;
-  background-color: #FAF8F5;
+  background-color: var(--support);
 }
 
 /* Apply this class to the parent wrapper in AdminDash.jsx */
@@ -26,12 +39,12 @@
 /* Header */
 .adm-hdr-container {
   height: 70px;
-  background-color: #FAF8F5; /* Matching sidebar light grey */
+  background-color: var(--support); /* Matching sidebar light grey */
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 30px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 1005;
@@ -42,16 +55,12 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #122621;
+  color: var(--main-header);
   display: flex;
   align-items: center;
   padding: 8px;
   border-radius: 8px;
   transition: background 0.2s;
-}
-
-.adm-hdr-menu-btn:hover {
-  background-color: #f0f0f0;
 }
 
 /* Right Section */
@@ -72,19 +81,18 @@
 .adm-hdr-icon-circle {
   width: 42px;
   height: 42px;
-  background-color: #ededed; /* Light grey circle from image */
+  background-color: #1226211A; /* Light grey circle from image */
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #122621;
+  color: var(--main-header);
   transition: all 0.2s ease;
 }
 .adm-hdr-icon-circle img{
   width: 20px;
   height: 22px;
 }
-
 
 /* Red Notification Dot */
 .adm-hdr-dot {
@@ -93,7 +101,7 @@
   right: 2px;
   width: 12px;
   height: 12px;
-  background-color: #fa5a25; /* Your signature orange/red */
+  background-color: var(--accent); /* Your signature orange/red */
   border-radius: 50%;
 }
 
@@ -103,11 +111,11 @@
   height: 42px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #eee;
+  border: 1px solid var(--border);
 }
 
 .adm-hdr-active .adm-hdr-dot {
-  border-color: #122621;
+  border-color: var(--main-header);
 }
 
 
@@ -115,8 +123,8 @@
 .adm-sb-container {
   width: 260px;
   height: 100vh;
-  background-color: #FAF8F5;
-  border-right: 1px solid #eee;
+  background-color: var(--support);
+  border-right: 1px solid var(--border);
   position: fixed; /* Fixes it to the left */
   left: 0;
   top: 0;
@@ -175,8 +183,8 @@
 
 /* Active State Fix */
 .adm-sb-nav-item.active {
-  background-color: #122621 ;
-  color: #ffffff;
+  background-color: var(--main-header) ;
+  color: var(--white);
   border-radius: 12px;
 }
 .adm-sb-icon-wrapper{
@@ -197,7 +205,7 @@
 }
 
 .adm-sb-nav-item.active .adm-sb-label-text{
-  color: #ffffff !important;
+  color: var(--white) !important;
 }
 
 .adm-sb-nav-item:hover:not(.active) .adm-sb-icon-wrapper img {
@@ -207,7 +215,7 @@
 /* --- FOOTER & LOGOUT --- */
 .adm-sb-footer-section {
   padding: 25px 15px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border);
 }
 
 .adm-sb-logout-action {
@@ -222,23 +230,23 @@
   border-radius: 12px;
   
   /* Red Styling */
-  color: #ff4d4d !important;
-  fill: #ff4d4d !important;
+  color: var(--red) !important;
+  fill: var(--red) !important;
 }
 
 .adm-sb-logout-text {
   font-size: 15px;
   font-weight: 700;
-  color: #ff4d4d !important;
+  color: var(--red) !important;
 }
 
 .adm-sb-logout-action svg {
-  color: #ff4d4d !important;
-  fill: #ff4d4d !important;
+  color: var(--red) !important;
+  fill: var(--red) !important;
 }
 
 .adm-sb-logout-action:hover {
-  background-color: #fff5f5;
+  background-color: var(--white);
 }
 
 @media (min-width: 1024px) {
@@ -251,8 +259,6 @@
   }
 }
 
-
-
 /* ========================================================
     DashAdmin.jsx 
 ======================================================== */
@@ -260,7 +266,7 @@
 .da-page-title {
   font-size: 28px;
   font-weight: 800;
-  color: #122621;
+  color: var(--main-header);
   margin-bottom: 25px;
 }
 
@@ -268,7 +274,7 @@
   font-size: 17px;
   font-weight: 700;
   margin-bottom: 15px;
-  color: #122621;
+  color: var(--main-header);
 }
 
 /* Stats Cards Section */
@@ -280,7 +286,7 @@
 }
 
 .da-stat-card {
-  background: #ffffff;
+  background: var(--white);
   padding: 22px;
   border-radius: 16px;
   display: flex;
@@ -302,12 +308,12 @@
   height: 24px;
 }
 
-.da-bg-orange { background-color: #ff5c28; }
+.da-bg-orange { background-color: var(--accent); }
 
 .da-label-muted {
   display: block;
   font-size: 13px;
-  color: #676767;
+  color: var(--des);
   font-weight: 600;
   margin-bottom: 2px;
 }
@@ -316,7 +322,7 @@
   margin: 0;
   font-size: 26px;
   font-weight: 800;
-  color: #122621;
+  color: var(--main-header);
 }
 
 /* Charts Section */
@@ -328,7 +334,7 @@
 }
 
 .da-chart-box {
-  background: #ffffff;
+  background: var(--white);
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.04);
@@ -342,7 +348,7 @@
 
 /* Custom Tooltip Styling */
 .da-custom-tooltip {
-  background: #ffffff;
+  background: var(--white);
   padding: 10px 15px;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
@@ -353,7 +359,7 @@
   margin: 0;
   font-size: 13px;
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
 }
 
 .da-tooltip-value {
@@ -366,13 +372,13 @@
 .da-tooltip-value p {
   margin: 0;
   font-size: 12px;
-  color: #676767;
+  color: var(--des);
 }
 
 .da-tooltip-dot {
   width: 8px;
   height: 8px;
-  background-color: #ff5c28;
+  background-color: var(--accent) ;
   border-radius: 50%;
   display: inline-block;
 }
@@ -391,7 +397,7 @@
 
 /* Table Card Section */
 .da-table-card {
-  background: #ffffff;
+  background: var(--white);
   padding: 15px;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.04);
@@ -416,7 +422,7 @@
 .da-admin-table td {
   padding: 16px;
   font-size: 14px;
-  color: #122621;
+  color: var(--main-header);
   border-bottom: 1px solid #f9f9f9;
 }
 
@@ -435,8 +441,8 @@
 }
 
 .da-btn-view {
-  background-color: #ff5c28;
-  color: #ffffff;
+  background-color: var(--accent);
+  color: var(--white);
   border: none;
   padding: 10px 18px;
   border-radius: 50px;
@@ -464,12 +470,12 @@
 .da-pagi-nav {
   width: 38px;
   height: 38px;
-  border: 1px solid #eee;
-  background: #ffffff;
+  border: 1px solid var(--border);
+  background: var(--white);
   border-radius: 10px;
   cursor: pointer;
   font-weight: 700;
-  color: #676767;
+  color: var(--des);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -477,14 +483,14 @@
 }
 
 .da-pagi-active {
-  background-color: #ff5c28;
-  color: #ffffff !important;
-  border-color: #ff5c28;
+  background-color: var(--accent);
+  color: var(--white) !important;
+  border-color: var(--accent);
 }
 
 .da-pagi-nav:hover:not(.da-pagi-active) {
-  border-color: #ff5c28;
-  color: #ff5c28;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* Profile View Layout============================================== */
@@ -510,7 +516,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-  color: #122621;
+  color: var(--main-header);
 }
 
 /* Card Container */
@@ -525,7 +531,7 @@
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 30px;
-  color: #122621;
+  color: var(--main-header);
 }
 
 /* Layout Grid */
@@ -563,7 +569,7 @@
   display: block;
   font-size: 13px;
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
   margin-bottom: 10px;
 }
 
@@ -574,7 +580,7 @@
   background-color: #f7f3f0;
   border: 1px solid #efeae6;
   border-radius: 12px;
-  color: #676767;
+  color: var(--des);
   font-size: 14px;
   outline: none;
   box-sizing: border-box; /* Crucial: padding won't push width past 100% */
@@ -604,7 +610,7 @@
 }
 
 .da-accordion-item {
-  border: 1px solid #eee;
+  border: 1px solid var(--border);
   border-radius: 15px;
   margin-bottom: 15px;
   background: #fff;
@@ -621,7 +627,7 @@
 .da-accordion-header span {
   font-size: 18px;
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
 }
 
 /* The Circular Toggle Icons */
@@ -633,12 +639,12 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  background-color: #ff5c28; /* Default Orange */
+  background-color: var(--accent); /* Default Orange */
   color: #fff;
 }
 
 .da-acc-icon-circle.active {
-  background-color: #122621; /* Dark Green when open */
+  background-color: var(--main-header); /* Dark Green when open */
 }
 
 /* Document Section Styles */
@@ -681,7 +687,7 @@
 }
 
 .da-btn-approve {
-  background-color: #ff5c28;
+  background-color: var(--accent);
   color: #fff;
   border: none;
   padding: 15px 35px;
@@ -697,8 +703,8 @@
 
 .da-btn-reject {
   background-color: #fff;
-  color: #ff5c28;
-  border: 1px solid #ff5c28;
+  color: var(--accent);
+  border: 1px solid var(--accent);
   padding: 15px 35px;
   border-radius: 50px; /* Pill shape */
   font-weight: 700;
@@ -726,12 +732,12 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #676767;
+  color: var(--des);
 }
 
 .da-checkbox-group input[type="checkbox"], 
 .da-confirmation-check input[type="checkbox"] {
-  accent-color: #ff5c28; /* RoofHero Orange */
+  accent-color: var(--accent); /* RoofHero Orange */
   width: 18px;
   height: 18px;
 }
@@ -748,7 +754,7 @@
 }
 
 .da-choose-file-btn {
-  background-color: #ff5c28;
+  background-color: var(--accent);
   color: white;
   border: none;
   padding: 12px 25px;
@@ -786,7 +792,7 @@
   position: absolute;
   top: -8px;
   right: -8px;
-  background-color: #ff5c28;
+  background-color: var(--accent);
   color: white;
   width: 22px;
   height: 22px;
@@ -805,23 +811,23 @@
   align-items: flex-start;
   gap: 10px;
   padding-top: 10px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border);
 }
 
 .da-confirmation-check label {
   font-size: 13px;
-  color: #676767;
+  color: var(--des);
   line-height: 1.4;
 }
 
 .da-label-bold {
   font-weight: 700;
   font-size: 14px;
-  color: #122621;
+  color: var(--main-header);
 }
 
 .da-required {
-  color: #ff5c28;
+  color: var(--accent);
   margin-left: 2px;
 }
 
@@ -833,12 +839,12 @@
 .da-cm-page-title {
   font-size: 28px;
   font-weight: 800;
-  color: #122621;
+  color: var(--main-header);
   margin-bottom: 25px;
 }
 
 .da-cm-content-card {
-  background: #ffffff;
+  background: var(--white);
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.04);
@@ -857,7 +863,7 @@
   align-items: center;
   gap: 10px;
   font-size: 14px;
-  color: #676767;
+  color: var(--des);
 }
 
 .da-cm-dropdown {
@@ -866,7 +872,7 @@
   border-radius: 8px;
   outline: none;
   background: #fff;
-  color: #676767;
+  color: var(--des);
 }
 
 .da-cm-search-box {
@@ -913,13 +919,13 @@
 .da-cm-table td {
   padding: 16px;
   font-size: 14px;
-  color: #122621;
+  color: var(--main-header);
   border-bottom: 1px solid #f9f9f9;
 }
 
 .da-cm-name-text {
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
 }
 
 .da-cm-id-text {
@@ -951,8 +957,8 @@
 
 /* Action Button */
 .da-cm-btn-action {
-  background-color: #ff5c28;
-  color: #ffffff;
+  background-color: var(--accent);
+  color: var(--white);
   border: none;
   padding: 10px 18px;
   border-radius: 50px;
@@ -980,12 +986,12 @@
 .da-cm-pagi-btn {
   width: 38px;
   height: 38px;
-  border: 1px solid #eee;
-  background: #ffffff;
+  border: 1px solid var(--border);
+  background: var(--white);
   border-radius: 10px;
   cursor: pointer;
   font-weight: 700;
-  color: #676767;
+  color: var(--des);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -997,9 +1003,9 @@
 }
 
 .da-cm-pagi-active {
-  background-color: #ff5c28;
-  color: #ffffff !important;
-  border-color: #ff5c28;
+  background-color: var(--accent);
+  color: var(--white) !important;
+  border-color: var(--accent);
 }
 
 /* Profile Layout */
@@ -1054,14 +1060,14 @@
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 5px;
-  color: #122621;
+  color: var(--main-header);
 }
 
 .da-cm-prof-sub-info {
   display: flex;
   gap: 20px;
   font-size: 14px;
-  color: #676767;
+  color: var(--des);
 }
 
 .da-cm-verified {
@@ -1076,7 +1082,7 @@
 /* Tabs */
 .da-cm-tabs {
   display: flex;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
   margin-bottom: 25px;
 }
 
@@ -1092,7 +1098,7 @@
 }
 
 .da-cm-tab-btn.active {
-  color: #ff5c28;
+  color: var(--accent);
   background: linear-gradient(180deg, rgba(250, 90, 40, 0.2) 0%, rgba(250, 90, 40, 0.07) 100%);
   border-radius: 16px 16px 0 0;
 }
@@ -1104,7 +1110,7 @@
   left: 0;
   width: 100%;
   height: 3px;
-  background: #ff5c28;
+  background: var(--accent);
 }
 
 /* Tab Header Button Positioning */
@@ -1115,7 +1121,7 @@
 }
 
 .da-cm-btn-orange {
-  background: #ff5c28;
+  background: var(--accent);
   color: #fff;
   border: none;
   padding: 12px 25px;
@@ -1169,7 +1175,7 @@
   font-size: 15px;
   line-height: 25px;
   letter-spacing: 0%;
-  color: #676767;
+  color: var(--des);
 }
 /* Documents List */
 .da-cm-docs-list {
@@ -1179,7 +1185,7 @@
 }
 
 .da-cm-doc-card {
-  border: 1px solid #eee;
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 5px;
   position: relative;
@@ -1196,7 +1202,7 @@
   width: 35px;
   height: 35px;
   background: #fdf2f0;
-  color: #ff5c28;
+  color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1211,7 +1217,7 @@
   top: 15px;
   right: 15px;
   border: none;
-  color: #ff5c28;
+  color: var(--accent);
   background: transparent;
   border-radius: 50%;
   display: flex;
@@ -1225,7 +1231,7 @@
   font-size: 18px;
   font-weight: 700;
   margin: 25px 0 15px 0;
-  color: #122621;
+  color: var(--main-header);
 }
 
 /* Licence Grid */
@@ -1243,13 +1249,13 @@
   display: block;
   font-size: 12px;
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
   margin-bottom: 5px;
 }
 
 .da-cm-licence-grid span {
   font-size: 14px;
-  color: #676767;
+  color: var(--des);
 }
 
 /* Gallery */
@@ -1282,7 +1288,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #ff5c28;
+  background: var(--accent);
   color: white;
   border: none;
   width: 25px;
@@ -1296,7 +1302,7 @@
 
 /* Buttons */
 .da-cm-btn-edit, .da-cm-btn-upload {
-  background: #ff5c28;
+  background: var(--accent);
   color: white;
   border: none;
   padding: 12px 25px;
@@ -1343,7 +1349,7 @@
 .da-cm-modal-header h3 {
   font-size: 18px;
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
 }
 
 .da-cm-modal-close {
@@ -1379,7 +1385,7 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  background: #ff5c28;
+  background: var(--accent);
   color: white;
   width: 20px;
   height: 20px;
@@ -1393,7 +1399,7 @@
 .da-cm-modal-photo-upload p {
   font-size: 12px;
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
 }
 
 /* --- Star Rating --- */
@@ -1409,7 +1415,7 @@
 }
 
 .da-cm-star-rating .star-active {
-  color: #ff5c28;
+  color: var(--accent);
   cursor: pointer;
 }
 
@@ -1422,7 +1428,7 @@
   display: block;
   font-size: 12px;
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
   margin-bottom: 8px;
 }
 
@@ -1440,7 +1446,7 @@
 /* --- Submit Button --- */
 .da-cm-btn-submit {
   width: 100%;
-  background: #ff5c28;
+  background: var(--accent);
   color: white;
   border: none;
   padding: 14px;
@@ -1483,7 +1489,7 @@
 .da-cm-section-title {
   font-size: 22px;
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
   margin: 30px 0 20px 0;
 }
 
@@ -1527,7 +1533,7 @@
   display: block;
   font-size: 13px;
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
   margin-bottom: 8px;
 }
 
@@ -1546,7 +1552,7 @@
 
 .da-cm-edit-group input:focus, 
 .da-cm-edit-group textarea:focus {
-  border-color: #ff5c28;
+  border-color: var(--accent);
 }
 
 .da-cm-bio-container {
@@ -1571,11 +1577,11 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #676767;
+  color: var(--des);
 }
 
 .da-cm-checkbox-item input[type="checkbox"] {
-  accent-color: #ff5c28;
+  accent-color: var(--accent);
   width: 18px;
   height: 18px;
 }
@@ -1589,8 +1595,8 @@
 
 .da-cm-btn-cancel {
   background: white;
-  color: #ff5c28;
-  border: 1px solid #ff5c28;
+  color: var(--accent);
+  border: 1px solid var(--accent);
   padding: 12px 30px;
   border-radius: 50px;
   font-weight: 700;
@@ -1602,7 +1608,7 @@
 
 .da-cm-btn-revoke {
   margin-top: 25px;
-  background: #122621; /* Dark green button */
+  background: var(--main-header); /* Dark green button */
   color: white;
   border: none;
   padding: 12px 25px;
@@ -1614,7 +1620,7 @@
   cursor: pointer;
 }
 
-.da-red { color: #ff5c28; margin-left: 2px; }
+.da-red { color: var(--accent); margin-left: 2px; }
 
 /* ======================================================
     Home Owners Management (User.jsx)
@@ -1632,7 +1638,7 @@
 
 /* 2. Content Card */
 .adm-ho-content-card {
-  background: #ffffff;
+  background: var(--white);
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -1681,7 +1687,7 @@
 
 /* 5. Address Detail - No Content Removed */
 .address-cell {
-  color: #676767;
+  color: var(--des);
   line-height: 1.4;
 }
 
@@ -1730,7 +1736,7 @@
 
 .adm-ho-dropdown {
   appearance: none; /* Removes default browser styling */
-  background: #ffffff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") no-repeat right 8px center;
+  background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") no-repeat right 8px center;
   background-size: 16px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -1764,7 +1770,7 @@
   font-size: 14px;
   color: #374151;
   outline: none;
-  background-color: #ffffff;
+  background-color: var(--white);
 }
 
 .adm-ho-search-input::placeholder {
@@ -1805,7 +1811,7 @@
 /* Active Page Style (The Orange Square) */
 .adm-ho-pagi-btn.active {
   background-color: #ff5a1f; /* Vibrant Orange from your image */
-  color: #ffffff;
+  color: var(--white);
 }
 
 /* Arrow Icons color */
@@ -1836,7 +1842,7 @@
 
 /* --- Card Styling --- */
 .adm-ho-content-card {
-  background: #ffffff;
+  background: var(--white);
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 24px;
@@ -1856,11 +1862,11 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #FFFFFF;
+  background: var(--white);
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  color: #122621;
+  color: var(--main-header);
   box-shadow: 0px 12px 40px 0px #6B728012;
   width: 52px;
   height: 52px;
@@ -2065,7 +2071,7 @@
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  border: 1px solid #eee;
+  border: 1px solid var(--border);
   border-radius: 12px;
   background: #fff;
   max-width: 100%; /* Prevents card from exceeding grid cell */
@@ -2274,7 +2280,7 @@
 
 .jb-card.jb-award-card {
   border: 1px solid rgba(255, 107, 53, 0.14);
-  background: linear-gradient(180deg, #ffffff 0%, #fff7f1 100%);
+  background: linear-gradient(180deg, var(--white) 0%, #fff7f1 100%);
   box-shadow: 0 24px 60px rgba(255, 107, 53, 0.12);
   padding: 28px;
 }
@@ -2362,7 +2368,7 @@
 }
 
 .jb-bid-badge {
-  color: #ffffff;
+  color: var(--white);
   background: #ff6b35;
 }
 
@@ -2398,7 +2404,7 @@
 .jb-tabs {
   display: flex;
   gap: 10px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
   margin-bottom: 24px;
 }
 
@@ -2407,7 +2413,7 @@
   background: none;
   border: none;
   border-bottom: 3px solid transparent;
-  color: #676767;
+  color: var(--des);
   cursor: pointer;
   font-weight: 600;
 }
@@ -2554,7 +2560,7 @@
   border-color: #ff6b35;
 }
 .jb-details-header{ display: flex; align-items: center; gap: 15px;}
-.jb-back-btn { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background-color: #ffffff; border: none; box-shadow: 0px 12px 40px 0px #6B728012; }
+.jb-back-btn { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background-color: var(--white); border: none; box-shadow: 0px 12px 40px 0px #6B728012; }
 .jb-details-container { padding: 32px; background-color: #FAF8F5; }
 .jb-details-layout { display: grid; grid-template-columns: 1fr 380px; gap: 24px; margin-top: 20px; gap: 15px;}
 .jb-p-24 { padding: 24px; }
@@ -2595,7 +2601,7 @@
 .jb-accordion-header {padding: 16px 24px;display: flex;justify-content: space-between;align-items: center;cursor: pointer;font-weight: 700;font-size: 18px;color: #1a2b2b;}
 
 /* Background when section is active */
-.jb-bg-active {background-color: #ffffff;}
+.jb-bg-active {background-color: var(--white);}
 /* Icon Backgrounds */
 .jb-circle-icon {width: 36px;height: 36px;border-radius: 50%;display: flex;align-items: center;justify-content: center;transition: all 0.2s ease;}
 .jb-bg-orange {background-color: #ff6b35;color: #fff;}
@@ -2891,7 +2897,7 @@
 }
 
 .da-plm-content-card {
-  background: #ffffff;
+  background: var(--white);
   padding: 40px;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.03);
@@ -2901,7 +2907,7 @@
 .da-plm-page-title {
   font-size: 28px;
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
   margin-bottom: 30px;
 }
 
@@ -2913,7 +2919,7 @@
 .da-plm-section-title {
   font-size: 18px;
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
   margin-bottom: 5px;
 }
 
@@ -2947,7 +2953,7 @@
   display: block;
   font-size: 12px;
   font-weight: 700;
-  color: #122621;
+  color: var(--main-header);
   margin-bottom: 8px;
   white-space: nowrap;
   overflow: hidden;
@@ -2970,14 +2976,14 @@
   border: 1px solid #efeae6;
   border-radius: 12px;
   font-size: 14px;
-  color: #676767;
+  color: var(--des);
   outline: none;
   transition: border-color 0.2s ease;
 }
 
 .da-plm-input-wrapper input:focus, 
 .da-plm-basic-input:focus {
-  border-color: #ff5c28;
+  border-color: var(--accent);
 }
 
 /* 5. Unit Badge Adjustment */
@@ -3018,8 +3024,8 @@
 
 .da-plm-btn-cancel {
   background-color: white;
-  color: #ff5c28;
-  border: 1px solid #ff5c28;
+  color: var(--accent);
+  border: 1px solid var(--accent);
   padding: 14px 30px;
   border-radius: 50px;
   font-weight: 700;
@@ -3042,7 +3048,7 @@
 }
 
 .adm-noti-card {
-  background-color: #ffffff;
+  background-color: var(--white);
   border-radius: 12px;
   padding: 15px 25px;
   display: flex;
@@ -3069,7 +3075,7 @@
 .adm-noti-icon-circle {
   width: 50px;
   height: 50px;
-  background-color: #122621; /* Dark Green from image */
+  background-color: var(--main-header); /* Dark Green from image */
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -3104,8 +3110,8 @@
 
 /* Orange Action Button */
 .adm-noti-btn {
-  background-color: #ff5c28; /* RoofHero Orange */
-  color: #ffffff;
+  background-color: var(--accent); /* RoofHero Orange */
+  color: var(--white);
   border: none;
   padding: 10px 20px;
   border-radius: 50px; /* Pill shape */

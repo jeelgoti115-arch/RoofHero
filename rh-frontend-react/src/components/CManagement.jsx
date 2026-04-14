@@ -78,6 +78,7 @@ const CManagement = () => {
       const { reviews } = await response.json();
       setReviewList(reviews);
       setSelectedContractor(prev => ({ ...prev, reviews }));
+      setContractors(prev => prev.map(c => c.mongoId === selectedContractor.mongoId ? { ...c, reviews } : c));
     } catch (error) {
       console.error(error);
       alert('Failed to save review. Please try again.')

@@ -2,7 +2,7 @@ import { RiArrowRightUpLine } from '@remixicon/react'
 import React, { useState } from 'react'
 
 const ServiceCard4 = ({ onNext }) => {
-  const [selectedPitch, setSelectedPitch] = useState('Flat');
+  const [selectedPitch, setSelectedPitch] = useState('Low Pitch');
 
   const pitchOptions = [
     { name: 'Low Pitch', img: 'public/low-pitch.png' },

@@ -2,7 +2,7 @@ import { RiArrowRightUpLine } from '@remixicon/react'
 import React, { useState } from 'react'
 
 const ServiceCard3 = ({ onNext }) => {
-  const [selectedMaterial, setSelectedMaterial] = useState('Asphalt Shingle');
+  const [selectedMaterial, setSelectedMaterial] = useState('Slate');
 
   const materials = [
     { name: 'Slate', img: 'public/slate.png' },
