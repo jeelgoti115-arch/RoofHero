@@ -1,7 +1,6 @@
 /* NAVBAR */
 .navbar {
   width: 100%;
-  height: 105px;
   top: 0;
   left: 0;
   background: var(--regular);
@@ -11,7 +10,6 @@
 
 .nav-container {
   width: 100%;
-  max-width: 1400px;
   margin: 0 auto;
   padding: 0 60px;
   display: flex;

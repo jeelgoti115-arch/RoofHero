@@ -57,6 +57,12 @@ const CManagement = () => {
     if (!newReview.text) return alert("Please enter a review message.");
     if (!selectedContractor) return alert('No contractor selected.')
 
+    const contractorId = selectedContractor?.mongoId || selectedContractor?._id || selectedContractor?.id
+    if (!contractorId) {
+      alert('Invalid contractor selected.');
+      return;
+    }
+
     const reviewToAdd = {
       name: newReview.name || "Anonymous User",
       text: newReview.text,
@@ -65,20 +71,21 @@ const CManagement = () => {
     };
 
     try {
-      const response = await fetch(`/api/admin/users/${selectedContractor.mongoId}/reviews`, {
+      const response = await fetch(`/api/admin/users/${contractorId}/reviews`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reviewToAdd),
       });
 
       if (!response.ok) {
-        throw new Error('Unable to save review.')
+        const errorText = await response.text();
+        throw new Error(`Unable to save review: ${response.status} ${errorText}`)
       }
 
       const { reviews } = await response.json();
       setReviewList(reviews);
       setSelectedContractor(prev => ({ ...prev, reviews }));
-      setContractors(prev => prev.map(c => c.mongoId === selectedContractor.mongoId ? { ...c, reviews } : c));
+      setContractors(prev => prev.map(c => c.mongoId === contractorId ? { ...c, reviews } : c));
     } catch (error) {
       console.error(error);
       alert('Failed to save review. Please try again.')

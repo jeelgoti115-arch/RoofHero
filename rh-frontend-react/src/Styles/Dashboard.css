@@ -12,8 +12,6 @@
   --primary: #1d3b34;
   --secondary: #4f7c70;
   --accent: #fa5a25;
-  --support: #f6f2e6;
-  --regular: #ffffff;
 }
 
 /* ============================================================
@@ -78,7 +76,7 @@
   width: 260px;
   height: 100vh;
   background-color: #FAF8F5;
-  border-right: 1px solid #eee;
+  border-right: 1px solid var(--border-color);
   position: fixed; /* Fixes it to the left */
   left: 0;
   top: 0;
@@ -131,7 +129,7 @@
 
 /* The dark "Dashboard" button style */
 .nav-item.active {
-  background-color: #122621; /* Matches the dark button in your image */
+  background-color: var(--text-dark); /* Matches the dark button in your image */
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
@@ -215,7 +213,7 @@
 
 /* The Bell Icon inside the badge */
 .notification-badge svg {
-  color: #122621; /* Dark forest green color of the bell */
+  color: var(--text-dark); /* Dark forest green color of the bell */
   width: 20px;
   height: 20px;
 }
@@ -308,7 +306,7 @@
 .side-info p{
   font-weight: 600;
   font-size: 10px;
-  color: #676767;
+  color: var(--text-gray);
 }
 
 .project-images-grid {
@@ -355,7 +353,7 @@
 }
 
 .manager-details{
-  color: #676767;
+  color: var(--text-gray);
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -369,7 +367,7 @@
 
 .divider {
   border: 0;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-color);
   margin: 20px 0;
 }
 
@@ -406,7 +404,7 @@
   letter-spacing: 0.14em;
   font-size: 11px;
   font-weight: 700;
-  color: #fa5a25;
+  color: var(--accent);
   margin-bottom: 8px;
 }
 
@@ -519,7 +517,7 @@
   font-size: 16px;
   font-weight: 800;
   margin: 0;
-  color: #122621;
+  color: var(--text-dark);
 }
 
 .accepted-proposal-section {
@@ -559,7 +557,7 @@
 
 .no-accepted-bid-card p {
   margin: 10px 0 0;
-  color: #676767;
+  color: var(--text-gray);
   font-size: 13px;
   line-height: 1.6;
 }
@@ -595,13 +593,13 @@
 .status-text h3 {
   font-size: 22px;
   font-weight: 800;
-  color: #122621;
+  color: var(--text-dark);
   margin-bottom: 15px;
 }
 
 .status-text p {
   font-size: 14px;
-  color: #676767;
+  color: var(--text-gray);
   line-height: 1.6;
   padding: 0 10px;
 }
@@ -622,7 +620,7 @@
 .section-title {
   font-size: 24px;
   font-weight: 800;
-  color: #122621;
+  color: var(--text-dark);
 }
 
 /* --- Carousel Buttons --- */
@@ -644,7 +642,7 @@
 }
 
 .nav-arrow:hover {
-  background: #fa5a25;
+  background: var(--accent);
   color: white;
   border: none;
 }
@@ -884,12 +882,12 @@
 .card-price {
   font-size: 22px;
   font-weight: 900;
-  color: #fa5a25;
+  color: var(--accent);
 }
 
 .service-tag {
   background: #f4f4f4;
-  color: #676767;
+  color: var(--text-gray);
   padding: 4px 12px;
   border-radius: 6px;
   font-size: 11px;
@@ -931,7 +929,7 @@
 .btn-white {
   flex: 1;
   background: white;
-  border: 1px solid #12201d;
+  border: 1px solid var(--sidebar-bg);
   border-radius: 50px;
   padding: 10px;
   font-weight: 800;
@@ -941,7 +939,7 @@
 
 .btn-orange {
   flex: 1.3;
-  background: #fa5a25;
+  background: var(--accent);
   color: white;
   border: none;
   border-radius: 50px;
@@ -964,7 +962,7 @@
 .info-circle {
   width: 18px;
   height: 18px;
-  background: #fa5a25;
+  background: var(--accent);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -1011,19 +1009,19 @@
 .modal-box h2 {
   font-size: 24px;
   font-weight: 800;
-  color: #122621;
+  color: var(--text-dark);
   margin-bottom: 15px;
 }
 
 .modal-box p {
   font-size: 14px;
-  color: #676767;
+  color: var(--text-gray);
   line-height: 1.6;
   margin-bottom: 30px;
 }
 
 .modal-btn {
-  background: #fa5a25;
+  background: var(--accent);
   color: white;
   border: none;
   width: 100%;
@@ -1040,7 +1038,7 @@
 }
 
 .modal-btn:hover {
-  background: #fa5a25;
+  background: var(--accent);
 }
 
 /* Animations */
@@ -1076,7 +1074,7 @@
 .accordion-header h4 {
   font-size: 18px;
   font-weight: 800;
-  color: #122621;
+  color: var(--text-dark);
 }
 
 /* Arrow Circle Colors based on State */
@@ -1087,12 +1085,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fa5a25; /* Orange when closed */
+  background: var(--accent); /* Orange when closed */
   color: #fff;
 }
 
 .arrow-circle.active {
-  background: #122621; /* Dark Green when open */
+  background: var(--text-dark); /* Dark Green when open */
   transform: rotate(0deg);
 }
 
@@ -1113,12 +1111,12 @@
 
 .info-item-pd p {
   font-weight: 800;
-  color: #122621;
+  color: var(--text-dark);
   white-space: nowrap;
 }
 
 .info-item-pd span {
-  color: #676767;
+  color: var(--text-gray);
 }
 
 /* --- 2. Automated Quoting Row --- */
@@ -1135,11 +1133,11 @@
 
 .quote-row p {
   font-weight: 800;
-  color: #122621;
+  color: var(--text-dark);
 }
 
 .quote-row .price, .quote-row .provider {
-  color: #676767;
+  color: var(--text-gray);
 }
 
 /* --- 3. Documents Grid --- */
@@ -1181,7 +1179,7 @@
 
 .doc-info p {
   font-size: 11px;
-  color: #676767;
+  color: var(--text-gray);
 }
 
 .doc-remove-btn {
@@ -1205,7 +1203,7 @@
 }
 
 .notification-card {
-  background: #ffffff;
+  background: var(--white);
   border-radius: 12px;
   padding: 16px 24px;
   display: flex;
@@ -1230,7 +1228,7 @@
 .noti-icon-circle {
   width: 44px;
   height: 44px;
-  background: #122621; /* Dark green from your image */
+  background: var(--text-dark); /* Dark green from your image */
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1265,7 +1263,7 @@
 
 /* Action Button Styling */
 .noti-action-btn {
-  background: #ff5c28;
+  background: var(--accent);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -1281,9 +1279,6 @@
   margin-left: 20px;
 }
 
-.noti-action-btn:hover {
-  background: #e54d1c;
-}
 
 /* Responsive for mobile */
 @media (max-width: 768px) {

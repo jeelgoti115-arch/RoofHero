@@ -1668,11 +1668,16 @@
   border-bottom: 1px solid #f3f4f6;
   font-size: 13px;
   word-wrap: break-word; /* Allows long text to break to next line */
+  overflow-wrap: anywhere;
   white-space: normal;   /* IMPORTANT: Allows text to wrap instead of pushing width */
 }
 
 .adm-ho-table td {
   white-space: normal;
+}
+
+.adm-ho-table td:first-child {
+  word-break: break-all; /* Force extremely long IDs to wrap inside the first column */
 }
 
 /* 4. Column Sizing (Using Percentages, not Pixels) */

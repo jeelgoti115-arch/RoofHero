@@ -156,7 +156,7 @@ const PLManagement = () => {
       setComplexityMultipliers(normalized.complexityMultipliers);
       setScaffoldingCosts(normalized.scaffoldingCosts);
       setEstimateSettings(normalized.estimateSettings);
-      setSaveMessage('Pricing settings saved successfully.');
+      setSaveMessage('Pricing settings saved.');
       setErrorMessage('');
     } catch (error) {
       setErrorMessage(error.message || 'Unable to save pricing settings.');
