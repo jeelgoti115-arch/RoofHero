@@ -25,8 +25,8 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
 
   const statusOptions = React.useMemo(() => {
     if (item.status === 'Accepted') return ['Accepted', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed']
-    if (item.status === 'Site Inspection Scheduled') return ['Materials Ordered', 'Completed']
-    if (item.status === 'Materials Ordered') return ['Completed']
+    if (item.status === 'Site Inspection Scheduled') return ['Site Inspection Scheduled', 'Materials Ordered', 'Completed']
+    if (item.status === 'Materials Ordered') return ['Materials Ordered', 'Completed']
     return [item.status]
   }, [item.status])
   const homeownerName = item.homeowner || item.fullName || item.homeowner?.fullName || 'Homeowner';
