@@ -230,7 +230,8 @@
 /* Forms (Image 1) */
 .con-dash-form-group { margin-bottom: 16px; }
 .con-dash-form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; }
-.con-dash-form-group input, .con-dash-form-group textarea, .con-dash-form-group select { width: 100%; padding: 12px; background: #f7f5f0; border: none; border-radius: 10px; font-size: 14px; }
+.con-dash-form-group input, .con-dash-form-group textarea, .con-dash-form-group select { width: 100%; padding: 12px; background: #f7f5f0; border: none; border-radius: 10px; font-size: 14px; box-sizing: border-box; }
+.con-dash-form-group textarea { min-height: 120px; resize: vertical; }
 .con-dash-form-group select { appearance: none; }
 .con-dash-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .con-dash-btn-submit { width: 100%; background: #ff6b35; color: #fff; border: none; padding: 14px; border-radius: 30px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }

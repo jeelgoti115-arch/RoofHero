@@ -536,7 +536,20 @@ const BidAcceptedView = ({ job, onBack }) => {
     isRejected: contractor.status === 'Rejected',
     status: contractor.status || 'New Arrival',
     proposalMessage: contractor.proposalMessage || '',
+    email: contractor.email || 'No email',
+    phone: contractor.phone || 'No phone',
   }))
+
+  const acceptedContractor = job.assignedContractor || (job.assignedContractors || []).find((contractor) => contractor.status === 'Accepted') || (job.assignedContractors || [])[0] || null;
+  const acceptedContractorDetails = acceptedContractor ? {
+    name: acceptedContractor.name || acceptedContractor.username || 'Contractor',
+    email: acceptedContractor.email || 'No email',
+    phone: acceptedContractor.phone || 'No phone',
+    proposalMessage: acceptedContractor.proposalMessage || 'No proposal message provided.',
+    bidAmount: acceptedContractor.quoteAmount || acceptedContractor.pricePerSquare || 'TBD',
+    pricePerSquare: acceptedContractor.pricePerSquare || 'N/A',
+    image: acceptedContractor.avatarUrl || 'public/contractor2.jpg',
+  } : null;
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -676,13 +689,13 @@ const BidAcceptedView = ({ job, onBack }) => {
             <h2 className="jb-section-title">Contractor Manager Details</h2>
             
             <div className="jb-flex-row mt-16">
-              <img src="public/toby.jpg" className="jb-avatar" alt="Manager" />
+              <img src={acceptedContractorDetails?.image || 'public/contractor2.jpg'} className="jb-avatar" alt="Manager" />
               <div className="jb-manager-info">
-                <h4>John Smith Roofing Co.</h4>
+                <h4>{acceptedContractorDetails?.name || 'Contractor Manager'}</h4>
                 <div className="jb-contact-row-sm">
-                  <span><RiMailFill size={12} className="jb-icon-orange" /> john@roofsmith.com</span>
+                  <span><RiMailFill size={12} className="jb-icon-orange" /> {acceptedContractorDetails?.email || 'No email'}</span>
                   <span className="jb-divider">|</span>
-                  <span><RiPhoneFill size={12} className="jb-icon-orange" /> +61 123 456 789</span>
+                  <span><RiPhoneFill size={12} className="jb-icon-orange" /> {acceptedContractorDetails?.phone || 'No phone'}</span>
                 </div>
               </div>
             </div>
@@ -690,20 +703,18 @@ const BidAcceptedView = ({ job, onBack }) => {
             <div className="jb-proposal-section mt-16">
               <label>Proposal Message</label>
               <p className="jb-proposal-text">
-                Hi, thank you for providing your roof details. Based on the information shared, 
-                we propose removing your existing tiled roof and installing a new Colorbond metal roof, 
-                including batten replacement, flashing...
+                {acceptedContractorDetails?.proposalMessage || 'No proposal message provided.'}
               </p>
             </div>
 
             <div className="jb-bid-summary-row mt-16">
               <div className="jb-summary-item">
                 <label>Final Bid Amount</label>
-                <span className="jb-bid-badge">AUD $18,500</span>
+                <span className="jb-bid-badge">{acceptedContractorDetails?.bidAmount ? `AUD ${acceptedContractorDetails.bidAmount}` : 'TBD'}</span>
               </div>
               <div className="jb-summary-item">
                 <label>Price Per Square</label>
-                <span className="jb-price-per">$143.3</span>
+                <span className="jb-price-per">{acceptedContractorDetails?.pricePerSquare ? `$${acceptedContractorDetails.pricePerSquare}` : 'N/A'}</span>
               </div>
             </div>
 
@@ -755,9 +766,9 @@ const BidAcceptedView = ({ job, onBack }) => {
                 </div>
               </div>
               {item.proposalMessage && (
-                <div className="card-note">
-                  <label>Proposal</label>
-                  <p>{item.proposalMessage}</p>
+                <div className="col">
+                  <label>PROPOSAL:</label>
+                  <span>{item.proposalMessage}</span>
                 </div>
               )}
             </div>

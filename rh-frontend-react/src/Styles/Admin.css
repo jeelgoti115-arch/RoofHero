@@ -2272,6 +2272,128 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
+.jb-card.jb-award-card {
+  border: 1px solid rgba(255, 107, 53, 0.14);
+  background: linear-gradient(180deg, #ffffff 0%, #fff7f1 100%);
+  box-shadow: 0 24px 60px rgba(255, 107, 53, 0.12);
+  padding: 28px;
+}
+
+.jb-award-card .jb-section-title {
+  color: #1f2937;
+  margin-bottom: 18px;
+}
+
+.jb-manager-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.jb-manager-info h4 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.jb-contact-row-sm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  color: #475569;
+  font-size: 13px;
+}
+
+.jb-proposal-section {
+  background: #fff4eb;
+  border: 1px solid rgba(255, 107, 53, 0.2);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.jb-proposal-section label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #344054;
+  margin-bottom: 10px;
+}
+
+.jb-proposal-text {
+  color: #334155;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.jb-bid-summary-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.jb-summary-item {
+  background: white;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.jb-summary-item label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.jb-bid-badge,
+.jb-price-per {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.jb-bid-badge {
+  color: #ffffff;
+  background: #ff6b35;
+}
+
+.jb-price-per {
+  color: #1f2937;
+  background: #f8fafc;
+}
+
+.jb-btn-assign-main {
+  min-height: 52px;
+  width: 100%;
+  background: #ff6b35;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.jb-btn-assign-main:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(255, 107, 53, 0.18);
+}
+
 /* Tabs Styling */
 .jb-tabs {
   display: flex;

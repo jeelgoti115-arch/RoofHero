@@ -82,6 +82,8 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
                 placeholder="$143.3"
               />
             </div>
+          </div>
+          <div className="con-dash-form-row">
             <div className="con-dash-form-group">
               <label>Estimated Start Date</label>
               <input
@@ -360,7 +362,6 @@ const DashContractor = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedItem, setSelectedItem] = useState(null);
   const [allLeads, setAllLeads] = useState([]);
-  const [dashboardStats, setDashboardStats] = useState({ bidsSubmitted: 0, jobsAwarded: 0, winRate: 0 });
   const [contractorInfo, setContractorInfo] = useState(null);
   const [loadingDashboard, setLoadingDashboard] = useState(true);
   const itemsPerPage = 5;
@@ -387,19 +388,28 @@ const DashContractor = () => {
         setContractorInfo(data);
 
         if (Array.isArray(data.assignedQuotes) && data.assignedQuotes.length > 0) {
-          const assignedLeads = data.assignedQuotes.map((quote) => ({
-            ...quote,
-            id: quote._id,
-            address: quote.serviceDetails?.propertyAddress || quote.serviceDetails?.address || 'Not specified',
-            date: quote.requestedAt ? new Date(quote.requestedAt).toLocaleDateString() : 'Unknown',
-            area: quote.serviceDetails?.roofArea || quote.serviceDetails?.approxRoofArea || 'Not specified',
-            quote: quote.serviceDetails?.quote || quote.serviceDetails?.estimatedQuote || 'Pending',
-            status: quote.contractorStatus || quote.status || 'New Arrival',
-            homeowner: quote.fullName || quote.homeowner?.fullName || 'Homeowner',
-          }))
+          const assignedLeads = data.assignedQuotes.map((quote) => {
+            const status = quote.contractorStatus || quote.status || 'New Arrival'
+            const hasSubmittedBid = Boolean(
+              quote.serviceDetails?.quote ||
+              quote.serviceDetails?.pricePerSquare ||
+              ['Pending Review', 'Accepted', 'Rejected', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed'].includes(status)
+            )
+
+            return {
+              ...quote,
+              id: quote._id,
+              address: quote.serviceDetails?.propertyAddress || quote.serviceDetails?.address || 'Not specified',
+              date: quote.requestedAt ? new Date(quote.requestedAt).toLocaleDateString() : 'Unknown',
+              area: quote.serviceDetails?.roofArea || quote.serviceDetails?.approxRoofArea || 'Not specified',
+              quote: quote.serviceDetails?.quote || quote.serviceDetails?.estimatedQuote || 'Pending',
+              status,
+              hasSubmittedBid,
+              homeowner: quote.fullName || quote.homeowner?.fullName || 'Homeowner',
+            }
+          })
           setAllLeads(assignedLeads)
         } else if (data.dashboard) {
-          setDashboardStats(data.dashboard.stats || { bidsSubmitted: 0, jobsAwarded: 0, winRate: 0 });
           setAllLeads([
             ...(data.dashboard.newLeads || []),
             ...(data.dashboard.submittedQuotes || []),
@@ -416,9 +426,9 @@ const DashContractor = () => {
     fetchDashboard();
   }, []);
 
-  const bidsCount = dashboardStats.bidsSubmitted;
-  const jobsCount = dashboardStats.jobsAwarded;
-  const winRate = dashboardStats.winRate;
+  const bidsCount = allLeads.filter((item) => item.hasSubmittedBid).length;
+  const jobsCount = allLeads.filter((item) => item.status === 'Accepted').length;
+  const winRate = bidsCount > 0 ? Math.round((jobsCount * 100) / bidsCount) : 0;
 
   const stats = [
     { title: 'Bids Submitted', value: bidsCount.toString().padStart(2, '0'), img: 'public/fact_check_ic.svg', color: '#Fa5a25' },

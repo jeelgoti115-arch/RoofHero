@@ -1,42 +1,98 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RiArrowRightUpLine } from '@remixicon/react';
 import '../Styles/Admin.css'; // Ensure paths match your project
 
-const PLManagement = () => {
-  // --- STATE MANAGEMENT ---
-  const [materialRates, setMaterialRates] = useState({
+const defaultPricingLogic = {
+  materialRates: {
     slate: '$70',
     concreteTile: '$70',
     premium: '$70',
     flatMembrane: '$70',
     metal: '$70',
-    asphaltShingle: '$70'
-  });
-
-  const [pitchMultipliers, setPitchMultipliers] = useState({
+    asphaltShingle: '$70',
+  },
+  pitchMultipliers: {
     lowPitch: '1.0x',
     normal: '1.2x',
     steep: '1.5x',
-    flat: '1.5x'
-  });
-
-  const [complexityMultipliers, setComplexityMultipliers] = useState({
+    flat: '1.5x',
+  },
+  complexityMultipliers: {
     simple: '1.0x',
     medium: '1.2x',
-    complex: '1.4x'
-  });
-
-  const [scaffoldingCosts, setScaffoldingCosts] = useState({
+    complex: '1.4x',
+  },
+  scaffoldingCosts: {
     oneStory: '$1,000',
     twoStory: '$2,000',
     threeStory: '$3,000',
-    fourStory: '$4,000'
-  });
-
-  const [estimateSettings, setEstimateSettings] = useState({
+    fourStory: '$4,000',
+  },
+  estimateSettings: {
     fixedSetupCost: '$4,000',
-    estimateMargin: '10%'
-  });
+    estimateMargin: '10%',
+  },
+};
+
+const PLManagement = () => {
+  // --- STATE MANAGEMENT ---
+  const [materialRates, setMaterialRates] = useState(defaultPricingLogic.materialRates);
+  const [pitchMultipliers, setPitchMultipliers] = useState(defaultPricingLogic.pitchMultipliers);
+  const [complexityMultipliers, setComplexityMultipliers] = useState(defaultPricingLogic.complexityMultipliers);
+  const [scaffoldingCosts, setScaffoldingCosts] = useState(defaultPricingLogic.scaffoldingCosts);
+  const [estimateSettings, setEstimateSettings] = useState(defaultPricingLogic.estimateSettings);
+  const [savedPricingLogic, setSavedPricingLogic] = useState(defaultPricingLogic);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [saveMessage, setSaveMessage] = useState('');
+
+  useEffect(() => {
+    const loadPricingLogic = async () => {
+      try {
+        const token = window.localStorage.getItem('roofheroToken');
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const response = await fetch('/api/admin/pricing-logic', { headers });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || 'Failed to load pricing settings.')
+        }
+
+        const data = await response.json();
+        const normalized = {
+          materialRates: data.materialRates || defaultPricingLogic.materialRates,
+          pitchMultipliers: data.pitchMultipliers || defaultPricingLogic.pitchMultipliers,
+          complexityMultipliers: data.complexityMultipliers || defaultPricingLogic.complexityMultipliers,
+          scaffoldingCosts: data.scaffoldingCosts || defaultPricingLogic.scaffoldingCosts,
+          estimateSettings: data.estimateSettings || defaultPricingLogic.estimateSettings,
+        };
+
+        setMaterialRates(normalized.materialRates);
+        setPitchMultipliers(normalized.pitchMultipliers);
+        setComplexityMultipliers(normalized.complexityMultipliers);
+        setScaffoldingCosts(normalized.scaffoldingCosts);
+        setEstimateSettings(normalized.estimateSettings);
+        setSavedPricingLogic(normalized);
+        setErrorMessage('');
+      } catch (error) {
+        setErrorMessage(error.message || 'Unable to load pricing settings.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPricingLogic();
+  }, []);
+
+  const resetToSaved = () => {
+    setMaterialRates(savedPricingLogic.materialRates);
+    setPitchMultipliers(savedPricingLogic.pitchMultipliers);
+    setComplexityMultipliers(savedPricingLogic.complexityMultipliers);
+    setScaffoldingCosts(savedPricingLogic.scaffoldingCosts);
+    setEstimateSettings(savedPricingLogic.estimateSettings);
+    setErrorMessage('');
+    setSaveMessage('');
+  };
 
   // --- HANDLERS ---
   const handleMaterialRateChange = (key, value) => {
@@ -59,49 +115,57 @@ const PLManagement = () => {
     setEstimateSettings(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleSaveChanges = () => {
-    const allData = {
+  const handleSaveChanges = async () => {
+    const payload = {
       materialRates,
       pitchMultipliers,
       complexityMultipliers,
       scaffoldingCosts,
-      estimateSettings
+      estimateSettings,
     };
-    console.log('Saved Data:', allData);
-    alert('All changes have been saved successfully!');
+
+    try {
+      const token = window.localStorage.getItem('roofheroToken');
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      };
+      const response = await fetch('/api/admin/pricing-logic', {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to save pricing settings.')
+      }
+
+      const updated = await response.json();
+      const normalized = {
+        materialRates: updated.materialRates || defaultPricingLogic.materialRates,
+        pitchMultipliers: updated.pitchMultipliers || defaultPricingLogic.pitchMultipliers,
+        complexityMultipliers: updated.complexityMultipliers || defaultPricingLogic.complexityMultipliers,
+        scaffoldingCosts: updated.scaffoldingCosts || defaultPricingLogic.scaffoldingCosts,
+        estimateSettings: updated.estimateSettings || defaultPricingLogic.estimateSettings,
+      };
+
+      setSavedPricingLogic(normalized);
+      setMaterialRates(normalized.materialRates);
+      setPitchMultipliers(normalized.pitchMultipliers);
+      setComplexityMultipliers(normalized.complexityMultipliers);
+      setScaffoldingCosts(normalized.scaffoldingCosts);
+      setEstimateSettings(normalized.estimateSettings);
+      setSaveMessage('Pricing settings saved successfully.');
+      setErrorMessage('');
+    } catch (error) {
+      setErrorMessage(error.message || 'Unable to save pricing settings.');
+      setSaveMessage('');
+    }
   };
 
   const handleCancel = () => {
-    // Reload initial values
-    setMaterialRates({
-      slate: '$70',
-      concreteTile: '$70',
-      premium: '$70',
-      flatMembrane: '$70',
-      metal: '$70',
-      asphaltShingle: '$70'
-    });
-    setPitchMultipliers({
-      lowPitch: '1.0x',
-      normal: '1.2x',
-      steep: '1.5x',
-      flat: '1.5x'
-    });
-    setComplexityMultipliers({
-      simple: '1.0x',
-      medium: '1.2x',
-      complex: '1.4x'
-    });
-    setScaffoldingCosts({
-      oneStory: '$1,000',
-      twoStory: '$2,000',
-      threeStory: '$3,000',
-      fourStory: '$4,000'
-    });
-    setEstimateSettings({
-      fixedSetupCost: '$4,000',
-      estimateMargin: '10%'
-    });
+    resetToSaved();
   };
 
   return (
@@ -171,13 +235,21 @@ const PLManagement = () => {
 
         {/* --- Footer Buttons --- */}
         <div className="da-plm-actions">
-          <button className="da-plm-btn-save" onClick={handleSaveChanges}>
+          <button className="da-plm-btn-save" onClick={handleSaveChanges} disabled={loading}>
             Save Changes <RiArrowRightUpLine size={18} />
           </button>
-          <button className="da-plm-btn-cancel" onClick={handleCancel}>
+          <button className="da-plm-btn-cancel" onClick={handleCancel} disabled={loading}>
             Cancel <RiArrowRightUpLine size={18} />
           </button>
         </div>
+
+        {(loading || errorMessage || saveMessage) && (
+          <div className="da-plm-status-block">
+            {loading && <p className="da-plm-status-text">Loading pricing logic...</p>}
+            {errorMessage && <p className="da-plm-status-error">{errorMessage}</p>}
+            {saveMessage && <p className="da-plm-status-success">{saveMessage}</p>}
+          </div>
+        )}
       </div>
     </div>
   );

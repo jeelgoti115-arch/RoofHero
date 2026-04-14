@@ -9,6 +9,7 @@ const ServiceCard9 = ({ serviceDetails, onSubmit }) => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [propertyAddress, setPropertyAddress] = useState('');
+  const [roofArea, setRoofArea] = useState('');
   const [roofImages, setRoofImages] = useState([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [credentials, setCredentials] = useState(null);
@@ -34,6 +35,7 @@ const ServiceCard9 = ({ serviceDetails, onSubmit }) => {
       formData.append('serviceDetails', JSON.stringify({
         ...serviceDetails,
         propertyAddress,
+        roofArea: Number(roofArea),
       }))
 
       roofImages.forEach((file) => {
@@ -57,12 +59,13 @@ const ServiceCard9 = ({ serviceDetails, onSubmit }) => {
       setEmail('');
       setPhone('');
       setPropertyAddress('');
+      setRoofArea('');
       setRoofImages([]);
       onSubmit({
         fullName,
         email,
         phone,
-        serviceDetails: { ...serviceDetails, propertyAddress, roofImages: roofImages.map((file) => file.name) },
+        serviceDetails: { ...serviceDetails, propertyAddress, roofArea: Number(roofArea), roofImages: roofImages.map((file) => file.name) },
       });
     } catch (error) {
       setErrorMessage('Unable to submit quote request. Please try again.');
@@ -133,6 +136,19 @@ const ServiceCard9 = ({ serviceDetails, onSubmit }) => {
           </div>
 
           <div className='sc9-input-row'>
+            <div className='sc9-input-group'>
+              <label htmlFor='roofArea'>Roof Area (m²)</label>
+              <input
+                type='number'
+                id='roofArea'
+                placeholder='Enter roof area in square meters'
+                min='0'
+                step='0.1'
+                value={roofArea}
+                onChange={(e) => setRoofArea(e.target.value)}
+                required
+              />
+            </div>
             <div className='sc9-input-group'>
               <label htmlFor='roofImages'>Roof Images (up to 4)</label>
               <input

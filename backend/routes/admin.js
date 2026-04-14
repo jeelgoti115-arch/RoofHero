@@ -3,6 +3,8 @@ import User from '../models/User.js'
 import ContractorApplication from '../models/ContractorApplication.js'
 import Homeowner from '../models/Homeowner.js'
 import QuoteRequest from '../models/QuoteRequest.js'
+import PricingLogic from '../models/PricingLogic.js'
+import { authenticate, authorize } from '../middleware/auth.js'
 
 const createDashboardSample = (application) => {
   const region = Array.isArray(application.regions) && application.regions.length ? application.regions[0] : 'Sydney';
@@ -168,6 +170,76 @@ router.get('/quote-requests', async (req, res, next) => {
   try {
     const quotes = await QuoteRequest.find().sort({ requestedAt: -1 }).populate('homeowner', 'fullName email phone username')
     res.json(quotes)
+  } catch (error) {
+    next(error)
+  }
+})
+
+const defaultPricingLogic = {
+  materialRates: {
+    slate: '$70',
+    concreteTile: '$70',
+    premium: '$70',
+    flatMembrane: '$70',
+    metal: '$70',
+    asphaltShingle: '$70',
+  },
+  pitchMultipliers: {
+    lowPitch: '1.0x',
+    normal: '1.2x',
+    steep: '1.5x',
+    flat: '1.5x',
+  },
+  complexityMultipliers: {
+    simple: '1.0x',
+    medium: '1.2x',
+    complex: '1.4x',
+  },
+  scaffoldingCosts: {
+    oneStory: '$1,000',
+    twoStory: '$2,000',
+    threeStory: '$3,000',
+    fourStory: '$4,000',
+  },
+  estimateSettings: {
+    fixedSetupCost: '$4,000',
+    estimateMargin: '10%',
+  },
+}
+
+router.get('/pricing-logic', authenticate, authorize('admin'), async (req, res, next) => {
+  try {
+    let pricingLogic = await PricingLogic.findOne()
+    if (!pricingLogic) {
+      pricingLogic = await PricingLogic.create(defaultPricingLogic)
+    }
+    res.json(pricingLogic)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.patch('/pricing-logic', authenticate, authorize('admin'), async (req, res, next) => {
+  try {
+    const updatePayload = {
+      materialRates: req.body.materialRates || defaultPricingLogic.materialRates,
+      pitchMultipliers: req.body.pitchMultipliers || defaultPricingLogic.pitchMultipliers,
+      complexityMultipliers: req.body.complexityMultipliers || defaultPricingLogic.complexityMultipliers,
+      scaffoldingCosts: req.body.scaffoldingCosts || defaultPricingLogic.scaffoldingCosts,
+      estimateSettings: req.body.estimateSettings || defaultPricingLogic.estimateSettings,
+    }
+
+    const pricingLogic = await PricingLogic.findOneAndUpdate(
+      {},
+      updatePayload,
+      {
+        new: true,
+        upsert: true,
+        setDefaultsOnInsert: true,
+      }
+    )
+
+    res.json(pricingLogic)
   } catch (error) {
     next(error)
   }

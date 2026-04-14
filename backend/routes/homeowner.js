@@ -7,12 +7,103 @@ import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import Homeowner from '../models/Homeowner.js'
 import QuoteRequest from '../models/QuoteRequest.js'
+import PricingLogic from '../models/PricingLogic.js'
 import { authenticate, authorize } from '../middleware/auth.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const router = express.Router()
 const uploadPath = path.join(__dirname, '..', 'uploads', 'homeowner-quotes')
 fs.mkdirSync(uploadPath, { recursive: true })
+
+const parseMoneyValue = (value) => {
+  if (value === undefined || value === null) return 0
+  const normalized = String(value).replace(/[^0-9.-]+/g, '')
+  const parsed = parseFloat(normalized)
+  return Number.isFinite(parsed) ? parsed : 0
+}
+
+const parseMultiplier = (value) => {
+  if (!value || typeof value !== 'string') return 1
+  const normalized = value.replace(/x/gi, '').trim()
+  const parsed = parseFloat(normalized)
+  return Number.isFinite(parsed) ? parsed : 1
+}
+
+const normalizeMaterialKey = (material) => {
+  if (!material || typeof material !== 'string') return 'asphaltShingle'
+  const lower = material.toLowerCase()
+  if (lower.includes('slate')) return 'slate'
+  if (lower.includes('concrete') || lower.includes('tile')) return 'concreteTile'
+  if (lower.includes('premium')) return 'premium'
+  if (lower.includes('flat') || lower.includes('membrane')) return 'flatMembrane'
+  if (lower.includes('metal') || lower.includes('colorbond')) return 'metal'
+  return 'asphaltShingle'
+}
+
+const normalizePitchKey = (pitch) => {
+  if (!pitch || typeof pitch !== 'string') return 'normal'
+  const lower = pitch.toLowerCase()
+  if (lower.includes('flat')) return 'flat'
+  if (lower.includes('steep')) return 'steep'
+  if (lower.includes('low')) return 'lowPitch'
+  return 'normal'
+}
+
+const normalizeComplexityKey = (value) => {
+  if (!value || typeof value !== 'string') return 'medium'
+  const lower = value.toLowerCase()
+  if (lower.includes('simple')) return 'simple'
+  if (lower.includes('complex')) return 'complex'
+  return 'medium'
+}
+
+const normalizeStoryKey = (story) => {
+  if (!story || typeof story !== 'string') return 'oneStory'
+  const lower = story.toLowerCase()
+  if (lower.includes('single') || lower.includes('one')) return 'oneStory'
+  if (lower.includes('double') || lower.includes('two')) return 'twoStory'
+  if (lower.includes('three')) return 'threeStory'
+  if (lower.includes('four')) return 'fourStory'
+  return 'oneStory'
+}
+
+const formatCurrency = (value) => {
+  const numberValue = Math.round(value)
+  return `$${numberValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+}
+
+const computeQuoteEstimate = (details, pricingLogic) => {
+  const area = Number(details.roofArea) || 0
+  const materialKey = normalizeMaterialKey(details.materialRequested || details.currentRoofMaterial)
+  const pitchKey = normalizePitchKey(details.steep || details.roofSlope || 'normal')
+  const complexityKey = normalizeComplexityKey(details.roofFaces || details.complexity || 'medium')
+  const storyKey = normalizeStoryKey(details.storey || details.story || 'single storey')
+
+  const materialRate = parseMoneyValue(pricingLogic.materialRates?.[materialKey])
+  const pitchMultiplier = parseMultiplier(pricingLogic.pitchMultipliers?.[pitchKey])
+  const complexityMultiplier = parseMultiplier(pricingLogic.complexityMultipliers?.[complexityKey])
+  const scaffoldingCost = parseMoneyValue(pricingLogic.scaffoldingCosts?.[storyKey])
+  const fixedSetupCost = parseMoneyValue(pricingLogic.estimateSettings?.fixedSetupCost)
+  const marginPercent = parseMoneyValue(pricingLogic.estimateSettings?.estimateMargin) / 100
+
+  const materialCost = area * materialRate
+  const adjustedCost = materialCost * pitchMultiplier * complexityMultiplier
+  const rawQuote = adjustedCost + scaffoldingCost + fixedSetupCost
+  const lower = rawQuote * Math.max(0, 1 - marginPercent)
+  const upper = rawQuote * (1 + marginPercent)
+
+  return {
+    quoteRange: `${formatCurrency(lower)} – ${formatCurrency(upper)}`,
+    estimatedQuote: formatCurrency(rawQuote),
+    estimatedPricePerSquare: area > 0 ? `$${(rawQuote / area).toFixed(2)}` : 'N/A',
+    materialRate,
+    pitchMultiplier,
+    complexityMultiplier,
+    scaffoldingCost,
+    fixedSetupCost,
+    marginPercent,
+  }
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadPath),
@@ -60,6 +151,24 @@ router.post('/quote', upload.array('roofImages', 4), async (req, res, next) => {
       return res.status(400).json({ message: 'Full name, email, and phone are required.' })
     }
 
+    let pricingLogic = await PricingLogic.findOne()
+    if (!pricingLogic) {
+      pricingLogic = await PricingLogic.create({})
+    }
+
+    const estimate = computeQuoteEstimate(parsedDetails, pricingLogic)
+    parsedDetails.estimatedQuote = estimate.estimatedQuote
+    parsedDetails.quoteRange = estimate.quoteRange
+    parsedDetails.estimatedPricePerSquare = estimate.estimatedPricePerSquare
+    parsedDetails.pricingDetails = {
+      materialRate: `$${estimate.materialRate}`,
+      pitchMultiplier: `${estimate.pitchMultiplier}x`,
+      complexityMultiplier: `${estimate.complexityMultiplier}x`,
+      scaffoldingCost: `$${estimate.scaffoldingCost}`,
+      fixedSetupCost: `$${estimate.fixedSetupCost}`,
+      estimateMargin: `${estimate.marginPercent * 100}%`,
+    }
+
     const username = generateUsername(fullName)
     const password = generatePassword()
     const hashedPassword = await bcrypt.hash(password, 10)
@@ -75,7 +184,7 @@ router.post('/quote', upload.array('roofImages', 4), async (req, res, next) => {
     const roofImages = (req.files || []).map((file) => `/uploads/homeowner-quotes/${file.filename}`)
     parsedDetails.roofImages = roofImages
 
-    await QuoteRequest.create({
+    const quoteRequest = await QuoteRequest.create({
       homeowner: homeowner._id,
       fullName,
       email,
@@ -88,6 +197,12 @@ router.post('/quote', upload.array('roofImages', 4), async (req, res, next) => {
     return res.status(201).json({
       message: 'Quote request received successfully.',
       credentials: { username, password },
+      quote: {
+        id: quoteRequest._id,
+        estimatedQuote: parsedDetails.estimatedQuote,
+        quoteRange: parsedDetails.quoteRange,
+        estimatedPricePerSquare: parsedDetails.estimatedPricePerSquare,
+      },
     })
   } catch (error) {
     next(error)
