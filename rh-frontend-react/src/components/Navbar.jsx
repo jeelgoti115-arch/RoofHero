@@ -23,14 +23,7 @@ const Navbar = () => {
 
   // Handle CTA button logic
   const handleButtonClick = () => {
-    const token = localStorage.getItem('roofheroToken');
-    const user = localStorage.getItem('roofheroUser');
-  
-    if (token && user) {
-      navigate('/dashboard');
-    } else {
-      navigate('/login');
-    }
+    navigate('/login');
   };
 
   // Close dropdown on outside click
@@ -70,10 +63,10 @@ const Navbar = () => {
             </div>
             {isDropdownOpen && (
               <div className="dropdown-menu">
-                <a href="#contact1">Contact 1</a>
-                <a href="#contact2">Login</a>
-                <a href="#contact3">Admin Login</a>
-                <a href="#contact3">Contractor Login</a>
+                <a href="/">Contact 1</a>
+                <a href="/login">Login</a>
+                <a href="/login">Admin Login</a>
+                <a href="/contractor-signup">Contractor Signup</a>
               </div>
             )}
           </div>
@@ -82,7 +75,7 @@ const Navbar = () => {
         <div className="nav-actions">
           {/* Dynamic Button Text and Action */}
           <button className="cta-btn-navbar" onClick={handleButtonClick}>
-            {isLoggedIn ? 'Go to My Dashboard' : 'Get Your Instant Quote'} 
+            Get Your Instant Quote
             <RiArrowRightUpLine size={20} />
           </button>
 
