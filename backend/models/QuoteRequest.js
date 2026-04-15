@@ -17,6 +17,7 @@ const quoteRequestSchema = new mongoose.Schema({
     email: { type: String, default: '' },
     phone: { type: String, default: '' },
     username: { type: String, default: '' },
+    avatarUrl: { type: String, default: null },
     status: {
       type: String,
       enum: [

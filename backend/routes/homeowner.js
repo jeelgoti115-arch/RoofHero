@@ -236,6 +236,7 @@ router.get('/me', authenticate, authorize('homeowner'), async (req, res, next) =
           email: contractor.email,
           phone: contractor.phone,
           username: contractor.username,
+          avatarUrl: contractor.avatarUrl || contractor.avatar || null,
           status: contractor.status,
           quoteAmount: contractor.quoteAmount || '',
           pricePerSquare: contractor.pricePerSquare || '',

@@ -278,6 +278,7 @@ router.patch('/quote-requests/:id/assign', async (req, res, next) => {
       email: contractor.email,
       phone: contractor.phone,
       username: contractor.username,
+      avatarUrl: contractor.avatarUrl || contractor.avatar || null,
       status: 'New Arrival',
     }))
     quote.assignedContractor = quote.assignedContractors[0] || null
