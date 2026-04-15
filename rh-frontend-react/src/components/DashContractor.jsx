@@ -1,5 +1,5 @@
 // eslint-disable react-hooks/exhaustive-deps
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { 
   RiArrowRightUpLine, RiArrowLeftSLine, RiArrowRightSLine, RiArrowLeftLine,
   RiMailLine, RiPhoneLine, RiArrowUpSLine, RiArrowDownSLine, RiInformationFill,
@@ -7,6 +7,10 @@ import {
   RiMailFill,
   RiPhoneFill
 } from '@remixicon/react';
+import socket from '../socket';
+
+const SUBMITTED_STATUSES = ['Pending Review', 'Accepted', 'Rejected', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed'];
+const JOB_AWARDED_STATUSES = ['Accepted', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed'];
 
 // --- SUB-COMPONENT: PROPOSAL DETAILS VIEW ---
 const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
@@ -366,68 +370,93 @@ const DashContractor = () => {
   const [loadingDashboard, setLoadingDashboard] = useState(true);
   const itemsPerPage = 5;
 
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      const token = window.localStorage.getItem('roofheroToken');
-      if (!token) {
+  const calculateHasSubmittedBid = useCallback((quote) => {
+    const status = quote.status || '';
+    return Boolean(
+      quote.serviceDetails?.quote ||
+      quote.serviceDetails?.pricePerSquare ||
+      SUBMITTED_STATUSES.includes(status)
+    );
+  }, []);
+
+  const normalizeQuote = useCallback((quote) => {
+    const status = quote.contractorStatus || quote.status || 'New Arrival';
+    return {
+      ...quote,
+      id: quote._id || quote.id,
+      address: quote.serviceDetails?.propertyAddress || quote.serviceDetails?.address || 'Not specified',
+      date: quote.requestedAt ? new Date(quote.requestedAt).toLocaleDateString() : 'Unknown',
+      area: quote.serviceDetails?.roofArea || quote.serviceDetails?.approxRoofArea || 'Not specified',
+      quote: quote.serviceDetails?.quote || quote.serviceDetails?.estimatedQuote || 'Pending',
+      status,
+      hasSubmittedBid: calculateHasSubmittedBid({ ...quote, status }),
+      homeowner: quote.fullName || quote.homeowner?.fullName || 'Homeowner',
+      serviceDetails: quote.serviceDetails || {},
+    };
+  }, [calculateHasSubmittedBid]);
+
+  const fetchDashboard = useCallback(async () => {
+    const token = window.localStorage.getItem('roofheroToken');
+    if (!token) {
+      setLoadingDashboard(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/contractors/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
         setLoadingDashboard(false);
         return;
       }
 
-      try {
-        const response = await fetch('/api/contractors/me', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      const data = await response.json();
+      setContractorInfo(data);
 
-        if (!response.ok) {
-          setLoadingDashboard(false);
-          return;
-        }
-
-        const data = await response.json();
-        setContractorInfo(data);
-
-        if (Array.isArray(data.assignedQuotes) && data.assignedQuotes.length > 0) {
-          const assignedLeads = data.assignedQuotes.map((quote) => {
-            const status = quote.contractorStatus || quote.status || 'New Arrival'
-            const hasSubmittedBid = Boolean(
-              quote.serviceDetails?.quote ||
-              quote.serviceDetails?.pricePerSquare ||
-              ['Pending Review', 'Accepted', 'Rejected', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed'].includes(status)
-            )
-
-            return {
-              ...quote,
-              id: quote._id,
-              address: quote.serviceDetails?.propertyAddress || quote.serviceDetails?.address || 'Not specified',
-              date: quote.requestedAt ? new Date(quote.requestedAt).toLocaleDateString() : 'Unknown',
-              area: quote.serviceDetails?.roofArea || quote.serviceDetails?.approxRoofArea || 'Not specified',
-              quote: quote.serviceDetails?.quote || quote.serviceDetails?.estimatedQuote || 'Pending',
-              status,
-              hasSubmittedBid,
-              homeowner: quote.fullName || quote.homeowner?.fullName || 'Homeowner',
-            }
-          })
-          setAllLeads(assignedLeads)
-        } else if (data.dashboard) {
-          setAllLeads([
-            ...(data.dashboard.newLeads || []),
-            ...(data.dashboard.submittedQuotes || []),
-            ...(data.dashboard.activeProjects || []),
-          ]);
-        }
-      } catch (error) {
-        console.error('Failed to load contractor dashboard', error);
-      } finally {
-        setLoadingDashboard(false);
+      if (Array.isArray(data.assignedQuotes) && data.assignedQuotes.length > 0) {
+        const assignedLeads = data.assignedQuotes.map(normalizeQuote);
+        setAllLeads(assignedLeads);
+      } else if (data.dashboard) {
+        setAllLeads([
+          ...(data.dashboard.newLeads || []),
+          ...(data.dashboard.submittedQuotes || []),
+          ...(data.dashboard.activeProjects || []),
+        ]);
       }
+    } catch (error) {
+      console.error('Failed to load contractor dashboard', error);
+    } finally {
+      setLoadingDashboard(false);
+    }
+  }, [normalizeQuote]);
+
+  useEffect(() => {
+    fetchDashboard();
+  }, [fetchDashboard]);
+
+  useEffect(() => {
+    if (!contractorInfo?._id && !contractorInfo?.id) return;
+
+    const handleDashboardUpdate = (payload) => {
+      if (!payload?.contractorIds || !payload.contractorIds.length) return;
+      const contractorId = contractorInfo._id?.toString() || contractorInfo.id?.toString();
+      if (!contractorId || !payload.contractorIds.includes(contractorId)) return;
+      fetchDashboard();
     };
 
-    fetchDashboard();
-  }, []);
+    socket.on('contractorDashboardUpdated', handleDashboardUpdate);
+    socket.on('contractorQuoteAssigned', handleDashboardUpdate);
+
+    return () => {
+      socket.off('contractorDashboardUpdated', handleDashboardUpdate);
+      socket.off('contractorQuoteAssigned', handleDashboardUpdate);
+    };
+  }, [contractorInfo, fetchDashboard]);
 
   const bidsCount = allLeads.filter((item) => item.hasSubmittedBid).length;
-  const jobsCount = allLeads.filter((item) => item.status === 'Accepted').length;
+  const jobsCount = allLeads.filter((item) => JOB_AWARDED_STATUSES.includes(item.status)).length;
   const winRate = bidsCount > 0 ? Math.round((jobsCount * 100) / bidsCount) : 0;
 
   const stats = [
@@ -463,6 +492,7 @@ const DashContractor = () => {
         status: newStatus,
         quote: updatedQuote.serviceDetails?.quote || updatedQuote.serviceDetails?.estimatedQuote || l.quote,
         serviceDetails: updatedQuote.serviceDetails || l.serviceDetails,
+        hasSubmittedBid: calculateHasSubmittedBid({ ...l, status: newStatus, serviceDetails: updatedQuote.serviceDetails || l.serviceDetails }),
       } : l))
     } else {
       const response = await fetch(`/api/contractors/quote-requests/${id}/update-status`, {
@@ -484,6 +514,7 @@ const DashContractor = () => {
         ...l,
         status: newStatus,
         serviceDetails: updatedQuote.serviceDetails || l.serviceDetails,
+        hasSubmittedBid: calculateHasSubmittedBid({ ...l, status: newStatus, serviceDetails: updatedQuote.serviceDetails || l.serviceDetails }),
       }) : l))
     }
 
@@ -494,7 +525,7 @@ const DashContractor = () => {
     return allLeads.filter(item => {
       if (activeTab === 'New Leads') return ['New Arrival', 'Bidding In Progress'].includes(item.status);
       if (activeTab === 'Submitted Quotes') return ['Pending Review', 'Accepted', 'Rejected'].includes(item.status);
-      if (activeTab === 'Active Projects') return ['In Progress', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed'].includes(item.status);
+      if (activeTab === 'Active Projects') return ['Accepted', 'In Progress', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed'].includes(item.status);
       return true;
     });
   }, [activeTab, allLeads]);

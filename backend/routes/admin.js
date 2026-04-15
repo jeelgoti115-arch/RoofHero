@@ -285,6 +285,15 @@ router.patch('/quote-requests/:id/assign', async (req, res, next) => {
     quote.assignedAt = new Date()
     await quote.save()
 
+    const io = req.app?.get('io')
+    if (io) {
+      io.emit('contractorDashboardUpdated', {
+        event: 'quoteAssigned',
+        contractorIds: ids,
+        quote: quote.toObject(),
+      })
+    }
+
     res.json(quote)
   } catch (error) {
     next(error)

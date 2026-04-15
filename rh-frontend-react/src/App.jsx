@@ -1,5 +1,5 @@
 // src/App.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -12,8 +12,20 @@ import AdminDash from './pages/AdminDash';
 import ContractorDash from './pages/ContractorDash';
 import ContractorRegister from './pages/ContractorRegister';
 import RequireAuth from './components/RequireAuth';
+import socket from './socket';
 
 const App = () => {
+  useEffect(() => {
+    if (!socket.connected) {
+      socket.connect()
+    }
+
+    return () => {
+      if (socket.connected) {
+        socket.disconnect()
+      }
+    }
+  }, [])
 
   return (
     <Router>

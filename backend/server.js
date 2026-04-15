@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import bcrypt from 'bcrypt'
+import http from 'node:http'
+import { Server } from 'socket.io'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { connectDB } from './db.js'
@@ -38,6 +40,22 @@ await ensureAdmin()
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
 const PORT = process.env.PORT || 3000
+const server = http.createServer(app)
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+  },
+})
+
+app.set('io', io)
+
+io.on('connection', (socket) => {
+  console.log(`Socket connected: ${socket.id}`)
+  socket.on('disconnect', () => {
+    console.log(`Socket disconnected: ${socket.id}`)
+  })
+})
 
 app.use(cors())
 app.use(express.json({ limit: '10mb' }))
@@ -58,6 +76,6 @@ app.use((error, req, res, next) => {
   res.status(error.status || 500).json({ message: error.message || 'Internal server error' })
 })
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`RoofHero backend listening on http://localhost:${PORT}`)
 })

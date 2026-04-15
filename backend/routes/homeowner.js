@@ -285,6 +285,12 @@ router.patch('/quote-requests/:id/accept', authenticate, authorize('homeowner'),
     quote.status = 'Bid Accepted'
     await quote.save()
 
+    emitContractorEvent(req, 'contractorDashboardUpdated', {
+      event: 'quoteAccepted',
+      contractorIds: quote.assignedContractors.map((entry) => entry.id?.toString()).filter(Boolean),
+      quote: quote.toObject(),
+    })
+
     return res.json({ quote })
   } catch (error) {
     next(error)

@@ -34,6 +34,11 @@ const parseJsonOrArray = (value) => {
   }
 }
 
+const emitContractorEvent = (req, event, payload) => {
+  const io = req.app?.get('io')
+  if (io) io.emit(event, payload)
+}
+
 router.post('/apply', upload.fields([
   { name: 'avatar', maxCount: 1 },
   { name: 'licenseDoc', maxCount: 1 },
@@ -153,6 +158,13 @@ router.patch('/quote-requests/:id/submit-quote', authenticate, authorize('contra
     quote.markModified('assignedContractors')
     quote.markModified('serviceDetails')
     await quote.save()
+
+    emitContractorEvent(req, 'contractorDashboardUpdated', {
+      event: 'quoteSubmitted',
+      contractorIds: [contractor._id.toString()],
+      quote: quote.toObject(),
+    })
+
     return res.json({ quote })
   } catch (error) {
     next(error)
@@ -197,6 +209,12 @@ router.patch('/quote-requests/:id/update-status', authenticate, authorize('contr
     contractorEntry.status = status
     quote.markModified('assignedContractors')
     await quote.save()
+
+    emitContractorEvent(req, 'contractorDashboardUpdated', {
+      event: 'quoteStatusUpdated',
+      contractorIds: [contractor._id.toString()],
+      quote: quote.toObject(),
+    })
 
     return res.json({ quote })
   } catch (error) {

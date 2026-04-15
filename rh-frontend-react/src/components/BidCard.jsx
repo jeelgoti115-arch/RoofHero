@@ -176,7 +176,7 @@ const BidCard = ({ quote, onQuoteUpdated }) => {
                     </div>
                   </div>
                 </div>
-                <div className="card-price">${item.price}</div>
+                <div className="card-price">{item.price}</div>
               </div>
 
               <div className="service-tag">
@@ -206,7 +206,7 @@ const BidCard = ({ quote, onQuoteUpdated }) => {
                     {acceptingId === item.id ? 'Accepting...' : 'Accept Quote'} <RiArrowRightUpLine size={16} />
                   </button>
                 ) : item.status === 'Accepted' ? (
-                  <div className="accepted-label">
+                  <div className="rejected-label">
                     <span className="info-circle">✓</span>
                     Accepted bid
                   </div>
@@ -216,7 +216,7 @@ const BidCard = ({ quote, onQuoteUpdated }) => {
                     Contractor has been rejected.
                   </div>
                 ) : (
-                  <div className="pending-label">
+                  <div className="rejected-label">
                     <span className="info-circle">⏳</span>
                     Awaiting bid.
                   </div>
