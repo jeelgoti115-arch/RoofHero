@@ -9,7 +9,7 @@ import r4 from '/r4.jpg';
 import r5 from '/r5.jpg';
 import r6 from '/r6.jpg';
 
-const ProposalDetails = ({ job = {}, contractor = {} }) => {
+const ProposalDetails = ({ job = {}, contractor = {}, from = '/dashboard' }) => {
   const galleryImages = job.serviceDetails?.roofImages?.length ? job.serviceDetails.roofImages : [r1, r2, r3, r4, r5, r6];
   
   // --- STATES ---
@@ -31,6 +31,7 @@ const ProposalDetails = ({ job = {}, contractor = {} }) => {
 
   const quoteId = job.id || job._id;
   const contractorId = contractor.id || contractor._id;
+  const apiPrefix = from?.includes('/admin') ? '/api/admin' : '/api/homeowner';
 
   const handleAcceptContractor = async () => {
     if (!quoteId || !contractorId) {
@@ -43,7 +44,7 @@ const ProposalDetails = ({ job = {}, contractor = {} }) => {
 
     try {
       const token = localStorage.getItem('roofheroToken');
-      const response = await fetch(`/api/homeowner/quote-requests/${quoteId}/accept`, {
+      const response = await fetch(`${apiPrefix}/quote-requests/${quoteId}/accept`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +78,7 @@ const ProposalDetails = ({ job = {}, contractor = {} }) => {
 
     try {
       const token = localStorage.getItem('roofheroToken');
-      const response = await fetch(`/api/homeowner/quote-requests/${quoteId}/reject`, {
+      const response = await fetch(`${apiPrefix}/quote-requests/${quoteId}/reject`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

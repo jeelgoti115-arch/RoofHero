@@ -176,10 +176,116 @@ router.get('/dashboard-stats', async (req, res, next) => {
   }
 })
 
+const emitContractorEvent = (req, event, payload) => {
+  const io = req.app?.get('io')
+  if (io) io.emit(event, payload)
+}
+
 router.get('/quote-requests', async (req, res, next) => {
   try {
     const quotes = await QuoteRequest.find().sort({ requestedAt: -1 }).populate('homeowner', 'fullName email phone username')
     res.json(quotes)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/quote-requests/:id', authenticate, authorize('admin'), async (req, res, next) => {
+  try {
+    const quote = await QuoteRequest.findById(req.params.id).populate('homeowner', 'fullName email phone username')
+    if (!quote) {
+      return res.status(404).json({ message: 'Quote request not found.' })
+    }
+    res.json({ quote })
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.patch('/quote-requests/:id/accept', authenticate, authorize('admin'), async (req, res, next) => {
+  try {
+    const { contractorId } = req.body
+    if (!contractorId) {
+      return res.status(400).json({ message: 'Contractor ID is required.' })
+    }
+
+    const quote = await QuoteRequest.findById(req.params.id)
+    if (!quote) {
+      return res.status(404).json({ message: 'Quote request not found.' })
+    }
+
+    if (quote.status === 'Bid Accepted') {
+      return res.status(400).json({ message: 'A bid has already been accepted for this quote.' })
+    }
+
+    let acceptedFound = false
+    quote.assignedContractors = (quote.assignedContractors || []).map((entry) => {
+      const isAccepted = entry.id?.toString() === contractorId.toString()
+      if (isAccepted) {
+        acceptedFound = true
+        return { ...entry, status: 'Accepted' }
+      }
+      return { ...entry, status: 'Rejected' }
+    })
+
+    if (!acceptedFound) {
+      return res.status(404).json({ message: 'Selected contractor is not assigned to this quote.' })
+    }
+
+    quote.assignedContractor = quote.assignedContractors.find((entry) => entry.status === 'Accepted') || null
+    quote.status = 'Bid Accepted'
+    await quote.save()
+
+    emitContractorEvent(req, 'contractorDashboardUpdated', {
+      event: 'quoteAccepted',
+      contractorIds: quote.assignedContractors.map((entry) => entry.id?.toString()).filter(Boolean),
+      quote: quote.toObject(),
+    })
+
+    res.json({ quote })
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.patch('/quote-requests/:id/reject', authenticate, authorize('admin'), async (req, res, next) => {
+  try {
+    const { contractorId } = req.body
+    if (!contractorId) {
+      return res.status(400).json({ message: 'Contractor ID is required.' })
+    }
+
+    const quote = await QuoteRequest.findById(req.params.id)
+    if (!quote) {
+      return res.status(404).json({ message: 'Quote request not found.' })
+    }
+
+    if (quote.status === 'Bid Accepted') {
+      return res.status(400).json({ message: 'Cannot reject bids after a contractor has been accepted.' })
+    }
+
+    let rejectedFound = false
+    quote.assignedContractors = (quote.assignedContractors || []).map((entry) => {
+      if (entry.id?.toString() === contractorId.toString()) {
+        rejectedFound = true
+        return { ...entry, status: 'Rejected' }
+      }
+      return entry
+    })
+
+    if (!rejectedFound) {
+      return res.status(404).json({ message: 'Selected contractor is not assigned to this quote.' })
+    }
+
+    await quote.save()
+
+    emitContractorEvent(req, 'contractorDashboardUpdated', {
+      event: 'quoteRejected',
+      contractorIds: [contractorId.toString()],
+      quote: quote.toObject(),
+    })
+
+    res.json({ quote })
   } catch (error) {
     next(error)
   }

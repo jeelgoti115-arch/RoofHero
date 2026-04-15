@@ -121,7 +121,7 @@ const OpenProjectDetails = () => {
                   </div>
                 ) : (
                   <>
-                    <ProposalDetails job={selectedJob} contractor={selectedContractor} />
+                    <ProposalDetails job={selectedJob} contractor={selectedContractor} from={backPath} />
                     <ContractorInfo contractor={selectedContractor} project={selectedJob} />
                   </>
                 )}
