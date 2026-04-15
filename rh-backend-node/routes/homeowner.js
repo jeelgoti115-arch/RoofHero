@@ -298,4 +298,48 @@ router.patch('/quote-requests/:id/accept', authenticate, authorize('homeowner'),
   }
 })
 
+router.patch('/quote-requests/:id/reject', authenticate, authorize('homeowner'), async (req, res, next) => {
+  try {
+    const { contractorId } = req.body
+    if (!contractorId) {
+      return res.status(400).json({ message: 'Contractor ID is required.' })
+    }
+
+    const quote = await QuoteRequest.findOne({ _id: req.params.id, homeowner: req.user._id })
+    if (!quote) {
+      return res.status(404).json({ message: 'Quote request not found.' })
+    }
+
+    if (quote.status === 'Bid Accepted') {
+      return res.status(400).json({ message: 'Cannot reject bids after a contractor has been accepted.' })
+    }
+
+    let rejectedFound = false
+
+    quote.assignedContractors = (quote.assignedContractors || []).map((entry) => {
+      if (entry.id?.toString() === contractorId.toString()) {
+        rejectedFound = true
+        return { ...entry, status: 'Rejected' }
+      }
+      return entry
+    })
+
+    if (!rejectedFound) {
+      return res.status(404).json({ message: 'Selected contractor is not assigned to this quote.' })
+    }
+
+    await quote.save()
+
+    emitContractorEvent(req, 'contractorDashboardUpdated', {
+      event: 'quoteRejected',
+      contractorIds: [contractorId.toString()],
+      quote: quote.toObject(),
+    })
+
+    return res.json({ quote })
+  } catch (error) {
+    next(error)
+  }
+})
+
 export default router

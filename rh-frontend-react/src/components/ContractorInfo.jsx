@@ -8,42 +8,49 @@ import r4 from '/r4.jpg';
 import r5 from '/r5.jpg';
 import r6 from '/r6.jpg';
 
-const ContractorInfo = () => {
+const ContractorInfo = ({ contractor = {}, project = {} }) => {
   const [activeTab, setActiveTab] = useState('About the Contractor');
 
-  const galleryImages = [r1, r2, r3, r4, r5, r6];
+  const galleryImages = contractor.workPhotos?.length ? contractor.workPhotos : [r1, r2, r3, r4, r5, r6];
+
+  const contractorName = contractor.name || contractor.username || 'Contractor Name';
+  const contractorEmail = contractor.email || contractor.contactEmail || 'No email';
+  const contractorPhone = contractor.phone || contractor.contactNumber || contractor.mobile || 'No phone';
+  const contractorRated = contractor.rating || '4.7';
+  const licenceNumber = contractor.licenseNumber || contractor.licenceNumber || contractor.licence || 'N/A';
+  const tradeQualification = contractor.tradeQualification || contractor.qualification || 'Qualified Roofing Specialist';
+  const liabilityInsurance = contractor.insurance || contractor.liabilityInsurance || contractor.insured ? 'Yes' : 'No';
+  const contractorBio = contractor.bio || contractor.description || 'This contractor is experienced in roof replacements, repairs, and specialist roofing work. They offer reliable timelines and transparent pricing.';
 
   // --- TAB 1: About Content ---
   const renderAbout = () => (
     <div className="tab-body-section animate-fade">
       <p className="bio-paragraph">
-        At Apex Roofing Co., we bring over 12 years of roofing expertise to homeowners across Sydney. 
-        Our team is fully licensed, insured, and known for our commitment to excellence—whether it's a 
-        minor repair or a complete roof replacement.
+        {contractorBio}
       </p>
 
       <div className="licence-info-grid">
         <div className="licence-col">
           <label>Contractor Licence Number:</label>
-          <span>NSW-ROOF-8823</span>
+          <span>{licenceNumber}</span>
         </div>
         <div className="licence-col">
           <label>Trade Qualification:</label>
-          <span>Certified Roof Plumbing & Construction</span>
+          <span>{tradeQualification}</span>
         </div>
         <div className="licence-col">
-          <label>  Liability Insurance:</label>
-          <span>Yes</span>
+          <label>Liability Insurance:</label>
+          <span>{liabilityInsurance}</span>
         </div>
       </div>
 
-      <h4 className="gallery-title">Project Gallery</h4>
+      <h4 className="gallery-title">Contractor Work Photos</h4>
       <div className="project-gallery-grid">
         {galleryImages.map((imgSrc, index) => (
           <img 
             key={index} 
             src={imgSrc} 
-            alt={`Project ${index + 1}`} 
+            alt={`Contractor work ${index + 1}`} 
             className="gallery-thumb" 
           />
         ))}
@@ -103,22 +110,21 @@ const ContractorInfo = () => {
     <div className="white-card-box contractor-detail-card">
       {/* Profile Header */}
       <div className="contractor-top-header">
-        <img src="public/contractor2.jpg" alt="Contractor" className="contractor-circle-img" />
+        <img src={contractor.avatarUrl || contractor.image || 'public/contractor2.jpg'} alt="Contractor" className="contractor-circle-img" />
         <div className="contractor-main-info">
           <div className="name-verified-row">
-            <h3>Samantha Hollick</h3>
-            
+            <h3>{contractorName}</h3>
           </div>
           <div className="contractor-contacts">
-            <span><RiCheckboxCircleFill color="rgba(250,90,37,1)" size={16} /> Verified Contractor</span>
-            <span><RiMailFill color="rgba(250,90,37,1)" size={16} /> JasperCanning@dayrep.com</span>
+            <span><RiCheckboxCircleFill color="rgba(250,90,37,1)" size={16} /> {contractor.verified || contractor.isVerified ? 'Verified Contractor' : 'Verified Contractor'}</span>
+            <span><RiMailFill color="rgba(250,90,37,1)" size={16} /> {contractorEmail}</span>
             <span className="v-divider">|</span>
-            <span><RiPhoneFill color="rgba(250,90,37,1)" size={16} /> 937-304-8161</span>
+            <span><RiPhoneFill color="rgba(250,90,37,1)" size={16} /> {contractorPhone}</span>
           </div>
         </div>
         <div className="contractor-rating-box">
           <RiStarFill size={16} color="#fa5a25" />
-          <span>4.7 (128 reviews)</span>
+          <span>{contractorRated} ({contractor.reviewCount || '128'} reviews)</span>
         </div>
       </div>
 

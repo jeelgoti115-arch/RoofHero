@@ -132,8 +132,8 @@ const BidCard = ({ quote, onQuoteUpdated }) => {
     }
   };
 
-  const handleButtonClick = () => {
-    navigate('/project-details');
+  const handleButtonClick = (contractor) => {
+    navigate('/project-details', { state: { job: quote, contractor } });
   };
 
   const scroll = (direction) => {
@@ -208,7 +208,7 @@ const BidCard = ({ quote, onQuoteUpdated }) => {
               </div>
 
               <div className="card-actions">
-                <button className="btn-white" onClick={handleButtonClick}>View Details <RiArrowRightUpLine size={16} /></button>
+                <button className="btn-white" onClick={() => handleButtonClick(item)}>View Details <RiArrowRightUpLine size={16} /></button>
                 {item.status === 'Pending Review' ? (
                   <button
                     className="btn-orange"

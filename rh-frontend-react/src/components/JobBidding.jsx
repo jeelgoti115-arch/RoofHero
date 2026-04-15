@@ -233,15 +233,16 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
   const navigate = useNavigate(); // Initialize navigation
   const scrollRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
+  const [modalContractor, setModalContractor] = useState(null);
   const details = job.serviceDetails || {};
 
   const toggleSection = (section) => {
     setExpandedSection(expandedSection === section ? null : section);
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (contractor) => {
     setIsModalOpen(false); // Close the modal first
-    navigate('/project-details'); // Navigate to the route path
+    navigate('/project-details', { state: { job, contractor } });
   };
 
   const contractors = (job.assignedContractors || []).map((contractor, index) => ({
@@ -478,11 +479,11 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
               )}
   
               <div className="card-actions">
-                <button className="btn-white" onClick={handleButtonClick}>View Details <RiArrowRightUpLine size={16} /></button>
+                <button className="btn-white" onClick={() => handleButtonClick(item)}>View Details <RiArrowRightUpLine size={16} /></button>
                 {!item.isRejected ? (
                   <button 
                     className="btn-orange" 
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => { setModalContractor(item); setIsModalOpen(true); }}
                   >
                     Accept Quote <RiArrowRightUpLine size={16} />
                   </button>
@@ -509,7 +510,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
                 Your roofing project has been confirmed. The selected contractor 
                 will contact you soon to coordinate the next steps and schedule the site visit.
               </p>
-              <button className="modal-btn" onClick={handleButtonClick}>
+              <button className="modal-btn" onClick={() => handleButtonClick(modalContractor || contractors[0])}>
                 View Project <RiArrowRightUpLine size={18} />
               </button>
             </div>
