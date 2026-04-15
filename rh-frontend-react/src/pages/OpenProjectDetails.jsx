@@ -23,8 +23,7 @@ const OpenProjectDetails = () => {
 
   const location = useLocation();
   const locationJob = location.state?.job || null;
-  const locationContractor = location.state?.contractor || null;
-
+  const locationContractor = location.state?.contractor || null;  const backPath = location.state?.from || '/dashboard';
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
@@ -76,7 +75,7 @@ const OpenProjectDetails = () => {
   }, [locationJob, locationContractor]);
 
   const handleBackToDashboard = () => {
-    navigate('/dashboard');
+    navigate(backPath);
   };
 
   return (

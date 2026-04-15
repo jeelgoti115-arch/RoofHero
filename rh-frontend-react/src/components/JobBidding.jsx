@@ -1,6 +1,6 @@
 // eslint-disable react-hooks/exhaustive-deps 
 import React, { useRef, useState, useMemo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   RiSearchLine,
   RiArrowLeftSLine,
@@ -231,6 +231,7 @@ const AwaitingAssignmentView = ({ job, onBack, availableContractors, loadingCont
 const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContractors, contractorError }) => {
   const [expandedSection, setExpandedSection] = useState('basic');
   const navigate = useNavigate(); // Initialize navigation
+  const location = useLocation();
   const scrollRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
   const [modalContractor, setModalContractor] = useState(null);
@@ -242,7 +243,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
 
   const handleButtonClick = (contractor) => {
     setIsModalOpen(false); // Close the modal first
-    navigate('/project-details', { state: { job, contractor } });
+    navigate('/project-details', { state: { job, contractor, from: location.pathname } });
   };
 
   const contractors = (job.assignedContractors || []).map((contractor, index) => ({

@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { RiArrowRightUpLine, RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const BidCard = ({ quote, onQuoteUpdated }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const scrollRef = useRef(null);
   const [contractors, setContractors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -133,7 +134,7 @@ const BidCard = ({ quote, onQuoteUpdated }) => {
   };
 
   const handleButtonClick = (contractor) => {
-    navigate('/project-details', { state: { job: quote, contractor } });
+    navigate('/project-details', { state: { job: quote, contractor, from: location.pathname } });
   };
 
   const scroll = (direction) => {
