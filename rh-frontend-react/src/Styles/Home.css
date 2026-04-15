@@ -324,7 +324,6 @@
 
 .book-container {
   width: 100%;
-  max-width: 1290px; 
   margin: 0 auto;
   padding: 0 40px;
   display: flex;
@@ -507,7 +506,6 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 50px;
-  max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
   gap: 30px;
@@ -542,7 +540,6 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr); 
   gap: 24px;
-  max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -672,7 +669,6 @@
   justify-content: space-between;
   align-items: center;
   gap: 60px;
-  max-width: 1400px;
   margin: 0 auto;
   padding: 0 40px;
   box-sizing: border-box;
@@ -836,7 +832,6 @@
 }
 
 .main-intro-box {
-  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -1009,7 +1004,6 @@
 
 .que-main-box {
   display: flex;
-  max-width: 1300px;
   width: 100%;
   gap: 40px;
   padding: 65px 65px;
@@ -1207,7 +1201,6 @@
 }
 
 .footer-content {
-  max-width: 1300px;
   margin: 0 auto;
   padding: 0 40px;
   display: flex;

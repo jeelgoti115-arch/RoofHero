@@ -10,3 +10,41 @@
   --des: #676767;
   --red: #FF3B30; /* adjusted standard red */
 }
+
+html {
+  font-size: 14px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: var(--main-header);
+  background: var(--support);
+  font-size: 0.96rem;
+  line-height: 1.45;
+  zoom: 0.94;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.dashboard-body,
+.adm-body-content,
+.jb-container,
+.open-project-container,
+.project-details-card,
+.white-card-box,
+.form-container,
+.con-dash-container {
+  width: 100%;
+  margin: 0 auto;
+}

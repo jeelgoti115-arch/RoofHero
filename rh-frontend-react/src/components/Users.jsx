@@ -14,7 +14,7 @@ const ProjectEditView = ({ project, onCancel }) => {
         <button onClick={onCancel} className="adm-ho-back-btn">
           <RiArrowLeftLine size={20} />
         </button>
-        <h1 className="adm-ho-page-title">Homeowner Project Edit</h1>
+        <h1>Homeowner Project Edit</h1>
       </div>
 
       <div className="adm-ho-content-card">
@@ -201,7 +201,7 @@ const ProjectDetailsView = ({ project, onBack }) => {
         <button onClick={onBack} className="adm-ho-back-btn">
           <RiArrowLeftLine size={20} />
         </button>
-        <h1 className="adm-ho-page-title">Homeowner Project Details</h1>
+        <h1>Homeowner Project Details</h1>
       </div>
 
       <div className="adm-ho-content-card">
@@ -422,7 +422,7 @@ const Users = () => {
 
   return (
     <div className="adm-ho-main-container animate-fade">
-      <h1 className="adm-ho-page-title">Homeowners Request</h1>
+      <h1>Homeowners Request</h1>
 
       <div className="adm-ho-content-card">
         <div className="adm-ho-controls">

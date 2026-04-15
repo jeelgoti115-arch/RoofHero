@@ -11,7 +11,6 @@
 
 .nav-container {
   width: 100%;
-  max-width: 1400px;
   margin: 0 auto;
   padding: 0 60px;
   display: flex;
@@ -235,7 +234,6 @@
 
 .login-card {
   background-color: #ffffff;
-  max-width: 550px;
   width: 100%;
   padding: 30px 20px; 
   border-radius: 24px;
@@ -360,7 +358,6 @@
 }
 
 .footer-content {
-  max-width: 1300px;
   margin: 0 auto;
   padding: 0 40px;
   display: flex;

@@ -103,7 +103,7 @@ const ProjectDetails = () => {
         <div className="quoting-grid">
           <div className="quote-row">
             <p>Automated Quoting:</p>
-            <span className="price">$8,000 – $9,500 AUD</span>
+            <span className="price">{quoteInfo?.serviceDetails?.quoteRange || quoteInfo?.quoteRange || quoteInfo?.serviceDetails?.estimatedQuote || '$8,000 – $9,500 AUD'}</span>
             <p>Provide by:</p>
             <span className="provider">roofhero</span>
           </div>

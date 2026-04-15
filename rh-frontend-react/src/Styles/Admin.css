@@ -3,7 +3,7 @@
   --primary: #1D3B34;
   --secondary: #4F7C70;
   --accent: #FA5A28;
-  --support: #F6F2EC;
+  --support: #FAF8F5;
   --optional-hero-blue: #004E7C;
   --des: #676767;
   --red: #FF3B30; /* adjusted standard red */
@@ -18,9 +18,14 @@
   background-color: var(--support);
 }
 
+.adm-body-content {
+  width: 100%;
+  margin: 0 auto;
+}
+
 /* Apply this class to the parent wrapper in AdminDash.jsx */
 .sidebar-open .dashboard-main-content {
-  margin-left: 260px; /* Match the sidebar width */
+  margin-left: 240px; /* Match the sidebar width */
 }
 
 .sidebar-closed .dashboard-main-content {
@@ -38,12 +43,12 @@
 
 /* Header */
 .adm-hdr-container {
-  height: 70px;
+  height: 64px;
   background-color: var(--support); /* Matching sidebar light grey */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px;
+  padding: 0 24px;
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
@@ -79,8 +84,8 @@
 }
 
 .adm-hdr-icon-circle {
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   background-color: #1226211A; /* Light grey circle from image */
   border-radius: 50%;
   display: flex;
@@ -90,8 +95,8 @@
   transition: all 0.2s ease;
 }
 .adm-hdr-icon-circle img{
-  width: 20px;
-  height: 22px;
+  width: 18px;
+  height: 20px;
 }
 
 /* Red Notification Dot */
@@ -107,8 +112,8 @@
 
 /* Profile Avatar */
 .adm-hdr-avatar {
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--border);
@@ -121,7 +126,7 @@
 
 /* Sidebar Container */
 .adm-sb-container {
-  width: 260px;
+  width: 240px;
   height: 100vh;
   background-color: var(--support);
   border-right: 1px solid var(--border);
@@ -142,7 +147,7 @@
 }
 
 .adm-sb-logo-section {
-  padding: 40px 25px;
+  padding: 30px 20px;
 }
 
 .adm-sb-logo-section img {
@@ -173,8 +178,8 @@
 .adm-sb-nav-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px 18px;
+  gap: 12px;
+  padding: 12px 16px;
   cursor: pointer;
   margin-bottom: 6px;
   transition: all 0.2s ease-in-out;

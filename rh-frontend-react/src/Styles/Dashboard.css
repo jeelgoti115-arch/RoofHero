@@ -33,18 +33,17 @@
 }
 
 .dashboard-body {
-  padding: 30px 40px;
+  padding: 0 28px;
   width: 100%;
-  max-width: 1300px; /* Adjust this to your preferred max dashboard width */
-  margin: 0 auto;    /* Centers the dashboard content */
+  margin: 0 auto;
   box-sizing: border-box;
 }
 
 .page-title {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 800;
   color: var(--text-dark);
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .section-header-row {
@@ -73,11 +72,11 @@
    3. SIDEBAR SECTION (Sidebar.jsx)
    ============================================================ */
 .sidebar-container {
-  width: 260px;
+  width: 240px;
   height: 100vh;
   background-color: #FAF8F5;
   border-right: 1px solid var(--border-color);
-  position: fixed; /* Fixes it to the left */
+  position: fixed;
   left: 0;
   top: 0;
   z-index: 1000;
@@ -170,12 +169,12 @@
    4. HEADER SECTION (DashboardHeader.jsx)
    ============================================================ */
 .dashboard-header {
-  height: 70px;
+  height: 64px;
   background: #FAF8F5;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
+  padding: 0 24px;
   border-bottom: 1px solid var(--border-color);
 }
 
