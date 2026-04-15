@@ -68,6 +68,11 @@ const DashAdmin = () => {
   const [activeAccordion, setActiveAccordion] = useState('document');
   const [loadingRequests, setLoadingRequests] = useState(false);
   const [requestError, setRequestError] = useState('');
+  const [dashboardStats, setDashboardStats] = useState({
+    totalContractors: 0,
+    totalHomeowners: 0,
+    completedProjects: 0,
+  });
   const [refreshKey, setRefreshKey] = useState(0);
 
   const fetchContractorRequests = async () => {
@@ -90,8 +95,26 @@ const DashAdmin = () => {
     }
   };
 
+  const fetchDashboardStats = async () => {
+    try {
+      const response = await fetch('/api/admin/dashboard-stats');
+      if (!response.ok) {
+        throw new Error('Unable to load dashboard statistics.');
+      }
+      const data = await response.json();
+      setDashboardStats({
+        totalContractors: data.totalContractors ?? 0,
+        totalHomeowners: data.totalHomeowners ?? 0,
+        completedProjects: data.completedProjects ?? 0,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchContractorRequests();
+    fetchDashboardStats();
   }, [refreshKey]);
 
   const updateApplicationStatus = async (status) => {
@@ -290,15 +313,24 @@ const DashAdmin = () => {
       <div className="da-stats-grid">
         <div className="da-stat-card">
           <div className="da-stat-icon-circle da-bg-orange"><img src="/roofers.png" alt="icon" /></div>
-          <div className="da-stat-info"><label className="da-label-muted">Total Contractors</label><h2 className="da-stat-number">120</h2></div>
+          <div className="da-stat-info">
+            <label className="da-label-muted">Total Contractors</label>
+            <h2 className="da-stat-number">{dashboardStats.totalContractors ?? 0}</h2>
+          </div>
         </div>
         <div className="da-stat-card">
           <div className="da-stat-icon-circle da-bg-orange"><img src="/homeowners.png" alt="icon" /></div>
-          <div className="da-stat-info"><label className="da-label-muted">Total Homeowners</label><h2 className="da-stat-number">240</h2></div>
+          <div className="da-stat-info">
+            <label className="da-label-muted">Total Homeowners</label>
+            <h2 className="da-stat-number">{dashboardStats.totalHomeowners ?? 0}</h2>
+          </div>
         </div>
         <div className="da-stat-card">
           <div className="da-stat-icon-circle da-bg-orange"><img src="/completeprojects.png" alt="icon" /></div>
-          <div className="da-stat-info"><label className="da-label-muted">Complete Projects</label><h2 className="da-stat-number">20</h2></div>
+          <div className="da-stat-info">
+            <label className="da-label-muted">Complete Projects</label>
+            <h2 className="da-stat-number">{dashboardStats.completedProjects ?? 0}</h2>
+          </div>
         </div>
       </div>
 

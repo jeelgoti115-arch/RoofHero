@@ -780,6 +780,8 @@ const BidAcceptedView = ({ job, onBack }) => {
 };
 
 // --- MAIN COMPONENT ---
+const ACCEPTED_STATUSES = ['Bid Accepted', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed'];
+
 const JobBidding = () => {
   const [activeTab, setActiveTab] = useState('Awaiting Assignment');
   const [searchQuery, setSearchQuery] = useState("");
@@ -855,7 +857,9 @@ const JobBidding = () => {
 
   const filteredJobs = useMemo(() => {
     return jobsData.filter(job => {
-      const matchesTab = job.status === activeTab;
+      const matchesTab = activeTab === 'Bid Accepted'
+        ? ACCEPTED_STATUSES.includes(job.status)
+        : job.status === activeTab;
       const matchesSearch = (job.name || '').toLowerCase().includes(searchQuery.toLowerCase()) || (job.id || '').toLowerCase().includes(searchQuery.toLowerCase());
       return matchesTab && matchesSearch;
     });
@@ -918,7 +922,7 @@ const JobBidding = () => {
   if (selectedJob) {
     if (selectedJob.status === 'Awaiting Assignment') return <AwaitingAssignmentView job={selectedJob} onBack={() => setSelectedJob(null)} availableContractors={availableContractors} loadingContractors={contractorLoading} contractorError={contractorError} onAssign={assignContractorToJob} />;
     if (selectedJob.status === 'Bidding In Progress') return <BiddingInProgressView job={selectedJob} onBack={() => setSelectedJob(null)} availableContractors={availableContractors} loadingContractors={contractorLoading} contractorError={contractorError} />;
-    if (selectedJob.status === 'Bid Accepted') return <BidAcceptedView job={selectedJob} onBack={() => setSelectedJob(null)} />;
+    if (ACCEPTED_STATUSES.includes(selectedJob.status)) return <BidAcceptedView job={selectedJob} onBack={() => setSelectedJob(null)} />;
   }
 
   return (
@@ -956,13 +960,13 @@ const JobBidding = () => {
               <thead>
                 <tr>
                   <th>Job ID</th><th>Homeowner Name</th><th>Address</th><th>Request Date</th><th>Roof Area</th>
-                  {(activeTab === 'Bidding In Progress' || activeTab === 'Bid Accepted') && <th>Contractor</th>}
+                  {((activeTab === 'Bidding In Progress') || (activeTab === 'Bid Accepted')) && <th>Contractor</th>}
                   <th>Status</th><th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {visibleData.length === 0 ? (
-                  <tr><td colSpan={(activeTab === 'Bidding In Progress' || activeTab === 'Bid Accepted') ? 8 : 7} className="jb-no-data">No quote requests found.</td></tr>
+                  <tr><td colSpan={((activeTab === 'Bidding In Progress') || (activeTab === 'Bid Accepted')) ? 8 : 7} className="jb-no-data">No quote requests found.</td></tr>
                 ) : visibleData.map((job) => (
                   <tr key={job.id}>
                     <td className="jb-text-dim">{job.id}</td>
@@ -970,7 +974,7 @@ const JobBidding = () => {
                     <td className="jb-address-cell">{job.address}</td>
                     <td>{job.date}</td>
                     <td>{job.area}</td>
-                    {(activeTab === 'Bidding In Progress' || activeTab === 'Bid Accepted') && (
+                    {((activeTab === 'Bidding In Progress') || (activeTab === 'Bid Accepted')) && (
                       <td>{job.assignedContractors?.length ? job.assignedContractors.map((c) => c.name).join(', ') : job.assignedContractor?.name || 'Not assigned'}</td>
                     )}
                     <td><span className={`jb-status-pill ${job.status.toLowerCase().replace(/\s+/g, '-')}`}>{job.status}</span></td>

@@ -14,7 +14,12 @@ const Dashboard = () => {
   const [homeownerLoading, setHomeownerLoading] = useState(true);
   const [homeownerError, setHomeownerError] = useState(null);
 
-  const refreshHomeownerData = async () => {
+  const refreshHomeownerData = async (updatedQuote = null) => {
+    if (updatedQuote) {
+      setHomeownerQuote(updatedQuote);
+      return;
+    }
+
     setHomeownerLoading(true);
     setHomeownerError(null);
 

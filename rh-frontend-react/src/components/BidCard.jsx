@@ -78,6 +78,18 @@ const BidCard = ({ quote, onQuoteUpdated }) => {
     fetchHomeownerBids();
   }, [quote, mapContractors]);
 
+  const ACCEPTED_STATUSES = ['Accepted', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed'];
+
+  const getStatusLabel = (status) => {
+    if (status === 'Pending Review') return 'Bid Submitted';
+    if (status === 'Accepted') return 'Bid Accepted';
+    if (status === 'Rejected') return 'Bid Rejected';
+    if (ACCEPTED_STATUSES.includes(status)) return status;
+    return 'Awaiting Bid';
+  };
+
+  const isActiveAcceptedStatus = (status) => ACCEPTED_STATUSES.includes(status);
+
   const handleAcceptQuote = async (contractor) => {
     if (!quote?.id) {
       setAcceptError('Unable to accept this bid.');
@@ -112,7 +124,7 @@ const BidCard = ({ quote, onQuoteUpdated }) => {
       const updatedQuote = data.quote;
       setContractors(mapContractors(updatedQuote.assignedContractors || []));
       setSuccessMessage('Bid accepted successfully.');
-      onQuoteUpdated?.();
+      onQuoteUpdated?.(updatedQuote);
     } catch (fetchError) {
       setAcceptError(fetchError.message);
     } finally {
@@ -180,7 +192,7 @@ const BidCard = ({ quote, onQuoteUpdated }) => {
               </div>
 
               <div className="service-tag">
-                {item.status === 'Pending Review' ? 'Bid Submitted' : item.status === 'Accepted' ? 'Bid Accepted' : item.status === 'Rejected' ? 'Bid Rejected' : 'Awaiting Bid'}
+                {getStatusLabel(item.status)}
               </div>
               <hr className="divider" />
 
@@ -205,15 +217,15 @@ const BidCard = ({ quote, onQuoteUpdated }) => {
                   >
                     {acceptingId === item.id ? 'Accepting...' : 'Accept Quote'} <RiArrowRightUpLine size={16} />
                   </button>
-                ) : item.status === 'Accepted' ? (
-                  <div className="rejected-label">
-                    <span className="info-circle">✓</span>
-                    Accepted bid
-                  </div>
                 ) : item.status === 'Rejected' ? (
                   <div className="rejected-label">
                     <span className="info-circle">i</span>
                     Contractor has been rejected.
+                  </div>
+                ) : isActiveAcceptedStatus(item.status) ? (
+                  <div className="rejected-label">
+                    <span className="info-circle">✓</span>
+                    {item.status === 'Accepted' ? 'Accepted bid' : item.status}
                   </div>
                 ) : (
                   <div className="rejected-label">

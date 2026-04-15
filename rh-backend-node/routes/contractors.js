@@ -207,6 +207,7 @@ router.patch('/quote-requests/:id/update-status', authenticate, authorize('contr
     }
 
     contractorEntry.status = status
+    quote.status = status
     quote.markModified('assignedContractors')
     await quote.save()
 

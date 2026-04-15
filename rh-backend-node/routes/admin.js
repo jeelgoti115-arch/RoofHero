@@ -164,6 +164,18 @@ router.patch('/contractor-applications/:id/status', async (req, res, next) => {
   }
 })
 
+router.get('/dashboard-stats', async (req, res, next) => {
+  try {
+    const totalContractors = await User.countDocuments({ role: 'contractor', status: 'approved' })
+    const totalHomeowners = await Homeowner.countDocuments()
+    const completedProjects = await QuoteRequest.countDocuments({ 'assignedContractors.status': 'Completed' })
+
+    res.json({ totalContractors, totalHomeowners, completedProjects })
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.get('/quote-requests', async (req, res, next) => {
   try {
     const quotes = await QuoteRequest.find().sort({ requestedAt: -1 }).populate('homeowner', 'fullName email phone username')

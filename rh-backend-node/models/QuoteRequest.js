@@ -10,7 +10,7 @@ const quoteRequestSchema = new mongoose.Schema({
   email: { type: String, required: true },
   phone: { type: String, required: true },
   serviceDetails: { type: Object, required: true, default: {} },
-  status: { type: String, enum: ['Awaiting Assignment', 'Bidding In Progress', 'Bid Accepted'], default: 'Awaiting Assignment' },
+  status: { type: String, enum: ['Awaiting Assignment', 'Bidding In Progress', 'Bid Accepted', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed'], default: 'Awaiting Assignment' },
   assignedContractors: [{
     id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     name: { type: String, default: '' },

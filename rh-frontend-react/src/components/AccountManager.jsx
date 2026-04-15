@@ -1,7 +1,9 @@
 import React from 'react';
 
+const ACCEPTED_STATUSES = ['Accepted', 'Site Inspection Scheduled', 'Materials Ordered', 'Completed'];
+
 const AccountManager = ({ quote, loading, error }) => {
-  const acceptedContractor = quote?.assignedContractors?.find((contractor) => contractor.status === 'Accepted');
+  const acceptedContractor = quote?.assignedContractors?.find((contractor) => ACCEPTED_STATUSES.includes(contractor.status));
 
   const normalizeImagePath = (value) => {
     if (!value) return '/contractor-img.png';
@@ -61,7 +63,7 @@ const AccountManager = ({ quote, loading, error }) => {
           <p className="section-overline">Accepted Contractor</p>
           <h3 className="section-title">{acceptedContractor.name || acceptedContractor.username || 'Accepted Contractor'}</h3>
         </div>
-        <span className="status-pill status-accepted">Accepted</span>
+        <span className="status-pill status-accepted">{acceptedContractor.status || 'Accepted'}</span>
       </div>
 
       <div className="accepted-contractor-profile">
