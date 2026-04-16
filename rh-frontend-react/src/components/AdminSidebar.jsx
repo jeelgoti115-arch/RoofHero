@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
 import { 
-  RiLayoutGridFill, 
-  RiUserSettingsLine, 
-  RiUserFollowLine, 
-  RiBriefcase4Line, 
-  RiMoneyDollarBoxLine, 
   RiLogoutBoxRLine 
 } from '@remixicon/react';
 import { useNavigate } from 'react-router-dom';
@@ -59,9 +54,6 @@ const AdminSidebar = ({ isOpen, activeTab, setActiveTab }) => {
             <span className="adm-sb-label-text">{item.label}</span>
           </div>
         ))}
-      </div>
-
-      <div className="adm-sb-footer-section">
         <button className="adm-sb-logout-action" onClick={handleLogout}>
           <RiLogoutBoxRLine size={20} />
           <span className="adm-sb-logout-text">Logout</span>
