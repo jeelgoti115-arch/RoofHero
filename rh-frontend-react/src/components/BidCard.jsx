@@ -184,7 +184,7 @@ const BidCard = ({ quote, onQuoteUpdated }) => {
                   <div className="user-text">
                     <h4>{item.name}</h4>
                     <div className="rating-row">
-                      <img src="public/star-ic-rating.png" alt="star" className='star'/>
+                      <img src="/star-ic-rating.png" alt="star" className='star'/>
                       <span className="rating-label">{item.rating} (128 reviews)</span>
                     </div>
                   </div>

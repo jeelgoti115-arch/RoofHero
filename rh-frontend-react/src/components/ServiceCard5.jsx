@@ -5,9 +5,9 @@ const ServiceCard5 = ({ onNext }) => {
   const [selectedComplexity, setSelectedComplexity] = useState('Simple (1-2 faces)');
 
   const options = [
-    { name: 'Simple (1-2 faces)', img: 'public/simple-roof.png' },
-    { name: 'Medium (3-4 faces, valleys)', img: 'public/medium-roof.png' },
-    { name: 'Complex (5+ faces, hips/valleys/dormers)', img: 'public/complex-roof.png' },
+    { name: 'Simple (1-2 faces)', img: '/simple-roof.png' },
+    { name: 'Medium (3-4 faces, valleys)', img: '/medium-roof.png' },
+    { name: 'Complex (5+ faces, hips/valleys/dormers)', img: '/complex-roof.png' },
   ];
 
   return (

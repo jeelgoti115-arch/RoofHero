@@ -22,7 +22,7 @@ const ProjectEditView = ({ project, onCancel }) => {
         <h3 className="adm-ho-form-section-title">Homeowner Information</h3>
         <div className="adm-ho-edit-profile-row">
           <div className="adm-ho-avatar large">
-            <img src="public/contractor2.jpg" alt="Profile" />
+            <img src="/contractor2.jpg" alt="Profile" />
           </div>
           <div className="adm-ho-form-grid-3">
             <div className="adm-ho-input-group">
@@ -163,7 +163,7 @@ const ProjectDetailsView = ({ project, onBack }) => {
   const [projectImages, setProjectImages] = useState(() => {
   return details.roofImages?.length 
     ? details.roofImages 
-    : ['public/r1.jpg', 'public/r2.jpg', 'public/r3.jpg', 'public/r4.jpg', 'public/r5.jpg'];
+    : ['/r1.jpg', '/r2.jpg', '/r3.jpg', '/r4.jpg', '/r5.jpg'];
   });
 
   const [documents, setDocuments] = useState([
@@ -209,13 +209,13 @@ const ProjectDetailsView = ({ project, onBack }) => {
         <div className="adm-ho-profile-section">
           <div className="adm-ho-profile-info">
             <div className="adm-ho-avatar">
-              <img src="public/user-image.png" alt="Profile" />
+              <img src="/user-image.png" alt="Profile" />
             </div>
             <div className="adm-ho-name-contact">
               <h2>{project.name || details.fullName || project.homeowner?.fullName || 'Homeowner'}</h2>
               <div className="adm-ho-contact-links">
-                <span><img src='public/mail_ic.png' alt='mail-ic' /> {project.email || details.email || project.homeowner?.email || 'No email'}</span>
-                <span><img src='public/Call_ic.png' alt='call-ic' /> {project.mobile || details.phone || project.homeowner?.phone || 'No phone'}</span>
+                <span><img src='/mail_ic.png' alt='mail-ic' /> {project.email || details.email || project.homeowner?.email || 'No email'}</span>
+                <span><img src='/Call_ic.png' alt='call-ic' /> {project.mobile || details.phone || project.homeowner?.phone || 'No phone'}</span>
               </div>
             </div>
           </div>

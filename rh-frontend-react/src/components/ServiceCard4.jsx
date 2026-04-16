@@ -5,10 +5,10 @@ const ServiceCard4 = ({ onNext }) => {
   const [selectedPitch, setSelectedPitch] = useState('Low Pitch');
 
   const pitchOptions = [
-    { name: 'Low Pitch', img: 'public/low-pitch.png' },
-    { name: 'Normal', img: 'public/normal-pitch.png' },
-    { name: 'Steep', img: 'public/steep-pitch.png' },
-    { name: 'Flat', img: 'public/flat-pitch.png' },
+    { name: 'Low Pitch', img: '/low-pitch.png' },
+    { name: 'Normal', img: '/normal-pitch.png' },
+    { name: 'Steep', img: '/steep-pitch.png' },
+    { name: 'Flat', img: '/flat-pitch.png' },
   ];
 
   return (

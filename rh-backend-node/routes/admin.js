@@ -6,26 +6,24 @@ import QuoteRequest from '../models/QuoteRequest.js'
 import PricingLogic from '../models/PricingLogic.js'
 import { authenticate, authorize } from '../middleware/auth.js'
 import { sendContractorApprovalEmail } from '../utils/email.js'
+import { emitContractorEvent } from '../utils/socket.js'
 
 const createDashboardSample = (application) => {
   const region = Array.isArray(application.regions) && application.regions.length ? application.regions[0] : 'Sydney';
   return {
     stats: {
-      bidsSubmitted: 8,
-      jobsAwarded: 3,
-      winRate: 38,
+      bidsSubmitted: 0,
+      jobsAwarded: 0,
+      winRate: 0,
     },
     newLeads: [
-      { id: '#L1001', address: `12 ${region} Road, ${region}`, date: '24 Apr 2025', area: '140 m²', quote: '$11,000 – $13,500', status: 'New Inquiry' },
-      { id: '#L1004', address: `34 ${region} Avenue, ${region}`, date: '23 Apr 2025', area: '160 m²', quote: '$12,500 – $15,000', status: 'New Inquiry' },
+      //dynamically data here
     ],
     submittedQuotes: [
-      { id: 'Q-1001', address: `12 ${region} Road, ${region}`, date: '24 Apr 2025', area: '140 m²', quote: '$14,800', status: 'Pending Review' },
-      { id: 'Q-1002', address: `34 ${region} Avenue, ${region}`, date: '23 Apr 2025', area: '160 m²', quote: '$18,200', status: 'Accepted' },
+      //dynamically data here
     ],
     activeProjects: [
-      { id: 'P-1001', address: `5 ${region} Street, ${region}`, date: '22 Apr 2025', area: '100 m²', quote: '$15,000', status: 'In Progress' },
-      { id: 'P-1002', address: `18 ${region} Park, ${region}`, date: '20 Apr 2025', area: '180 m²', quote: '$18,500', status: 'Site Inspection Scheduled' },
+      //dynamically data here
     ],
   }
 }
@@ -188,11 +186,6 @@ router.get('/dashboard-stats', async (req, res, next) => {
   }
 })
 
-const emitContractorEvent = (req, event, payload) => {
-  const io = req.app?.get('io')
-  if (io) io.emit(event, payload)
-}
-
 router.get('/quote-requests', async (req, res, next) => {
   try {
     const quotes = await QuoteRequest.find().sort({ requestedAt: -1 }).populate('homeowner', 'fullName email phone username')
@@ -251,7 +244,7 @@ router.patch('/quote-requests/:id/accept', authenticate, authorize('admin'), asy
     emitContractorEvent(req, 'contractorDashboardUpdated', {
       event: 'quoteAccepted',
       contractorIds: quote.assignedContractors.map((entry) => entry.id?.toString()).filter(Boolean),
-      quote: quote.toObject(),
+      quoteId: quote._id,
     })
 
     res.json({ quote })
@@ -294,7 +287,7 @@ router.patch('/quote-requests/:id/reject', authenticate, authorize('admin'), asy
     emitContractorEvent(req, 'contractorDashboardUpdated', {
       event: 'quoteRejected',
       contractorIds: [contractorId.toString()],
-      quote: quote.toObject(),
+      quoteId: quote._id,
     })
 
     res.json({ quote })
@@ -416,14 +409,11 @@ router.patch('/quote-requests/:id/assign', async (req, res, next) => {
     quote.assignedAt = new Date()
     await quote.save()
 
-    const io = req.app?.get('io')
-    if (io) {
-      io.emit('contractorDashboardUpdated', {
-        event: 'quoteAssigned',
-        contractorIds: ids,
-        quote: quote.toObject(),
-      })
-    }
+    emitContractorEvent(req, 'contractorDashboardUpdated', {
+      event: 'quoteAssigned',
+      contractorIds: ids,
+      quoteId: quote._id,
+    })
 
     res.json(quote)
   } catch (error) {

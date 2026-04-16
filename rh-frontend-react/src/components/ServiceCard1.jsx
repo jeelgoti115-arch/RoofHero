@@ -17,7 +17,7 @@ const ServiceCard1 = ({ onNext }) => {
               onClick={() => setSelected('replacement')}
             >
               <div className='sc1-option-icon'>
-                <img src='public/roof_replacement.svg' alt='replacement' />
+                <img src='/roof_replacement.svg' alt='replacement' />
               </div>
               <p>Roof Replacement</p>
             </div>
@@ -27,7 +27,7 @@ const ServiceCard1 = ({ onNext }) => {
               onClick={() => setSelected('repair')}
             >
               <div className='sc1-option-icon'>
-                <img src='public/roof_repair.svg' alt='repair' />
+                <img src='/roof_repair.svg' alt='repair' />
               </div>
               <p>Roof Repair</p>
             </div>

@@ -28,7 +28,7 @@ const CManagement = () => {
   const [loadingContractors, setLoadingContractors] = useState(false);
   const [contractorError, setContractorError] = useState('');
   const inputRef = useRef(null);
-  const [galleryImages, setGalleryImages] = useState([1,2,3,4,5,6,7,8,9].map(i => `public/roofie${i}.jpg`)); 
+  const [galleryImages, setGalleryImages] = useState([1,2,3,4,5,6,7,8,9].map(i => `/roofie${i}.jpg`)); 
   const [documents, setDocuments] = useState([
     { id: 1, name: 'RooferCoinsurance.pdf', desc: 'Public Liability Insurance' },
     { id: 2, name: 'WorkSafetyCertificate.pdf', desc: 'Contractor Safety Certificate' },

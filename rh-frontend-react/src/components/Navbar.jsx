@@ -48,7 +48,7 @@ const Navbar = () => {
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="nav-container">
         <div className="nav-logo">
-          <img src="public/Frame 1000009354.png" alt="roofhero.au" />
+          <img src="/Frame 1000009354.png" alt="roofhero.au" />
         </div>
 
         <div className={`nav-links ${isMobileMenuOpen ? 'active' : ''}`}>

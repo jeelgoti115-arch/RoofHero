@@ -16,10 +16,10 @@ const DashboardHeader = ({ onToggleSidebar, onToggleNotifications, isNotificatio
           className={`notification-badge ${isNotificationActive ? 'active' : ''}`} 
           onClick={onToggleNotifications}
         >
-          <img src='public/dashboard-header-icon.png' alt='dashboard-header-icon' />
+          <img src='/dashboard-header-icon.png' alt='dashboard-header-icon' />
           <span className="dot"></span>
         </button>
-        <img src="public/dashboard1-profile.png" alt="Profile" className="header-avatar" />
+        <img src="/dashboard1-profile.png" alt="Profile" className="header-avatar" />
       </div>
     </header>
   );

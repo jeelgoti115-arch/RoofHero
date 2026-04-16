@@ -180,7 +180,7 @@ const ServiceCard9 = ({ serviceDetails, onSubmit }) => {
         <div className='sc9-success-overlay'>
           <div className='sc9-success-modal'>
             <div className='success-icon-container'>
-              <img src='public/success-envelope.svg' alt='Success Icon' className='success-icon' />
+              <img src='/success-envelope.svg' alt='Success Icon' className='success-icon' />
             </div>
 
             <h2>Quote Submitted</h2>

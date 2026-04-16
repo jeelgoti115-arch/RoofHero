@@ -9,6 +9,7 @@ import Homeowner from '../models/Homeowner.js'
 import QuoteRequest from '../models/QuoteRequest.js'
 import PricingLogic from '../models/PricingLogic.js'
 import { authenticate, authorize } from '../middleware/auth.js'
+import { emitContractorEvent } from '../utils/socket.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const router = express.Router()
@@ -289,7 +290,7 @@ router.patch('/quote-requests/:id/accept', authenticate, authorize('homeowner'),
     emitContractorEvent(req, 'contractorDashboardUpdated', {
       event: 'quoteAccepted',
       contractorIds: quote.assignedContractors.map((entry) => entry.id?.toString()).filter(Boolean),
-      quote: quote.toObject(),
+      quoteId: quote._id,
     })
 
     return res.json({ quote })
@@ -333,7 +334,7 @@ router.patch('/quote-requests/:id/reject', authenticate, authorize('homeowner'),
     emitContractorEvent(req, 'contractorDashboardUpdated', {
       event: 'quoteRejected',
       contractorIds: [contractorId.toString()],
-      quote: quote.toObject(),
+      quoteId: quote._id,
     })
 
     return res.json({ quote })

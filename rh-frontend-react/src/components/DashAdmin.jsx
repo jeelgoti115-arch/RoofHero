@@ -219,12 +219,50 @@ const DashAdmin = () => {
                   </div>
                   <div className="da-upload-list">
                     <div className="da-file-preview">
-                      <span>{selectedContractor.licenseDocName || 'No licence document uploaded'}</span>
-                      <RiDownload2Line size={20} className="da-download-icon" />
+                      {selectedContractor.licenseDocUrl ? (
+                        <a
+                          href={selectedContractor.licenseDocUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="da-file-link"
+                        >
+                          <span>{selectedContractor.licenseDocName || 'License document'}</span>
+                        </a>
+                      ) : (
+                        <span>{selectedContractor.licenseDocName || 'No licence document uploaded'}</span>
+                      )}
+                      {selectedContractor.licenseDocUrl && (
+                        <a
+                          href={selectedContractor.licenseDocUrl}
+                          download={selectedContractor.licenseDocName || undefined}
+                          title="Download licence document"
+                        >
+                          <RiDownload2Line size={20} className="da-download-icon" />
+                        </a>
+                      )}
                     </div>
                     <div className="da-file-preview">
-                      <span>{selectedContractor.insuranceDocName || 'No insurance document uploaded'}</span>
-                      <RiDownload2Line size={20} className="da-download-icon" />
+                      {selectedContractor.insuranceDocUrl ? (
+                        <a
+                          href={selectedContractor.insuranceDocUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="da-file-link"
+                        >
+                          <span>{selectedContractor.insuranceDocName || 'Insurance document'}</span>
+                        </a>
+                      ) : (
+                        <span>{selectedContractor.insuranceDocName || 'No insurance document uploaded'}</span>
+                      )}
+                      {selectedContractor.insuranceDocUrl && (
+                        <a
+                          href={selectedContractor.insuranceDocUrl}
+                          download={selectedContractor.insuranceDocName || undefined}
+                          title="Download insurance document"
+                        >
+                          <RiDownload2Line size={20} className="da-download-icon" />
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>

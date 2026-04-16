@@ -78,7 +78,7 @@ const AwaitingAssignmentView = ({ job, onBack, availableContractors, loadingCont
             <h2 className="jb-section-title">Project Details</h2>
             
             <div className="jb-profile-row">
-              <img src="public/contractor2.jpg" alt="Profile" className="jb-avatar" />
+              <img src="/contractor2.jpg" alt="Profile" className="jb-avatar" />
               <div className="jb-profile-info">
                 <h3>{job.fullName || job.name || 'Homeowner'}</h3>
                 <div className="jb-contact-row">
@@ -96,7 +96,7 @@ const AwaitingAssignmentView = ({ job, onBack, availableContractors, loadingCont
             </div>
             <h2 className="jb-section-title mt-24">Project Images</h2>
             <div className="jb-image-grid-4">
-              {(details.roofImages?.length ? details.roofImages : ['public/r1.jpg', 'public/r2.jpg', 'public/r3.jpg', 'public/r4.jpg']).slice(0, 4).map((src, index) => (
+              {(details.roofImages?.length ? details.roofImages : ['/r1.jpg', '/r2.jpg', '/r3.jpg', '/r4.jpg']).slice(0, 4).map((src, index) => (
                 <img key={index} src={src} alt={`Job ${index + 1}`} />
               ))}
             </div>
@@ -165,7 +165,7 @@ const AwaitingAssignmentView = ({ job, onBack, availableContractors, loadingCont
                     {[1, 2, 3].map((_, i) => (
                       <div key={i} className="jb-doc-pill-card">
                         <div className="jb-doc-icon-box">
-                          <img src="public/pdf_ic.png" alt="pdf" width="20" />
+                          <img src="/pdf_ic.png" alt="pdf" width="20" />
                         </div>
                         <div className="jb-doc-text">
                           <span className="jb-doc-name">RooferCoinsurance.pdf</span>
@@ -199,7 +199,7 @@ const AwaitingAssignmentView = ({ job, onBack, availableContractors, loadingCont
                 availableContractors.map((contractor) => (
                   <div key={contractor._id} className="jb-contractor-item">
                     <div className="jb-flex-row">
-                      <img src={contractor.avatarUrl || 'public/contractor2.jpg'} className="jb-avatar-sm" alt="C" />
+                      <img src={contractor.avatarUrl || '/contractor2.jpg'} className="jb-avatar-sm" alt="C" />
                       <div className="jb-c-info">
                         <p className="jb-c-name">{contractor.name || contractor.username}</p>
                         <p className="jb-c-loc">{contractor.regions?.join(', ') || 'Available contractor'}</p>
@@ -249,7 +249,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
   const contractors = (job.assignedContractors || []).map((contractor, index) => ({
     id: contractor.id?.toString() || contractor._id?.toString() || index,
     name: contractor.name || contractor.username || 'Contractor',
-    image: contractor.avatarUrl || 'public/contractor2.jpg',
+    image: contractor.avatarUrl || '/contractor2.jpg',
     price: contractor.quoteAmount || 'TBD',
     rating: contractor.rating || '4.7',
     contractorId: contractor.username ? `#${contractor.username}` : contractor.id?.toString().slice(-6) || `#${index + 1}`,
@@ -283,7 +283,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
           <div className="jb-card jb-p-24">
             <h2 className="jb-section-title">Project Details</h2>
             <div className="jb-profile-row">
-              <img src="public/contractor2.jpg" alt="Profile" className="jb-avatar" />
+              <img src="/contractor2.jpg" alt="Profile" className="jb-avatar" />
               <div className="jb-profile-info">
                 <h3>{job.fullName || job.name || 'Homeowner'}</h3>
                 <div className="jb-contact-row">
@@ -302,7 +302,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
 
             <h2 className="jb-section-title mt-24">Project Images</h2>
             <div className="jb-image-grid-4">
-              {(details.roofImages?.length ? details.roofImages : ['public/r1.jpg', 'public/r2.jpg', 'public/r3.jpg', 'public/r4.jpg']).slice(0, 4).map((src, index) => (
+              {(details.roofImages?.length ? details.roofImages : ['/r1.jpg', '/r2.jpg', '/r3.jpg', '/r4.jpg']).slice(0, 4).map((src, index) => (
                 <img key={index} src={src} alt={`Job ${index + 1}`} />
               ))}
             </div>
@@ -371,7 +371,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
                     {[1, 2, 3].map((_, i) => (
                       <div key={i} className="jb-doc-pill-card">
                         <div className="jb-doc-icon-box">
-                          <img src="public/pdf_ic.png" alt="pdf" width="20" />
+                          <img src="/pdf_ic.png" alt="pdf" width="20" />
                         </div>
                         <div className="jb-doc-text">
                           <span className="jb-doc-name">RooferCoinsurance.pdf</span>
@@ -409,7 +409,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
                   return (
                     <div key={contractor._id} className="jb-contractor-item">
                       <div className="jb-flex-row">
-                        <img src={contractor.avatarUrl || 'public/contractor2.jpg'} className="jb-avatar-sm" alt="C" />
+                        <img src={contractor.avatarUrl || '/contractor2.jpg'} className="jb-avatar-sm" alt="C" />
                         <div className="jb-c-info">
                           <p className="jb-c-name">{contractor.name || contractor.username}</p>
                           <p className="jb-c-loc">{contractor.regions?.join(', ') || 'Available contractor'}</p>
@@ -451,7 +451,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
                   <div className="user-text">
                     <h4>{item.name}</h4>
                     <div className="rating-row">
-                      <img src="public/star-ic-rating.png" alt="star" className='star'/>
+                      <img src="/star-ic-rating.png" alt="star" className='star'/>
                       <span className="rating-label">{item.rating} (128 reviews)</span>
                     </div>
                   </div>
@@ -504,7 +504,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
           <div className="modal-overlay">
             <div className="modal-box">
               <div className="modal-icon-container">
-                  <img src="public/bidcard-qa.svg" alt="Success" />
+                  <img src="/bidcard-qa.svg" alt="Success" />
               </div>
               <h2>Quote Accepted Successfully</h2>
               <p>
@@ -530,7 +530,7 @@ const BidAcceptedView = ({ job, onBack }) => {
   const contractors = (job.assignedContractors || []).map((contractor, index) => ({
     id: contractor.id?.toString() || contractor._id?.toString() || index,
     name: contractor.name || contractor.username || 'Contractor',
-    image: contractor.avatarUrl || 'public/contractor2.jpg',
+    image: contractor.avatarUrl || '/contractor2.jpg',
     price: contractor.quoteAmount || contractor.pricePerSquare || 'TBD',
     rating: contractor.rating || '4.7',
     contractorId: contractor.username ? `#${contractor.username}` : contractor.id?.toString().slice(-6) || `#${index + 1}`,
@@ -550,7 +550,7 @@ const BidAcceptedView = ({ job, onBack }) => {
     proposalMessage: acceptedContractor.proposalMessage || 'No proposal message provided.',
     bidAmount: acceptedContractor.quoteAmount || acceptedContractor.pricePerSquare || 'TBD',
     pricePerSquare: acceptedContractor.pricePerSquare || 'N/A',
-    image: acceptedContractor.avatarUrl || 'public/contractor2.jpg',
+    image: acceptedContractor.avatarUrl || '/contractor2.jpg',
   } : null;
 
   const scroll = (direction) => {
@@ -581,7 +581,7 @@ const BidAcceptedView = ({ job, onBack }) => {
           <div className="jb-card jb-p-24">
             <h2 className="jb-section-title">Project Details</h2>
             <div className="jb-profile-row">
-              <img src="public/contractor2.jpg" alt="Profile" className="jb-avatar" />
+              <img src="/contractor2.jpg" alt="Profile" className="jb-avatar" />
               <div className="jb-profile-info">
                 <h3>{job.fullName || job.name || 'Homeowner'}</h3>
                 <div className="jb-contact-row">
@@ -600,7 +600,7 @@ const BidAcceptedView = ({ job, onBack }) => {
 
             <h2 className="jb-section-title mt-24">Project Images</h2>
             <div className="jb-image-grid-4">
-              {(details.roofImages?.length ? details.roofImages : ['public/r1.jpg', 'public/r2.jpg', 'public/r3.jpg', 'public/r4.jpg']).slice(0, 4).map((src, index) => (
+              {(details.roofImages?.length ? details.roofImages : ['/r1.jpg', '/r2.jpg', '/r3.jpg', '/r4.jpg']).slice(0, 4).map((src, index) => (
                 <img key={index} src={src} alt={`Job ${index + 1}`} />
               ))}
             </div>
@@ -669,7 +669,7 @@ const BidAcceptedView = ({ job, onBack }) => {
                     {[1, 2, 3].map((_, i) => (
                       <div key={i} className="jb-doc-pill-card">
                         <div className="jb-doc-icon-box">
-                          <img src="public/pdf_ic.png" alt="pdf" width="20" />
+                          <img src="/pdf_ic.png" alt="pdf" width="20" />
                         </div>
                         <div className="jb-doc-text">
                           <span className="jb-doc-name">RooferCoinsurance.pdf</span>
@@ -691,7 +691,7 @@ const BidAcceptedView = ({ job, onBack }) => {
             <h2 className="jb-section-title">Contractor Manager Details</h2>
             
             <div className="jb-flex-row mt-16">
-              <img src={acceptedContractorDetails?.image || 'public/contractor2.jpg'} className="jb-avatar" alt="Manager" />
+              <img src={acceptedContractorDetails?.image || '/contractor2.jpg'} className="jb-avatar" alt="Manager" />
               <div className="jb-manager-info">
                 <h4>{acceptedContractorDetails?.name || 'Contractor Manager'}</h4>
                 <div className="jb-contact-row-sm">
@@ -746,7 +746,7 @@ const BidAcceptedView = ({ job, onBack }) => {
                   <div className="user-text">
                     <h4>{item.name}</h4>
                     <div className="rating-row">
-                      <img src="public/star-ic-rating.png" alt="star" className='star'/>
+                      <img src="/star-ic-rating.png" alt="star" className='star'/>
                       <span className="rating-label">{item.rating} (128 reviews)</span>
                     </div>
                   </div>

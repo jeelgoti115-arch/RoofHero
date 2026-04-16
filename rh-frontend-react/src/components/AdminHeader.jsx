@@ -17,7 +17,7 @@ const AdminHeader = ({ onToggleSidebar, onToggleNotifications, isNotificationAct
           onClick={onToggleNotifications}
         >
           <div className="adm-hdr-icon-circle">
-            <img src='public/dashboard-header-icon.png' alt='dashboard-header-icon' />
+            <img src='/dashboard-header-icon.png' alt='dashboard-header-icon' />
             <span className="adm-hdr-dot"></span>
           </div>
         </button>

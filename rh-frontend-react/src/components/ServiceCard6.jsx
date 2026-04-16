@@ -5,9 +5,9 @@ const ServiceCard6 = ({ onNext }) => {
   const [selectedLevel, setSelectedLevel] = useState('Single Storey');
 
   const levels = [
-    { name: 'Single Storey', img: 'public/single-storey.svg' },
-    { name: 'Double Storey', img: 'public/double-storey.svg' },
-    { name: 'Three or more storeys', img: 'public/triple-storey.svg' },
+    { name: 'Single Storey', img: '/single-storey.svg' },
+    { name: 'Double Storey', img: '/double-storey.svg' },
+    { name: 'Three or more storeys', img: '/triple-storey.svg' },
   ];
 
   return (

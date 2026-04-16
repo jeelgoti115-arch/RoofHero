@@ -48,7 +48,7 @@ const Notifications = () => {
           <div className="noti-left-content">
             <div className="noti-icon-circle">
               {/* Replace with your specific logo/icon */}
-              <img src="public/notification-img.svg" alt="icon" />
+              <img src="/notification-img.svg" alt="icon" />
             </div>
             <div className="noti-text-details">
               <p className="noti-message">{item.text}</p>

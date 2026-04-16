@@ -27,7 +27,7 @@ const AssignedServices = () => {
         {services.map((service, index) => (
           <div className='as-card' key={index}>
             <div className='as-icon-box'>
-              <img src='public/Vector.png' alt='check icon' />
+              <img src='/Vector.png' alt='check icon' />
             </div>
             <div className='as-card-content'>
               <h3>{service.title}</h3>

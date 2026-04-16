@@ -61,10 +61,10 @@ const ContractorInfo = ({ contractor = {}, project = {} }) => {
   // --- TAB 2: Reviews Content ---
   const renderReviews = () => {
     const reviews = [
-      { id: 1, name: "Eunice J. Williams", img: "public/contractor1.jpg", text: "The team was punctual, professional, and finished the project before deadline. Everything was cleaned up nicely, and the new Colorbond roof looks great. Very happy with the outco..." },
-      { id: 2, name: "Nancy N. Ellis", img: "public/contractor2.jpg", text: "Fantastic job overall. They followed the quote and maintained good workmanship. One small issue was the delay in removing scaffolding, but everything else was handled very..." },
-      { id: 3, name: "James R. Okelly", img: "public/contractor2.jpg", text: "Work was well done and priced fairly. Only downside was that updates were slow during the middle of the job, but the end result was solid and as promised." },
-      { id: 4, name: "Derek J. Youngquist", img: "public/contractor1.jpg", text: "Very smooth experience. The team communicated well, handled everything quickly, and showed us progress photos. Would definitely hire them again for future roofing or repair j..." }
+      { id: 1, name: "Eunice J. Williams", img: "/contractor1.jpg", text: "The team was punctual, professional, and finished the project before deadline. Everything was cleaned up nicely, and the new Colorbond roof looks great. Very happy with the outco..." },
+      { id: 2, name: "Nancy N. Ellis", img: "/contractor2.jpg", text: "Fantastic job overall. They followed the quote and maintained good workmanship. One small issue was the delay in removing scaffolding, but everything else was handled very..." },
+      { id: 3, name: "James R. Okelly", img: "/contractor2.jpg", text: "Work was well done and priced fairly. Only downside was that updates were slow during the middle of the job, but the end result was solid and as promised." },
+      { id: 4, name: "Derek J. Youngquist", img: "/contractor1.jpg", text: "Very smooth experience. The team communicated well, handled everything quickly, and showed us progress photos. Would definitely hire them again for future roofing or repair j..." }
     ];
 
     return (
@@ -94,7 +94,7 @@ const ContractorInfo = ({ contractor = {}, project = {} }) => {
       {[1, 2, 3, 4, 5].map((i) => (
         <div key={i} className="doc-item-card">
           <div className="doc-icon-box">
-             <img src="public/pdf_ic.png" alt="pdf" />
+             <img src="/pdf_ic.png" alt="pdf" />
           </div>
           <div className="doc-meta">
             <h4>RooferCoinsurance.pdf</h4>
@@ -110,7 +110,7 @@ const ContractorInfo = ({ contractor = {}, project = {} }) => {
     <div className="white-card-box contractor-detail-card">
       {/* Profile Header */}
       <div className="contractor-top-header">
-        <img src={contractor.avatarUrl || contractor.image || 'public/contractor2.jpg'} alt="Contractor" className="contractor-circle-img" />
+        <img src={contractor.avatarUrl || contractor.image || '/contractor2.jpg'} alt="Contractor" className="contractor-circle-img" />
         <div className="contractor-main-info">
           <div className="name-verified-row">
             <h3>{contractorName}</h3>

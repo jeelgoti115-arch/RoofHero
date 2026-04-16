@@ -5,12 +5,12 @@ const ServiceCard3 = ({ onNext }) => {
   const [selectedMaterial, setSelectedMaterial] = useState('Slate');
 
   const materials = [
-    { name: 'Slate', img: 'public/slate.png' },
-    { name: 'Concrete Tile', img: 'public/concrete.png' },
-    { name: 'Premium', img: 'public/premium.png' },
-    { name: 'Flat/ Membrane', img: 'public/flat.png' },
-    { name: 'Metal', img: 'public/metal.png' },
-    { name: 'Asphalt Shingle', img: 'public/asphalt.png' },
+    { name: 'Slate', img: '/slate.png' },
+    { name: 'Concrete Tile', img: '/concrete.png' },
+    { name: 'Premium', img: '/premium.png' },
+    { name: 'Flat/ Membrane', img: '/flat.png' },
+    { name: 'Metal', img: '/metal.png' },
+    { name: 'Asphalt Shingle', img: '/asphalt.png' },
   ];
 
   return (

@@ -6,7 +6,7 @@ const ServiceInstruction = () => {
       <div className='si-container'>
         <div className='si-map-wrapper'>
           {/* Ensure path to your map image is correct */}
-          <img src='public/service-map.png' alt='Bondi Area Map' className='si-map-img' />
+          <img src='/service-map.png' alt='Bondi Area Map' className='si-map-img' />
         </div>
 
         <div className='si-header'>

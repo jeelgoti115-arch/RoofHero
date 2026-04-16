@@ -7,7 +7,7 @@ const Book = () => {
       <div className='book-container'>
         <div className='left-box-book'>
           <div className="image-wrapper">
-             <img src='public/2-book.png' alt='Roofing service' />
+             <img src='/2-book.png' alt='Roofing service' />
           </div>
         </div>
 
@@ -15,7 +15,7 @@ const Book = () => {
           <div className='header-section'>
             <p className='section-tag'>
               WHY CHOOSE US 
-              <img src='public/OBJECTS.svg' alt='squiggle' className='tag-logo' />
+              <img src='/OBJECTS.svg' alt='squiggle' className='tag-logo' />
             </p>
             <h1>Multiple Quotes. One Easy Choice.</h1>
           </div>
@@ -23,7 +23,7 @@ const Book = () => {
           <div className='features-container'>
             <div className='details'>
               <div className='icon-wrapper'>
-                <img src='public/book-vector.png' alt='icon' />
+                <img src='/book-vector.png' alt='icon' />
               </div>
               <div className="text-content">
                 <h6>Compare & Choose with Confidence</h6>
@@ -33,7 +33,7 @@ const Book = () => {
             
             <div className='details'>
               <div className='icon-wrapper'>
-                <img src='public/vector-2.png' alt='icon' />
+                <img src='/book-vector-2.png' alt='icon' />
               </div>
               <div className="text-content">
                 <h6>Transparent, Accurate Pricing</h6>
@@ -43,7 +43,7 @@ const Book = () => {
             
             <div className='details'>
               <div className='icon-wrapper'>
-                <img src='public/vector-3.png' alt='icon' />
+                <img src='/book-vector-3.png' alt='icon' />
               </div>
               <div className="text-content">
                 <h6>Quality You Can Trust</h6>

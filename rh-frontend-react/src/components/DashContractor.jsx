@@ -38,7 +38,8 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
   const homeownerPhone = item.homeowner?.phone || item.phone || 'No phone';
   const quotePrice = details.quote || details.estimatedQuote || item.quote || 'Pending';
   const startDate = details.estimatedStartDate || item.estimatedStartDate || 'Not available';
-  const projectImages = details.roofImages?.length ? details.roofImages.slice(0, 4) : ['public/r1.jpg', 'public/r2.jpg', 'public/r3.jpg', 'public/r4.jpg'];
+  const projectImages = details.roofImages?.length ? details.roofImages.slice(0, 4) : [];
+  const documentItems = item.serviceDetails?.documents || item.documents || [];
 
   const toggleSection = (section) => {
     setExpandedSection(expandedSection === section ? null : section);
@@ -134,7 +135,7 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
           <div className="con-dash-readonly-group">
             <label>Custom Proposal Message</label>
             <p className="con-dash-msg-text">
-              {item.proposalMessage || details.proposalMessage || 'Thank you for considering us for your roofing project. We will carefully remove the existing tile roof and replace it with a new Colorbond metal roof, ensuring high-quality workmanship and full compliance with safety standards.'}
+              {item.proposalMessage || details.proposalMessage || 'No proposal message available.'}
             </p>
           </div>
           {['Accepted', 'Site Inspection Scheduled', 'Materials Ordered'].includes(item.status) ? (
@@ -200,7 +201,7 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
           <div className="con-dash-readonly-group">
             <label>Custom Proposal Message</label>
             <p className="con-dash-msg-text">
-              {item.proposalMessage || details.proposalMessage || 'Your bid was not selected. Better luck on the next opportunity.'}
+              {item.proposalMessage || details.proposalMessage || 'No proposal message available.'}
             </p>
           </div>
           <div className="jb-status-red-pill">
@@ -215,7 +216,7 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
       <div className="con-dash-sidebar-card animate-fade">
         <h2 className="con-dash-side-title">Homeowner Details</h2>
         <div className="con-dash-owner-profile">
-          <img src="public/toby.jpg" alt="owner" />
+          <img src="/toby.jpg" alt="owner" />
           <div>
               <h4>John Smith Roofing Co.</h4>
               <div className="con-dash-owner-contact">
@@ -253,24 +254,28 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
             <h2 className="con-dash-sec-title">Project Details</h2>
             <p className="con-dash-sub-sec">Account Manager Details</p>
             <div className="con-dash-profile-row">
-              <img src="public/contractor2.jpg" alt="Mike" className="jb-avatar" />
+              <img src="/contractor2.jpg" alt="Mike" className="jb-avatar" />
               <div className="jb-profile-info">
                 <h3>{homeownerName}</h3>
                 <div className="jb-contact-row">
-                  <span className="jb-contact-row-span"><img src='public/mail_ic.png' alt='mail_ic' />{homeownerEmail}</span>
+                  <span className="jb-contact-row-span"><img src='/mail_ic.png' alt='mail_ic' />{homeownerEmail}</span>
                   <span>|</span>
-                  <span className="jb-contact-row-span"><img src='public/Call_ic.png' alt='call_ic' />{homeownerPhone}</span>
+                  <span className="jb-contact-row-span"><img src='/Call_ic.png' alt='call_ic' />{homeownerPhone}</span>
                 </div>
               </div>
               <div className="jb-status-container">
                 <div className="con-dash-tag-open">{item.status}</div>
-                <p className="jb-bids-count">{item.serviceDetails?.contractorBids || '12'} Contractor Bids Received</p>
+                <p className="jb-bids-count">{item.serviceDetails?.contractorBids ?? 0} Contractor Bids Received</p>
               </div>
             </div>
 
             <h2 className="con-dash-sec-title mt-24">Project Images</h2>
             <div className="con-dash-img-grid">
-              {projectImages.map((src, index) => <img key={index} src={src} alt={`roof-${index}`} />)}
+              {projectImages.length ? (
+                projectImages.map((src, index) => <img key={index} src={src} alt={`roof-${index}`} />)
+              ) : (
+                <div className="jb-text-muted">No project images available.</div>
+              )}
             </div>
 
             {/* Accordion Sections */}
@@ -315,8 +320,8 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
                 </div>
                 {expandedSection === 'quoting' && (
                   <div className="jb-accordion-content jb-grid-2 animate-fade">
-                    <div><label>Automated Quoting:</label><p>{details.quoteRange || details.quote || details.estimatedQuote || '$8,000 — $9,500 AUD'}</p></div>
-                    <div><label>Provide by:</label><p>{details.quoteProvider || 'roofhero'}</p></div>
+                    <div><label>Automated Quoting:</label><p>{details.quoteRange || details.quote || details.estimatedQuote || 'Not specified'}</p></div>
+                    <div><label>Provide by:</label><p>{details.quoteProvider || 'Not specified'}</p></div>
                   </div>
                 )}
               </div>
@@ -334,18 +339,22 @@ const ProposalDetailsView = ({ item, onBack, onUpdateStatus }) => {
                 </div>
                 {expandedSection === 'docs' && (
                   <div className="jb-accordion-content jb-doc-flex animate-fade">
-                    {[1, 2, 3].map((_, i) => (
-                      <div key={i} className="jb-doc-pill-card">
-                        <div className="jb-doc-icon-box">
-                          <img src="public/pdf_ic.png" alt="pdf" width="20" />
+                    {documentItems.length ? (
+                      documentItems.map((doc, i) => (
+                        <div key={i} className="jb-doc-pill-card">
+                          <div className="jb-doc-icon-box">
+                            <img src="/pdf_ic.png" alt="pdf" width="20" />
+                          </div>
+                          <div className="jb-doc-text">
+                            <span className="jb-doc-name">{doc.name || doc.filename || 'Document.pdf'}</span>
+                            <span className="jb-doc-sub">{doc.description || doc.type || 'Attached document'}</span>
+                          </div>
+                          <RiCloseCircleLine size={18} className="jb-doc-close" />
                         </div>
-                        <div className="jb-doc-text">
-                          <span className="jb-doc-name">RooferCoinsurance.pdf</span>
-                          <span className="jb-doc-sub">Public Liability Insurance</span>
-                        </div>
-                        <RiCloseCircleLine size={18} className="jb-doc-close" />
-                      </div>
-                    ))}
+                      ))
+                    ) : (
+                      <div className="jb-text-muted">No documents attached.</div>
+                    )}
                   </div>
                 )}
               </div>
@@ -418,12 +427,8 @@ const DashContractor = () => {
       if (Array.isArray(data.assignedQuotes) && data.assignedQuotes.length > 0) {
         const assignedLeads = data.assignedQuotes.map(normalizeQuote);
         setAllLeads(assignedLeads);
-      } else if (data.dashboard) {
-        setAllLeads([
-          ...(data.dashboard.newLeads || []),
-          ...(data.dashboard.submittedQuotes || []),
-          ...(data.dashboard.activeProjects || []),
-        ]);
+      } else {
+        setAllLeads([]);
       }
     } catch (error) {
       console.error('Failed to load contractor dashboard', error);
@@ -460,9 +465,9 @@ const DashContractor = () => {
   const winRate = bidsCount > 0 ? Math.round((jobsCount * 100) / bidsCount) : 0;
 
   const stats = [
-    { title: 'Bids Submitted', value: bidsCount.toString().padStart(2, '0'), img: 'public/fact_check_ic.svg', color: '#Fa5a25' },
-    { title: 'Jobs Awarded', value: jobsCount.toString().padStart(2, '0'), img: 'public/roofers.png', color: '#Fa5a25' },
-    { title: 'Win Rate', value: `${winRate}%`, img: 'public/trophy_ic.svg', color: '#Fa5a25' },
+    { title: 'Bids Submitted', value: bidsCount.toString().padStart(2, '0'), img: '/fact_check_ic.svg', color: '#Fa5a25' },
+    { title: 'Jobs Awarded', value: jobsCount.toString().padStart(2, '0'), img: '/roofers.png', color: '#Fa5a25' },
+    { title: 'Win Rate', value: `${winRate}%`, img: '/trophy_ic.svg', color: '#Fa5a25' },
   ];
 
   const handleUpdateStatus = async (id, newStatus, payload = {}) => {

@@ -21,11 +21,11 @@ const AdminSidebar = ({ isOpen, activeTab, setActiveTab }) => {
   };
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', img: 'public/dashbord_ic.svg' },
-    { id: 'contractor', label: 'Contractor Management', img: 'public/contractor_ic.svg' },
-    { id: 'homeowner', label: 'Homeowner Management', img: 'public/profile_ic.svg' },
-    { id: 'jobs', label: 'Job & Bidding Pipeline', img: 'public/work_update_ic.svg' },
-    { id: 'pricing', label: 'Pricing Logic Management', img: 'public/rate_ic.svg' },
+    { id: 'dashboard', label: 'Dashboard', img: '/dashbord_ic.svg' },
+    { id: 'contractor', label: 'Contractor Management', img: '/contractor_ic.svg' },
+    { id: 'homeowner', label: 'Homeowner Management', img: '/profile_ic.svg' },
+    { id: 'jobs', label: 'Job & Bidding Pipeline', img: '/work_update_ic.svg' },
+    { id: 'pricing', label: 'Pricing Logic Management', img: '/rate_ic.svg' },
   ];
 
   return (

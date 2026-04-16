@@ -52,7 +52,7 @@ const AdminNotification = () => {
                 <div className="adm-noti-left">
                     <div className="adm-noti-icon-circle">
                     {/* This matches the RoofHero logo mark in the dark circle */}
-                    <img src="public/notification-img.svg" alt="icon" className="adm-noti-logo-mark" />
+                    <img src="/notification-img.svg" alt="icon" className="adm-noti-logo-mark" />
                     </div>
                     <div className="adm-noti-content">
                     <p className="adm-noti-text">{noti.text}</p>

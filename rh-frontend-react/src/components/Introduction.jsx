@@ -7,7 +7,7 @@ const Introduction = () => {
             <div className='intro-header'>
                 <p className='intro-p'>
                     Compare & Choose 
-                    <img src='public/OBJECTS.svg' alt='logo' className='tag-logo' />
+                    <img src='/OBJECTS.svg' alt='logo' className='tag-logo' />
                 </p>
                 <h1>How It Works</h1>
                 <p className='intro-sub-text'>We’ve made the process simple, fast, and fully transparent—from start to finish.</p>
@@ -17,7 +17,7 @@ const Introduction = () => {
                 <div className='stage-desc'>
                     <div className='desc-logo'>
                         <div className='desc-logo-img1'>
-                            <img src='public/home-pin-1.png' alt='Enter Address' />
+                            <img src='/home-pin-1.png' alt='Enter Address' />
                          </div>
                         <div className='desc-logo-img2'>1</div>
                     </div>
@@ -26,13 +26,13 @@ const Introduction = () => {
                 </div>
 
                 <div className='arrow-container'>
-                    <img src='public/right-arrow.svg' alt='next' className='flow-arrow' />
+                    <img src='/right-arrow.svg' alt='next' className='flow-arrow' />
                 </div>
 
                 <div className='stage-desc'>
                     <div className='desc-logo'>
                         <div className='desc-logo-img1'>
-                            <img src='public/reports.png' alt='Get Quotes' />
+                            <img src='/reports.png' alt='Get Quotes' />
                          </div>
                         <div className='desc-logo-img2'>2</div>
                     </div>
@@ -41,13 +41,13 @@ const Introduction = () => {
                 </div>
 
                 <div className='arrow-container'>
-                    <img src='public/right-arrow.svg' alt='next' className='flow-arrow' />
+                    <img src='/right-arrow.svg' alt='next' className='flow-arrow' />
                 </div>
 
                 <div className='stage-desc'>
                     <div className='desc-logo'>
                         <div className='desc-logo-img1'>
-                            <img src='public/roofers.png' alt='Choose Roofer' />
+                            <img src='/roofers.png' alt='Choose Roofer' />
                          </div>
                         <div className='desc-logo-img2'>3</div>
                     </div>

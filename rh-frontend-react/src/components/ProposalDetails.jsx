@@ -191,7 +191,7 @@ const ProposalDetails = ({ job = {}, contractor = {}, from = '/dashboard' }) => 
         <div className="modal-overlay">
           <div className="modal-box">
             <div className="modal-icon-container">
-               <img src="public/bidcard-qr.svg" alt="Reject" />
+               <img src="/bidcard-qr.svg" alt="Reject" />
             </div>
             <h2>Are you sure you want to reject this contractor?</h2>
             <p>
@@ -214,7 +214,7 @@ const ProposalDetails = ({ job = {}, contractor = {}, from = '/dashboard' }) => 
         <div className="modal-overlay">
           <div className="modal-box">
             <div className="modal-icon-container">
-               <img src="public/bidcard-qa.svg" alt="Success" />
+               <img src="/bidcard-qa.svg" alt="Success" />
             </div>
             <h2>Quote Accepted Successfully</h2>
             <p>

@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import ContractorApplication from '../models/ContractorApplication.js'
 import QuoteRequest from '../models/QuoteRequest.js'
 import { authenticate, authorize } from '../middleware/auth.js'
+import { emitContractorEvent } from '../utils/socket.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const router = express.Router()
@@ -34,10 +35,6 @@ const parseJsonOrArray = (value) => {
   }
 }
 
-const emitContractorEvent = (req, event, payload) => {
-  const io = req.app?.get('io')
-  if (io) io.emit(event, payload)
-}
 
 router.post('/apply', upload.fields([
   { name: 'avatar', maxCount: 1 },
@@ -75,7 +72,9 @@ router.post('/apply', upload.fields([
       avatarFilename: req.files?.avatar?.[0]?.filename || null,
       avatarUrl: req.files?.avatar?.[0]?.filename ? `/uploads/contractor-applications/${req.files.avatar[0].filename}` : null,
       licenseDocName: req.files?.licenseDoc?.[0]?.originalname || null,
+      licenseDocUrl: req.files?.licenseDoc?.[0]?.filename ? `/uploads/contractor-applications/${req.files.licenseDoc[0].filename}` : null,
       insuranceDocName: req.files?.insuranceDoc?.[0]?.originalname || null,
+      insuranceDocUrl: req.files?.insuranceDoc?.[0]?.filename ? `/uploads/contractor-applications/${req.files.insuranceDoc[0].filename}` : null,
       workPhotos: (req.files?.workPhotos || []).map((file) => `/uploads/contractor-applications/${file.filename}`),
       status: 'pending',
     })
@@ -162,7 +161,7 @@ router.patch('/quote-requests/:id/submit-quote', authenticate, authorize('contra
     emitContractorEvent(req, 'contractorDashboardUpdated', {
       event: 'quoteSubmitted',
       contractorIds: [contractor._id.toString()],
-      quote: quote.toObject(),
+      quoteId: quote._id,
     })
 
     return res.json({ quote })
@@ -214,7 +213,7 @@ router.patch('/quote-requests/:id/update-status', authenticate, authorize('contr
     emitContractorEvent(req, 'contractorDashboardUpdated', {
       event: 'quoteStatusUpdated',
       contractorIds: [contractor._id.toString()],
-      quote: quote.toObject(),
+      quoteId: quote._id,
     })
 
     return res.json({ quote })

@@ -54,12 +54,12 @@ const ProjectDetails = () => {
       <h2>Project details</h2>
       <div className="card-user-header">
         <div className="user-info">
-          <img src="public/user-image.png" alt={homeowner?.fullName || 'Homeowner'} className="user-img" />
+          <img src="/user-image.png" alt={homeowner?.fullName || 'Homeowner'} className="user-img" />
           <div>
             <h3>{homeowner?.fullName || 'Homeowner Name'}</h3>
             <p>
-              <img src='public/mail_ic.png' alt='mail' className='user-icons' /> {homeowner?.email || 'email@example.com'} | 
-              <img src='public/Call_ic.png' alt='call' className='user-icons' /> {homeowner?.phone || '000-000-0000'}
+              <img src='/mail_ic.png' alt='mail' className='user-icons' /> {homeowner?.email || 'email@example.com'} | 
+              <img src='/Call_ic.png' alt='call' className='user-icons' /> {homeowner?.phone || '000-000-0000'}
             </p>
           </div>
         </div>
@@ -120,7 +120,7 @@ const ProjectDetails = () => {
           {[1, 2, 3].map((_, i) => (
             <div key={i} className="doc-card">
               <div className="doc-icon-box">
-                <img src="public/pdf_ic.png" alt="pdf" />
+                <img src="/pdf_ic.png" alt="pdf" />
               </div>
               <div className="doc-info">
                 <h4>RooferCoinsurance.pdf</h4>

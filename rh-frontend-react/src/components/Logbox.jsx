@@ -50,7 +50,7 @@ const Logbox = () => {
 
   return (
     <div className='login-section'>
-      <img src='public/hero-bg.png' alt='logo' className='login-logo'/>
+      <img src='/hero-bg.png' alt='logo' className='login-logo'/>
 
       <div className='login-card'>
         <div className='login-header'>

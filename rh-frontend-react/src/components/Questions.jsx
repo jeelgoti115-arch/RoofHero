@@ -38,7 +38,7 @@ const Questions = () => {
           <div className="que-right-header">
             <p className='section-tag'>
               Ask Question 
-              <img src='public/OBJECTS.svg' alt='logo' className='tag-logo' />
+              <img src='/OBJECTS.svg' alt='logo' className='tag-logo' />
             </p>
             <h2>Frequently Asked Questions</h2>
           </div>
