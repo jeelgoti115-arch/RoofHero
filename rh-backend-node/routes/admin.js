@@ -5,6 +5,7 @@ import Homeowner from '../models/Homeowner.js'
 import QuoteRequest from '../models/QuoteRequest.js'
 import PricingLogic from '../models/PricingLogic.js'
 import { authenticate, authorize } from '../middleware/auth.js'
+import { sendContractorApprovalEmail } from '../utils/email.js'
 
 const createDashboardSample = (application) => {
   const region = Array.isArray(application.regions) && application.regions.length ? application.regions[0] : 'Sydney';
@@ -151,6 +152,17 @@ router.patch('/contractor-applications/:id/status', async (req, res, next) => {
           ...contractorData,
         })
         generatedCredentials = { username, password }
+      }
+
+      try {
+        await sendContractorApprovalEmail({
+          toEmail: application.email,
+          fullName: application.fullName,
+          username: generatedCredentials.username,
+          password: generatedCredentials.password,
+        })
+      } catch (emailError) {
+        console.error('Failed to send contractor approval email:', emailError)
       }
     }
 
