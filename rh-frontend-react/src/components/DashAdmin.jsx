@@ -128,11 +128,21 @@ const DashAdmin = () => {
       });
 
       if (!response.ok) {
-        const body = await response.json();
-        throw new Error(body.message || 'Unable to update status');
+        let errorBody = null;
+        try {
+          errorBody = await response.json();
+        } catch (parseError) {
+          console.error('Failed to parse error response:', parseError);
+        }
+        throw new Error(errorBody?.message || 'Unable to update status');
       }
 
-      await response.json();
+      try {
+        await response.json();
+      } catch (parseError) {
+        console.warn('Response JSON parse failed after successful status update:', parseError);
+      }
+
       setSelectedContractor(null);
       setRefreshKey((prev) => prev + 1);
     } catch (error) {

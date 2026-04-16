@@ -662,12 +662,13 @@
 
 /* --- The Card Item --- */
 .bid-card-item {
-  min-width: calc(33.333% - 14px); /* Show exactly 3 cards */
+  min-width: calc(33.333% - 14px); /* Show exactly 3 cards */  
+  max-width: 340px;
   background: white;
   border-radius: 15px;
   padding: 22px;
   border: 1px solid #f0f0f0;
-  flex-shrink: 0; /* Prevents squishing */
+  flex: 0 0 340px ; /* Prevents squishing */
 }
 
 .card-top-row {

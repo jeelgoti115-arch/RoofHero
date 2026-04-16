@@ -447,7 +447,7 @@ const CManagement = () => {
               <div className="da-cm-prof-name-block">
                 <h2 className="da-cm-prof-name">{selectedContractor.name}</h2>
                 <div className="da-cm-prof-sub-info">
-                  <span className="da-cm-verified"><img src='/Vector.png' alt='v' /> Verified Contractor</span>
+                  <span className="da-cm-verified"><img src='/book-vector-3.png' alt='v' /> Verified Contractor</span>
                   <span className="da-cm-verified"><img src='/mail_ic.png' alt='m' /> {selectedContractor.email}</span>
                   <span className="da-cm-verified"><img src='/Call_ic.png' alt='c' /> {selectedContractor.mobile}</span>
                 </div>
