@@ -456,7 +456,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
                     </div>
                   </div>
                 </div>
-                <div className="card-price">${item.price}</div>
+                <div className="card-price">{item.price}</div>
               </div>
   
               <div className="service-tag">{item.status === 'Pending Review' ? 'Bid Submitted' : item.status === 'New Arrival' ? 'Awaiting Bid' : 'Roof Replacement'}</div>
@@ -469,7 +469,7 @@ const BiddingInProgressView = ({ job, onBack, availableContractors, loadingContr
                 </div>
                 <div className="col">
                   <label>PRICE PER SQUARE:</label>
-                  <span>${item.pricePerSq}</span>
+                  <span>{item.pricePerSq}</span>
                 </div>
               </div>
               {item.proposalMessage && (

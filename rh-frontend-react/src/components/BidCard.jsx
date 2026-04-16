@@ -204,7 +204,7 @@ const BidCard = ({ quote, onQuoteUpdated }) => {
                 </div>
                 <div className="col">
                   <label>PRICE PER SQUARE:</label>
-                  <span>${item.pricePerSq}</span>
+                  <span>{item.pricePerSq}</span>
                 </div>
               </div>
 
