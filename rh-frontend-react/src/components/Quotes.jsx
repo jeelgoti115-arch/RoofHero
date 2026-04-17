@@ -14,7 +14,7 @@ const Quotes = () => {
             desc: 'Only licensed, experienced roofers with proven local track records.'
         },
         {
-            img: '/connect.png',
+            img: '/Connect.png',
             title: 'Free to Connect',
             desc: "Zero fees to connect with Sydney's top-rated roofing professionals."
         },
@@ -37,34 +37,36 @@ const Quotes = () => {
 
     return (
         <div className='quotes'>
-            <div className='quote-header'>
-                <div className='sub-quote-header'>
-                    <p>
-                        Smart Roofing, Simplified
-                        <img src='/smart_roofing_arrow.svg' alt='arrow' className='tag-logo' />
-                    </p>
-                    <h1>Instant Quotes. Vetted Roofers. Best Prices.</h1>
-                </div>
-                <div className='quote-header-btn'>
-                    <button className="cta-btn-quote">
-                        Get Quotes Now
-                        <RiArrowRightUpLine size={20} />
-                    </button>
-                </div>
-            </div>
-
-            <div className='main-quote-grid'>
-                {quoteData.map((item, index) => (
-                    <div className='quote-card' key={index}>
-                        <div className='report-img'>
-                            <img src={item.img} alt={item.title} />
-                        </div>
-                        <div className='quote-card-text'>
-                            <p>{item.title}</p>
-                            <p>{item.desc}</p>
-                        </div>
+            <div className="main-quote-box">
+                <div className='quote-header'>
+                    <div className='sub-quote-header'>
+                        <p>
+                            Smart Roofing, Simplified
+                            <img src='/smart_roofing_arrow.svg' alt='arrow' className='tag-logo' />
+                        </p>
+                        <h1>Instant Quotes. Vetted Roofers. Best Prices.</h1>
                     </div>
-                ))}
+                    <div className='quote-header-btn'>
+                        <button className="cta-btn-quote">
+                            Get Quotes Now
+                            <RiArrowRightUpLine size={20} />
+                        </button>
+                    </div>
+                </div>
+
+                <div className='main-quote-grid'>
+                    {quoteData.map((item, index) => (
+                        <div className='quote-card' key={index}>
+                            <div className='report-img'>
+                                <img src={item.img} alt={item.title} />
+                            </div>
+                            <div className='quote-card-text'>
+                                <p>{item.title}</p>
+                                <p>{item.desc}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     )

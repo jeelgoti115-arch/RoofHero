@@ -21,7 +21,7 @@ body{
 .service-section {
   width: 100%;
   margin: 0 auto;
-  padding: 40px 20px; 
+  padding: 31px 16px; 
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -32,8 +32,8 @@ body{
   background-position: center;
   background-size: cover;
   width: 100%;
-  border-radius: 24px;
-  padding: 60px 15px; 
+  border-radius: 19px;
+  padding: 47px 12px; 
   display: flex;
   justify-content: center;
   text-align: center;
@@ -43,11 +43,11 @@ body{
 
 .hero-content {
   width: 100%;
-  max-width: 850px;
+  max-width: 663px;
 }
 
 .hero-content h1 {
-  font-size: 28px; 
+  font-size: 22px; 
   font-weight: 800;
   margin-bottom: 12px;
   letter-spacing: -0.5px;
@@ -55,9 +55,9 @@ body{
 }
 
 .hero-subtitle {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 500;
-  margin-bottom: 30px;
+  margin-bottom: 23px;
   opacity: 0.9;
   line-height: 1.4;
 }
@@ -66,20 +66,20 @@ body{
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
   width: 100%;
 }
 
 .textarea {
   background-color: #f6f2e6;
   border: none;
-  border-radius: 15px;
-  padding: 16px 20px;
-  font-size: 16px;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 12px;
   color: var(--primary);
   width: 100%;
-  max-width: 800px;
-  min-height: 56px; 
+  max-width: 624px;
+  min-height: 44px; 
   resize: none;
   outline: none;
   box-sizing: border-box;
@@ -90,17 +90,17 @@ body{
   background-color: var(--accent);
   color: white;
   border: none;
-  padding: 16px 35px;
-  border-radius: 50px;
+  padding: 12px 27px;
+  border-radius: 39px;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   cursor: pointer;
   width: 100%;
-  max-width: 300px;
+  max-width: 234px;
   transition: transform 0.2s ease;
 }
 
@@ -109,7 +109,7 @@ body{
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  margin-top: 30px;
+  margin-top: 23px;
   width: 100%;
 }
 
@@ -119,16 +119,16 @@ body{
   gap: 12px;
   background-color: #F6F2EC;
   border-radius: 12px;
-  padding: 15px;
+  padding: 12px;
   box-sizing: border-box;
   flex: 1 1 100%; 
-  min-width: 240px; 
+  min-width: 187px; 
 }
 
 .service-card p {
   font-weight: 700;
   color: var(--primary);
-  font-size: 14px;
+  font-size: 11px;
   margin: 0;
   white-space: normal; 
   line-height: 1.2;
@@ -136,8 +136,8 @@ body{
 }
 
 .hero-icon {
-  height: 28px;
-  width: 28px;
+  height: 22px;
+  width: 22px;
   background: var(--accent);
   border-radius: 50%;
   display: flex;
@@ -147,33 +147,33 @@ body{
   flex-shrink: 0;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 468px) {
   .service-card {
     flex: 1 1 calc(50% - 12px);
     max-width: calc(50% - 12px);
   }
   
   .hero-content h1 {
-    font-size: 36px;
+    font-size: 28px;
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 799px) {
   .service-section {
-    padding: 40px 60px;
+    padding: 31px 47px;
   }
 
   .service-hero {
-    border-radius: 40px;
-    padding: 100px 20px;
+    border-radius: 31px;
+    padding: 78px 16px;
   }
 
   .hero-content h1 {
-    font-size: 48px;
+    font-size: 37px;
   }
 
   .hero-subtitle {
-    font-size: 16px;
+    font-size: 12px;
   }
 
   .cta-btn-service {
@@ -181,24 +181,24 @@ body{
   }
 
   .s-cards {
-    gap: 20px;
-    margin-top: 50px;
+    gap: 16px;
+    margin-top: 39px;
   }
 
   .service-card {
-    flex: 1 1 calc(25% - 20px);
-    max-width: calc(25% - 20px);
-    padding: 20px;
+    flex: 1 1 calc(25% - 16px);
+    max-width: calc(25% - 16px);
+    padding: 16px;
   }
 
   .service-card p {
-    font-size: 15px;
+    font-size: 12px;
     white-space: nowrap; 
   }
 
   .hero-icon {
-    height: 32px;
-    width: 32px;
+    height: 25px;
+    width: 25px;
   }
 }
 
@@ -206,7 +206,7 @@ body{
 
 .sho-section {
   width: 100%;
-  padding: 40px 20px;
+  padding: 31px 16px;
   background-color: #ffffff;
   display: flex;
   justify-content: center;
@@ -215,10 +215,11 @@ body{
 
 .sho-container {
   width: 100%;
+  margin: 0 180px;
   display: flex;
   flex-direction: column; 
   align-items: flex-start;
-  gap: 30px; 
+  gap: 23px; 
 }
 
 .sho-left-box {
@@ -229,7 +230,7 @@ body{
 .sho-img {
   width: 100%;
   height: auto;
-  border-radius: 20px; 
+  border-radius: 16px; 
   display: block;
   object-fit: cover;
 }
@@ -241,17 +242,17 @@ body{
 
 .sho-header h2 {
   color: var(--primary);
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 800;
   line-height: 1.2;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .sho-content p {
   color: #4a5568; 
-  font-size: 15px;
+  font-size: 12px;
   line-height: 1.6;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .sho-subheading {
@@ -268,10 +269,10 @@ body{
 
 .sho-list li {
   color: #4a5568;
-  font-size: 15px;
+  font-size: 12px;
   line-height: 1.6;
   position: relative;
-  padding-left: 20px;
+  padding-left: 16px;
   margin-bottom: 10px;
 }
 
@@ -283,34 +284,34 @@ body{
   font-weight: bold;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 774px) {
   .sho-section {
-    padding: 80px 20px;
+    padding: 62px 16px;
   }
 
   .sho-container {
     flex-direction: row;
     align-items: center;
-    gap: 60px;
+    gap: 47px;
   }
 
   .sho-img {
-    border-radius: 30px;
+    border-radius: 23px;
   }
 
   .sho-header h2 {
-    font-size: 36px;
-    margin-bottom: 25px;
+    font-size: 28px;
+    margin-bottom: 20px;
   }
 
   .sho-content p, .sho-list li {
-    font-size: 16px;
+    font-size: 12px;
   }
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1092px) {
   .sho-section {
-    padding: 100px 0;
+    padding: 78px 0;
   }
 }
 
@@ -318,7 +319,7 @@ body{
 
 .assigned-section {
   background-color: #f6f2e6;
-  padding: 60px 20px;
+  padding: 47px 16px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -328,21 +329,21 @@ body{
 
 .as-header {
   text-align: center;
-  max-width: 800px;
-  margin-bottom: 40px;
+  max-width: 624px;
+  margin-bottom: 31px;
 }
 
 .as-header h1 {
   color: var(--primary);
-  font-size: 32px;
+  font-size: 25px;
   font-weight: 800;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   line-height: 1.2;
 }
 
 .as-header p {
   color: #676767;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 500;
   opacity: 0.8;
   line-height: 1.5;
@@ -351,14 +352,14 @@ body{
 .as-grid-container {
   display: grid;
   grid-template-columns: 1fr; 
-  gap: 40px; 
-  width: 100%;
+  gap: 31px; 
+  width: 60%;
 }
 
 .as-card {
   display: flex;
   align-items: flex-start;
-  gap: 16px; 
+  gap: 12px; 
 }
 
 .as-icon-box {
@@ -367,69 +368,69 @@ body{
 }
 
 .as-icon-box img {
-  width: 22px;
-  height: 22px;
+  width: 17px;
+  height: 17px;
   display: block;
 }
 
 .as-card-content h3 {
   color: var(--primary);
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
   margin: 0 0 8px 0;
 }
 
 .as-card-content p {
   color: #4a5568;
-  font-size: 14px;
+  font-size: 11px;
   line-height: 1.6;
   margin: 0;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 799px) {
   .assigned-section {
-    padding: 100px 60px;
+    padding: 78px 47px;
   }
 
   .as-header {
-    margin-bottom: 80px;
+    margin-bottom: 62px;
   }
 
   .as-header h1 {
-    font-size: 48px;
+    font-size: 37px;
   }
 
   .as-header p {
-    font-size: 16px;
+    font-size: 12px;
   }
 
   .as-grid-container {
     grid-template-columns: 1fr 1fr; 
-    gap: 60px 80px; 
+    gap: 47px 62px; 
   }
 
   .as-card {
-    gap: 20px;
+    gap: 16px;
   }
 
   .as-icon-box img {
-    width: 24px;
-    height: 24px;
+    width: 19px;
+    height: 19px;
   }
 
   .as-card-content h3 {
-    font-size: 22px;
+    font-size: 17px;
   }
 
   .as-card-content p {
-    font-size: 15px;
+    font-size: 12px;
   }
 }
 
 /* Roofing Companies */
 .companies-section {
   width: 100%;
-  padding: 80px 20px;
+  padding: 62px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -438,27 +439,27 @@ body{
 
 .companies-header {
   text-align: center;
-  max-width: 800px;
-  margin-bottom: 50px;
+  max-width: 624px;
+  margin-bottom: 39px;
 }
 
 .companies-header h1 {
   color: var(--primary);
-  font-size: 42px;
+  font-size: 33px;
   font-weight: 800;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .companies-header p {
   color: #676767;
-  font-size: 15px;
+  font-size: 12px;
   line-height: 1.6;
 }
 
 .table-container {
   width: 100%;
   border: 1px solid #E0E0E0;
-  border-radius: 20px; 
+  border-radius: 16px; 
   overflow: hidden; 
 }
 
@@ -474,16 +475,16 @@ body{
 }
 
 .roofing-table th {
-  padding: 20px 30px;
+  padding: 16px 23px;
   color: var(--primary);
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 700;
 }
 
 .roofing-table td {
-  padding: 20px 30px;
+  padding: 16px 23px;
   color: #676767;
-  font-size: 15px;
+  font-size: 12px;
   border-top: 1px solid #F0F0F0; 
 }
 
@@ -511,8 +512,8 @@ body{
 
 /* Customer Testimonial */
 .ct-section {
-  background-color: #F6F2EC; 
-  padding: 100px 20px;
+  background-color: #F6F2EC;
+  padding: 78px 16px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -528,21 +529,21 @@ body{
 
 .ct-header {
   text-align: center;
-  max-width: 800px;
-  margin-bottom: 60px;
+  max-width: 624px;
+  margin-bottom: 47px;
 }
 
 .ct-header h1 {
   color: var(--primary);
-  font-size: 48px;
+  font-size: 37px;
   font-weight: 800;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   letter-spacing: -1px;
 }
 
 .ct-header p {
   color: #676767;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 1.5;
   font-weight: 500;
 }
@@ -550,15 +551,15 @@ body{
 .ct-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
-  gap: 30px;
+  gap: 23px;
   width: 100%;
 }
 
 .ct-card {
   background-color: #ffffff;
-  padding: 40px;
-  border-radius: 24px; 
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); 
+  padding: 31px;
+  border-radius: 19px; 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -567,41 +568,41 @@ body{
 
 .ct-card-desc {
   color: #4A5568;
-  font-size: 15px;
+  font-size: 12px;
   line-height: 1.6;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   font-weight: 500;
 }
 
 .ct-card-author {
   color: var(--primary);
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 800; 
   margin: 0;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 799px) {
   .ct-grid {
     grid-template-columns: 1fr 1fr; 
   }
   .ct-header h1 {
-    font-size: 36px;
+    font-size: 28px;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 599px) {
   .ct-grid {
     grid-template-columns: 1fr;
   }
   .ct-section {
-    padding: 60px 20px;
+    padding: 47px 16px;
   }
 }
 
 /* Service Questions */
 .sq-section {
   background-color: var(--primary); 
-  padding: 100px 20px;
+  padding: 78px 16px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -617,35 +618,35 @@ body{
 
 .sq-top-box {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 39px;
 }
 
 .sq-top-box h1 {
   color: #ffffff;
-  font-size: 48px;
+  font-size: 37px;
   font-weight: 800;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .sq-top-box p {
   color: #ffffff;
   opacity: 0.7;
-  font-size: 16px;
-  max-width: 600px;
+  font-size: 12px;
+  max-width: 468px;
   margin: 0 auto;
 }
 
 .sq-accordion-container {
-  width: 100%;
+  width: 60%;
   display: flex;
   flex-direction: column;
-  gap: 15px; 
+  gap: 12px; 
 }
 
 .sq-item {
   background-color: #ffffff;
-  border-radius: 20px;
-  padding: 30px 40px;
+  border-radius: 16px;
+  padding: 23px 31px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -654,19 +655,19 @@ body{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .sq-question-row h3 {
   color: var(--primary);
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   margin: 0;
 }
 
 .sq-icon-circle {
-  width: 34px;
-  height: 34px;
+  width: 27px;
+  height: 27px;
   background-color: var(--primary);
   color: #ffffff;
   border-radius: 50%;
@@ -677,28 +678,28 @@ body{
 }
 
 .sq-answer-row {
-  margin-top: 20px;
+  margin-top: 16px;
   padding-top: 10px;
 }
 
 .sq-answer-row p {
   color: #4A5568;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 1.6;
   margin: 0;
 }
 
-@media (max-width: 768px) {
-  .sq-top-box h1 { font-size: 32px; }
-  .sq-item { padding: 20px; }
-  .sq-question-row h3 { font-size: 16px; }
+@media (max-width: 599px) {
+  .sq-top-box h1 { font-size: 25px; }
+  .sq-item { padding: 16px; }
+  .sq-question-row h3 { font-size: 12px; }
 }
 
 /* Service Instruction */
 
 .si-section {
   background-color: #F6F2EC;
-  padding: 80px 20px;
+  padding: 62px 16px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -714,9 +715,9 @@ body{
 
 .si-map-wrapper {
   width: 100%;
-  max-width: 900px;
-  margin-bottom: 50px;
-  border-radius: 30px;
+  max-width: 702px;
+  margin-bottom: 39px;
+  border-radius: 23px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
@@ -729,38 +730,38 @@ body{
 
 .si-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 31px;
 }
 
 .si-header h1 {
   color: var(--primary);
-  font-size: 42px;
+  font-size: 33px;
   font-weight: 800;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   letter-spacing: -1px;
 }
 
 .si-header p {
   color: #676767;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 500;
 }
 
 .si-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
+  gap: 20px;
   width: 100%;
-  max-width: 900px;
+  max-width: 702px;
 }
 
 .si-card {
   background-color: var(--primary); 
   color: #ffffff;
-  padding: 25px;
-  border-radius: 20px;
+  padding: 20px;
+  border-radius: 16px;
   text-align: center;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.2s ease, background-color 0.2s ease;
@@ -771,35 +772,34 @@ body{
   background-color: #1a352e;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 702px) {
   .si-cards-grid {
     grid-template-columns: 1fr; 
-    gap: 15px;
+    gap: 12px;
   }
   
   .si-header h1 {
-    font-size: 32px;
+    font-size: 25px;
   }
 
   .si-map-wrapper {
-    border-radius: 20px;
+    border-radius: 16px;
   }
 }
 
 /* Availability and Promise */
 .anp {
-  padding: 80px 0;
+  padding: 62px 155px;
   background-color: var(--regular);
-  width: 100%;
 }
 
 .main-box-anp {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 60px;
+  gap: 47px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 31px;
   box-sizing: border-box;
 }
 
@@ -813,15 +813,15 @@ body{
   align-items: center;
   font-weight: 600;
   letter-spacing: 1.5px;
-  font-size: 14px;
-  margin-bottom: 20px;
+  font-size: 11px;
+  margin-bottom: 16px;
   text-transform: uppercase;
 }
 
 .left-box-anp h1 {
-  font-size: 48px;
+  font-size: 37px;
   font-weight: 800;
-  margin: 0 0 24px 0;
+  margin: 0 0 19px 0;
   line-height: 1.1;
   color: var(--primary);
 }
@@ -829,12 +829,12 @@ body{
 .text-content-anp {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .left-anp {
   color: #676767;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 1.6;
   margin: 0;
 }
@@ -842,9 +842,9 @@ body{
 .right-box-anp {
   flex-shrink: 0;
   width: 100%;
-  max-width: 615px;
+  max-width: 480px;
   aspect-ratio: 1 / 1; 
-  border-radius: 24px;
+  border-radius: 19px;
   background: linear-gradient(180deg, rgba(18, 38, 33, 1) 0%, rgba(18, 38, 33, 0) 100%), url(' /Rectangle 5678.png');
   background-repeat: no-repeat;
   background-size: cover;
@@ -858,38 +858,38 @@ body{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 50px; 
+  padding: 39px; 
   box-sizing: border-box;
 }
 
 .anp-right-div-text h4 {
   color: white;
   font-weight: 700;
-  font-size: 38px;
+  font-size: 30px;
   line-height: 1.2;
   margin: 0;
-  max-width: 500px;
+  max-width: 390px;
 }
 
 .anp-right-div-text p {
   color: white;
   font-weight: 700;
-  font-size: 18px;
-  line-height: 28px;
+  font-size: 14px;
+  line-height: 22px;
   margin: 0;
-  max-width: 500px;
+  max-width: 390px;
 }
 
 .cta-btn-anp {
   color: white;
   background-color: var(--accent);
-  border-radius: 50px;
-  padding: 16px 32px;
+  border-radius: 39px;
+  padding: 12px 25px;
   display: inline-flex;
   align-items: center;
   gap: 10px;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 12px;
   border: none;
   width: fit-content;
   align-self: flex-end; 
@@ -898,23 +898,23 @@ body{
   white-space: nowrap;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 936px) {
   .left-box-anp h1 {
-    font-size: 38px;
+    font-size: 30px;
   }
   .right-box-anp {
-    max-width: 500px;
+    max-width: 390px;
   }
   .anp-right-div p {
-    font-size: 30px;
+    font-size: 23px;
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 799px) {
   .main-box-anp {
     flex-direction: column; 
-    gap: 40px;
-    padding: 0 20px;
+    gap: 31px;
+    padding: 0 16px;
   }
 
   .left-box-anp {
@@ -924,16 +924,16 @@ body{
   .right-box-anp {
     max-width: 100%;
     aspect-ratio: auto; 
-    min-height: 450px; 
+    min-height: 351px; 
   }
 
   .anp-right-div {
-    padding: 40px 30px;
-    gap: 60px; 
+    padding: 31px 23px;
+    gap: 47px; 
   }
 
   .anp-right-div p {
-    font-size: 28px;
+    font-size: 22px;
   }
 
   .cta-btn-anp {
@@ -943,39 +943,39 @@ body{
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 374px) {
   .anp {
-    padding: 50px 0;
+    padding: 39px 0;
   }
   .left-box-anp h1 {
-    font-size: 32px;
+    font-size: 25px;
   }
   .left-anp {
-    font-size: 16px;
+    font-size: 12px;
   }
   .right-box-anp {
-    min-height: 380px;
+    min-height: 296px;
   }
   .anp-right-div p {
-    font-size: 24px;
+    font-size: 19px;
   }
 }
 
 /* ============================================================
    ADDITIONAL RESPONSIVE ENHANCEMENTS - HOMEOWNER PAGES
    ============================================================ */
-@media (max-width: 600px) {
+@media (max-width: 468px) {
   .service-section {
-    padding: 30px 15px;
+    padding: 23px 12px;
   }
 
   .service-hero {
-    padding: 50px 15px;
-    border-radius: 20px;
+    padding: 39px 12px;
+    border-radius: 16px;
   }
 
   .hero-content h1 {
-    font-size: 24px;
+    font-size: 19px;
   }
 
   .hero-subtitle {
@@ -984,7 +984,7 @@ body{
 
   .s-cards {
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 16px;
     flex-direction: column;
   }
 
@@ -995,22 +995,22 @@ body{
   }
 
   .cta-btn-service {
-    padding: 14px 25px;
-    font-size: 14px;
+    padding: 11px 20px;
+    font-size: 11px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 374px) {
   .assigned-section {
-    padding: 40px 15px;
+    padding: 31px 12px;
   }
 
   .as-header h1 {
-    font-size: 26px;
+    font-size: 20px;
   }
 
   .as-grid-container {
-    gap: 30px;
+    gap: 23px;
   }
 
   .as-card {
@@ -1018,12 +1018,12 @@ body{
   }
 
   .as-icon-box img {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
   }
 
   .as-card-content h3 {
-    font-size: 18px;
+    font-size: 14px;
   }
 
   .as-card-content p {
@@ -1031,46 +1031,46 @@ body{
   }
 
   .ct-header h1 {
-    font-size: 36px;
+    font-size: 28px;
   }
 
   .ct-card {
-    padding: 25px;
+    padding: 20px;
   }
 
   .companies-header h1 {
-    font-size: 32px;
+    font-size: 25px;
   }
 
   .roofing-table th,
   .roofing-table td {
-    padding: 12px 15px;
+    padding: 12px 12px;
     font-size: 12px;
   }
 
   .table-container {
-    border-radius: 15px;
+    border-radius: 12px;
   }
 
   .sq-top-box h1 {
-    font-size: 36px;
+    font-size: 28px;
   }
 
   .faq-item {
-    padding: 15px;
+    padding: 12px;
   }
 
   .faq-que p {
-    font-size: 15px;
+    font-size: 12px;
   }
 
   .sq-icon-circle {
-    width: 30px;
-    height: 30px;
+    width: 23px;
+    height: 23px;
   }
 
   .si-header h1 {
-    font-size: 32px;
+    font-size: 25px;
   }
 
   .si-cards-grid {
@@ -1078,7 +1078,7 @@ body{
   }
 
   .si-card {
-    padding: 20px;
-    font-size: 16px;
+    padding: 16px;
+    font-size: 12px;
   }
 }

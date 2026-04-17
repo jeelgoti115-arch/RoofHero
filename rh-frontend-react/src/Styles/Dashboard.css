@@ -33,30 +33,30 @@
 }
 
 .dashboard-body {
-  padding: 0 28px;
+  padding: 0 16px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 800;
   color: var(--text-dark);
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .section-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 /* Optional: Highlight the notification button when active */
 .notification-badge.active {
   background: rgba(18, 38, 33, 0.1);
-  border-radius: 50px;
+  border-radius: 39px;
 }
 
 .animate-fade {
@@ -72,7 +72,7 @@
    3. SIDEBAR SECTION (Sidebar.jsx)
    ============================================================ */
 .sidebar-container {
-  width: 240px;
+  width: 187px;
   height: 100vh;
   background-color: #FAF8F5;
   border-right: 1px solid var(--border-color);
@@ -95,17 +95,17 @@
 }
 
 .sidebar-logo {
-  padding: 25px 20px 10px 20px; /* Reduced bottom padding */
+  padding: 20px 16px 10px 16px; /* Reduced bottom padding */
   display: flex;
   align-items: center;
 }
 
 .sidebar-logo img {
-  width: 150px; /* Adjusted to match scale */
+  width: 117px; /* Adjusted to match scale */
 }
 
 .sidebar-menu {
-  padding: 10px 15px;
+  padding: 10px 12px;
   /* Removed flex: 1; to stop it from pushing the footer to the bottom */
 }
 
@@ -113,17 +113,17 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 18px;
+  padding: 12px 14px;
   color: #fff;
   cursor: pointer;
   border-radius: 12px;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 500;
 }
 
 .nav-item img{
-  height: 24px;
-  width: 24px;
+  height: 19px;
+  width: 19px;
 }
 
 /* The dark "Dashboard" button style */
@@ -139,7 +139,7 @@
 
 .sidebar-footer {
   /* Removed margin-top: auto; to pull the logout button up */
-  padding: 10px 25px 30px 25px; 
+  padding: 10px 20px 23px 20px; 
 }
 
 .logout-btn {
@@ -150,7 +150,7 @@
   align-items: center;
   gap: 12px;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 11px;
   cursor: pointer;
   padding-left: 10px;
   transition: opacity 0.2s;
@@ -169,12 +169,12 @@
    4. HEADER SECTION (DashboardHeader.jsx)
    ============================================================ */
 .dashboard-header {
-  height: 64px;
+  height: 50px;
   background: #FAF8F5;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 24px;
+  padding: 0 19px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -188,14 +188,14 @@
 .header-right {
   display: flex;
   align-items: center;
-  gap: 15px; /* Adjust gap to match your design */
+  gap: 12px; /* Adjust gap to match your design */
 }
 
 .notification-badge {
   position: relative;
   background: #e8eceb; /* Matches the light gray/greenish tint in image */
-  width: 40px;  /* Same as profile picture */
-  height: 40px; /* Same as profile picture */
+  width: 31px;  /* Same as profile picture */
+  height: 31px; /* Same as profile picture */
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -206,30 +206,30 @@
 }
 
 .notification-badge img {
-    width: 16px;
-    height: 20px;
+    width: 12px;
+    height: 16px;
 }
 
 /* The Bell Icon inside the badge */
 .notification-badge svg {
   color: var(--text-dark); /* Dark forest green color of the bell */
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 .dot {
   position: absolute;
   top: 0;      /* Adjusted to sit on the edge of the circle */
   right: 0;    /* Adjusted to sit on the edge of the circle */
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   background: var(--accent); /* RoofHero Orange */
   border-radius: 50%;
 }
 
 .header-avatar {
-  width: 40px;
-  height: 40px;
+  width: 31px;
+  height: 31px;
   border-radius: 50%;
   object-fit: cover;
   display: block; /* Removes any baseline spacing */
@@ -241,28 +241,28 @@
 .dashboard-grid-top {
   display: grid;
   grid-template-columns: 2.2fr 1fr;
-  gap: 25px;
-  margin-bottom: 40px;
+  gap: 14px;
+  margin-bottom: 23px;
 }
 
 .project-details-card {
   background: var(--white);
-  border-radius: 15px;
-  padding: 30px;
+  border-radius: 12px;
+  padding: 19px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.02);
 }
 
 .card-user-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 25px;
+  margin-bottom: 16px;
 }
 
 .user-img {
-  width: 55px;
-  height: 55px;
+  width: 39px;
+  height: 39px;
   border-radius: 50%;
-  margin-right: 15px;
+  margin-right: 12px;
 }
 
 .user-info{
@@ -272,27 +272,27 @@
 
 .user-info h3 {
   font-weight: 800;
-  font-size: 18px;
-  margin-bottom: 5px;
+  font-size: 12px;
+  margin-bottom: 4px;
 }
 
 .user-info p {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-gray);
   align-items: center;
   display: flex;
-  gap: 5px;
+  gap: 4px;
 }
 .user-icons{
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
 }
 .status-tag {
   background: #e9f7ef;
   color: #27ae60;
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 11px;
   font-weight: 700;
   height: fit-content;
 }
@@ -311,13 +311,13 @@
 .project-images-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin: 25px 0 35px 0;
+  gap: 10px;
+  margin: 16px 0 23px 0;
 }
 
 .project-images-grid img {
   width: 100%;
-  height: 120px;
+  height: 78px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -327,27 +327,27 @@
    ============================================================ */
 .account-manager-card {
   background: var(--white);
-  border-radius: 15px;
-  padding: 25px;
-  box-shadow: 0 12px 32px rgba(18, 38, 33, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 12px 25px rgba(18, 38, 33, 0.05);
 }
 
 .account-manager-card h4 {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 800;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .manager-profile {
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .manager-profile img {
-  width: 50px;
-  height: 50px;
+  width: 39px;
+  height: 39px;
   border-radius: 50%;
 }
 
@@ -360,14 +360,14 @@
 }
 
 .manager-details img{
-  height: 14px;
-  width: 14px;
+  height: 11px;
+  width: 11px;
 }
 
 .divider {
   border: 0;
   border-top: 1px solid var(--border-color);
-  margin: 20px 0;
+  margin: 16px 0;
 }
 
 /* ============================================================
@@ -375,26 +375,26 @@
    ============================================================ */
 .contractor-status-container {
   text-align: center;
-  padding: 20px 0;
+  padding: 16px 0;
 }
 
 .contractor-status-container img{
-  height: 150px;
-  width: 150px;
+  height: 117px;
+  width: 117px;
 }
 
 .accepted-card {
   border: 1px solid rgba(250, 90, 37, 0.15);
-  border-radius: 20px;
-  padding: 22px;
+  border-radius: 16px;
+  padding: 17px;
 }
 
 .accepted-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .section-overline {
@@ -410,13 +410,13 @@
 .accepted-contractor-profile {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
 }
 
 .accepted-contractor-avatar {
-  width: 75px;
-  height: 75px;
-  border-radius: 18px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
   object-fit: cover;
   border: 1px solid #f2f2f2;
 }
@@ -426,7 +426,7 @@
 }
 
 .contractor-name {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 800;
   margin-bottom: 10px;
 }
@@ -444,32 +444,32 @@
   font-size: 13px;
   color: #4f4f4f;
   background: #f8f5f1;
-  padding: 10px 14px;
+  padding: 10px 11px;
   border-radius: 12px;
 }
 
 .contractor-contact-row img {
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
 }
 
 .accepted-details-card {
   background: #fcf2e9;
-  border-radius: 18px;
-  padding: 20px;
+  border-radius: 14px;
+  padding: 16px;
 }
 
 .accepted-status {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .accepted-status p {
   flex: 1;
-  font-size: 14px;
+  font-size: 11px;
   color: #5f5f5f;
   margin: 0;
 }
@@ -478,8 +478,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 14px;
-  border-radius: 999px;
+  padding: 8px 11px;
+  border-radius: 779px;
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
@@ -494,13 +494,13 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .accepted-bid-item {
-  background: white;
-  border-radius: 16px;
-  padding: 16px;
+  background: var(--white);
+  border-radius: 12px;
+  padding: 12px;
   border: 1px solid #f2f2f2;
 }
 
@@ -513,7 +513,7 @@
 }
 
 .accepted-bid-item p {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 800;
   margin: 0;
   color: var(--text-dark);
@@ -521,8 +521,8 @@
 
 .accepted-proposal-section {
   background: white;
-  border-radius: 16px;
-  padding: 18px;
+  border-radius: 12px;
+  padding: 14px;
   border: 1px solid #f2f2f2;
 }
 
@@ -536,21 +536,21 @@
 
 .accepted-proposal-section p {
   margin: 0;
-  font-size: 14px;
+  font-size: 11px;
   color: #525252;
   line-height: 1.7;
 }
 
 .no-accepted-bid-card {
   background: #f9f7f5;
-  border-radius: 16px;
-  padding: 18px;
+  border-radius: 12px;
+  padding: 14px;
   border: 1px dashed rgba(250, 90, 37, 0.35);
 }
 
 .no-accepted-bid-card h4 {
   margin-top: 0;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 800;
 }
 
@@ -563,12 +563,12 @@
 
 .manager-loading,
 .manager-error {
-  font-size: 14px;
+  font-size: 11px;
   color: #4f4f4f;
-  padding: 16px 0;
+  padding: 12px 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 599px) {
   .accepted-card-header {
     flex-direction: column;
     align-items: flex-start;
@@ -590,14 +590,14 @@
 
 /* --- Status Text --- */
 .status-text h3 {
-  font-size: 22px;
+  font-size: 17px;
   font-weight: 800;
   color: var(--text-dark);
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .status-text p {
-  font-size: 14px;
+  font-size: 11px;
   color: var(--text-gray);
   line-height: 1.6;
   padding: 0 10px;
@@ -606,18 +606,18 @@
 /* --- Contractor Bids Container --- */
 .contractor-bids-section {
   width: 100%;
-  padding: 20px 0;
+  padding: 16px 0;
 }
 
 .bids-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .section-title {
-  font-size: 24px;
+  font-size: 17px;
   font-weight: 800;
   color: var(--text-dark);
 }
@@ -625,12 +625,12 @@
 /* --- Carousel Buttons --- */
 .carousel-nav {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .nav-arrow {
-  width: 35px;
-  height: 35px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   border: 1px solid #ddd;
   background: white;
@@ -649,11 +649,11 @@
 /* --- The Slider Track --- */
 .bids-slider-track {
   display: flex;
-  gap: 20px;
+  gap: 12px;
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none; /* Firefox */
-  padding: 5px;
+  padding: 4px;
 }
 
 .bids-slider-track::-webkit-scrollbar {
@@ -662,20 +662,20 @@
 
 /* --- The Card Item --- */
 .bid-card-item {
-  min-width: calc(33.333% - 14px); /* Show exactly 3 cards */  
-  max-width: 340px;
+  min-width: calc(33.333% - 12px); /* Show exactly 3 cards */  
+  max-width: 234px;
   background: white;
-  border-radius: 15px;
-  padding: 22px;
+  border-radius: 12px;
+  padding: 14px;
   border: 1px solid #f0f0f0;
-  flex: 0 0 340px ; /* Prevents squishing */
+  flex: 0 0 234px ; /* Prevents squishing */
 }
 
 .card-top-row {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .user-profile {
@@ -685,13 +685,13 @@
 }
 
 .user-profile img {
-  width: 50px;
-  height: 50px;
+  width: 39px;
+  height: 39px;
   border-radius: 50%;
 }
 
 .user-text h4 {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 800;
   margin-bottom: 2px;
 }
@@ -706,13 +706,13 @@
 /* ============================================================
    RESPONSIVE DESIGN - DASHBOARD
    ============================================================ */
-@media (max-width: 1024px) {
+@media (max-width: 799px) {
   .sidebar-container {
-    width: 220px;
+    width: 172px;
   }
 
   .dashboard-body {
-    padding: 25px;
+    padding: 20px;
   }
 
   .project-images-grid {
@@ -720,7 +720,7 @@
   }
 
   .page-title {
-    font-size: 24px;
+    font-size: 19px;
   }
 
   .bid-card-item {
@@ -728,9 +728,9 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 599px) {
   .sidebar-container {
-    width: 180px;
+    width: 140px;
     position: fixed;
     transform: translateX(-100%);
     z-index: 999;
@@ -747,16 +747,16 @@
   }
 
   .dashboard-body {
-    padding: 15px;
+    padding: 12px;
   }
 
   .page-title {
-    font-size: 20px;
-    margin-bottom: 15px;
+    font-size: 16px;
+    margin-bottom: 12px;
   }
 
   .dashboard-header {
-    padding: 0 15px;
+    padding: 0 12px;
   }
 
   .header-right {
@@ -765,15 +765,15 @@
 
   .dashboard-grid-top {
     grid-template-columns: 1fr;
-    gap: 15px;
+    gap: 12px;
   }
 
   .project-details-card {
-    padding: 15px;
+    padding: 12px;
   }
 
   .account-manager-card {
-    padding: 15px;
+    padding: 12px;
   }
 
   .project-images-grid {
@@ -782,12 +782,12 @@
   }
 
   .project-images-grid img {
-    height: 100px;
+    height: 78px;
   }
 
   .bid-card-item {
     min-width: calc(100% - 0px);
-    padding: 15px;
+    padding: 12px;
   }
 
   .card-user-header {
@@ -810,12 +810,12 @@
   }
 
   .nav-arrow {
-    width: 40px;
-    height: 40px;
+    width: 31px;
+    height: 31px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 374px) {
   .sidebar-container {
     width: 100%;
   }
@@ -825,7 +825,7 @@
   }
 
   .page-title {
-    font-size: 18px;
+    font-size: 14px;
   }
 
   .section-header-row {
@@ -848,7 +848,7 @@
   }
 
   .user-info h3 {
-    font-size: 16px;
+    font-size: 12px;
   }
 
   .bid-card-item {
@@ -870,17 +870,17 @@
   }
 }
 .rating-row img{
-  height: 14px;
-  width: 14px;
+  height: 11px;
+  width: 11px;
 }
 
 .star { 
-  height: 14px;
-  width: 14px;
+  height: 11px;
+  width: 11px;
 }
 
 .card-price {
-  font-size: 22px;
+  font-size: 17px;
   font-weight: 900;
   color: var(--accent);
 }
@@ -893,15 +893,15 @@
   font-size: 11px;
   font-weight: 700;
   width: fit-content;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
-.divider { border: 0; border-top: 1px solid #f2f2f2; margin-bottom: 20px; }
+.divider { border: 0; border-top: 1px solid #f2f2f2; margin-bottom: 16px; }
 
 .card-details-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .col label {
@@ -930,7 +930,7 @@
   flex: 1;
   background: white;
   border: 1px solid var(--sidebar-bg);
-  border-radius: 50px;
+  border-radius: 39px;
   padding: 10px;
   font-weight: 800;
   font-size: 12px;
@@ -942,7 +942,7 @@
   background: var(--accent);
   color: white;
   border: none;
-  border-radius: 50px;
+  border-radius: 39px;
   padding: 11px;
   font-weight: 800;
   font-size: 12px;
@@ -960,8 +960,8 @@
 }
 
 .info-circle {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   background: var(--accent);
   color: white;
   border-radius: 50%;
@@ -990,34 +990,34 @@
 .modal-box {
   background: white;
   width: 90%;
-  max-width: 450px;
-  padding: 40px;
-  border-radius: 24px;
+  max-width: 351px;
+  padding: 31px;
+  border-radius: 19px;
   text-align: center;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 31px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.3s ease;
 }
 
 .modal-icon-container {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .modal-icon-container img {
-  width: 100px;
+  width: 78px;
 }
 
 .modal-box h2 {
-  font-size: 24px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--text-dark);
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .modal-box p {
-  font-size: 14px;
+  font-size: 11px;
   color: var(--text-gray);
   line-height: 1.6;
-  margin-bottom: 30px;
+  margin-bottom: 23px;
 }
 
 .modal-btn {
@@ -1025,10 +1025,10 @@
   color: white;
   border: none;
   width: 100%;
-  padding: 14px;
+  padding: 11px;
   border-radius: 12px;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1048,7 +1048,7 @@
 }
 
 @keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
+  from { transform: translateY(16px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
@@ -1058,12 +1058,12 @@
 .accordion-wrapper {
   border: 1px solid #e0e0e0;
   border-radius: 12px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   overflow: hidden;
 }
 
 .accordion-header {
-  padding: 18px 24px;
+  padding: 14px 19px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1072,15 +1072,15 @@
 }
 
 .accordion-header h4 {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 800;
   color: var(--text-dark);
 }
 
 /* Arrow Circle Colors based on State */
 .arrow-circle {
-  width: 32px;
-  height: 32px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1098,8 +1098,8 @@
 .info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr; /* Two columns like image */
-  gap: 15px 40px;
-  padding: 10px 24px 24px 24px;
+  gap: 12px 31px;
+  padding: 10px 19px 19px 19px;
 }
 
 .info-item-pd {
@@ -1111,7 +1111,7 @@
 
 .info-item-pd p {
   font-weight: 800;
-  color: var(--text-dark);
+  color: var(--primary-dark);
   white-space: nowrap;
 }
 
@@ -1121,14 +1121,14 @@
 
 /* --- 2. Automated Quoting Row --- */
 .quoting-grid {
-  padding: 10px 24px 24px 24px;
+  padding: 10px 19px 19px 19px;
 }
 
 .quote-row {
   display: flex;
   align-items: center;
-  gap: 60px; /* Space between the text items */
-  font-size: 14px;
+  gap: 47px; /* Space between the text items */
+  font-size: 11px;
 }
 
 .quote-row p {
@@ -1143,8 +1143,8 @@
 /* --- 3. Documents Grid --- */
 .documents-grid {
   display: flex;
-  gap: 15px;
-  padding: 10px 24px 24px 24px;
+  gap: 12px;
+  padding: 10px 19px 19px 19px;
   flex-wrap: wrap;
 }
 
@@ -1154,9 +1154,9 @@
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
-  padding: 12px 15px;
+  padding: 12px 12px;
   gap: 12px;
-  min-width: 280px;
+  min-width: 218px;
   position: relative;
 }
 
@@ -1167,8 +1167,8 @@
 }
 
 .doc-icon-box img {
-  width: 24px;
-  height: 24px;
+  width: 19px;
+  height: 19px;
 }
 
 .doc-info h4 {
@@ -1186,7 +1186,7 @@
   background: none;
   border: none;
   color: var(--accent);
-  font-size: 18px;
+  font-size: 14px;
   cursor: pointer;
   margin-left: auto;
 }
@@ -1205,7 +1205,7 @@
 .notification-card {
   background: var(--white);
   border-radius: 12px;
-  padding: 16px 24px;
+  padding: 12px 19px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1221,13 +1221,13 @@
 .noti-left-content {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   flex: 1;
 }
 
 .noti-icon-circle {
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
   background: var(--text-dark); /* Dark green from your image */
   border-radius: 50%;
   display: flex;
@@ -1237,7 +1237,7 @@
 }
 
 .noti-icon-circle img {
-  width: 24px;
+  width: 19px;
   height: auto;
 }
 
@@ -1249,7 +1249,7 @@
 
 .noti-message {
   margin: 0;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 600;
   color: #444;
   line-height: 1.4;
@@ -1257,7 +1257,7 @@
 
 .noti-date {
   font-size: 12px;
-  color: #999;
+  color: var(--text-faint);
   font-weight: 500;
 }
 
@@ -1266,8 +1266,8 @@
   background: var(--accent);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 50px; /* Pill shape */
+  padding: 10px 16px;
+  border-radius: 39px; /* Pill shape */
   font-size: 13px;
   font-weight: 700;
   display: flex;
@@ -1276,16 +1276,16 @@
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.2s ease;
-  margin-left: 20px;
+  margin-left: 16px;
 }
 
 
 /* Responsive for mobile */
-@media (max-width: 768px) {
+@media (max-width: 599px) {
   .notification-card {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 12px;
   }
   
   .noti-action-btn {

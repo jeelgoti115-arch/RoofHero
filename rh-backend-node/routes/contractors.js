@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 import ContractorApplication from '../models/ContractorApplication.js'
 import QuoteRequest from '../models/QuoteRequest.js'
 import { authenticate, authorize } from '../middleware/auth.js'
-import { emitContractorEvent } from '../utils/socket.js'
+import { emitContractorEvent, emitHomeownerEvent } from '../utils/socket.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const router = express.Router()
@@ -118,6 +118,68 @@ router.get('/me', authenticate, authorize('contractor'), async (req, res, next) 
   }
 })
 
+router.get('/notifications', authenticate, authorize('contractor'), async (req, res, next) => {
+  try {
+    const contractor = req.user
+    const assignedQuotes = await QuoteRequest.find({
+      $or: [
+        { 'assignedContractors.id': contractor._id },
+        { 'assignedContractor.id': contractor._id },
+      ],
+    }).sort({ requestedAt: -1 }).lean()
+
+    const notifications = assignedQuotes.flatMap((quote) => {
+      const contractorEntry = (quote.assignedContractors || []).find((entry) => entry.id?.toString() === contractor._id.toString())
+      const fallbackEntry = quote.assignedContractor?.id?.toString() === contractor._id.toString() ? quote.assignedContractor : null
+      const entry = contractorEntry || fallbackEntry
+      if (!entry) return []
+
+      const address = quote.serviceDetails?.propertyAddress || quote.serviceDetails?.address || 'the property'
+      const quoteId = quote._id?.toString() || ''
+      const date = new Date(quote.requestedAt || quote.assignedAt || quote.bidSubmittedAt || Date.now()).toLocaleDateString()
+
+      if (entry.status === 'New Arrival') {
+        return [{
+          id: `assigned-${quoteId}`,
+          subject: 'New roof job available',
+          text: `You’ve been invited to bid on a new job at ${address}. Submit your bid before the deadline.`,
+          buttonText: 'View Job Details',
+          buttonUrl: `/project-details?quoteId=${quoteId}`,
+          date,
+        }]
+      }
+
+      if (entry.status === 'Accepted') {
+        return [{
+          id: `accepted-${quoteId}`,
+          subject: 'Your bid was accepted!',
+          text: `Your bid for ${address} has been accepted by the homeowner. Coordinate next steps directly.`,
+          buttonText: 'View Job Details',
+          buttonUrl: `/project-details?quoteId=${quoteId}`,
+          date,
+        }]
+      }
+
+      if (entry.status === 'Rejected') {
+        return [{
+          id: `rejected-${quoteId}`,
+          subject: 'Your bid was not selected',
+          text: `Your bid for ${address} was not selected. Better luck on the next opportunity.`,
+          buttonText: null,
+          buttonUrl: null,
+          date,
+        }]
+      }
+
+      return []
+    })
+
+    return res.json({ notifications })
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.patch('/quote-requests/:id/submit-quote', authenticate, authorize('contractor'), async (req, res, next) => {
   try {
     const contractor = req.user
@@ -163,6 +225,14 @@ router.patch('/quote-requests/:id/submit-quote', authenticate, authorize('contra
       contractorIds: [contractor._id.toString()],
       quoteId: quote._id,
     })
+
+    if (quote.homeowner) {
+      emitHomeownerEvent(req, 'homeownerNotificationsUpdated', {
+        event: 'newBidSubmitted',
+        homeownerId: quote.homeowner.toString(),
+        quoteId: quote._id,
+      })
+    }
 
     return res.json({ quote })
   } catch (error) {

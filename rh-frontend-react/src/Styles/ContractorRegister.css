@@ -9,15 +9,15 @@
 .onboarding-page {
   background-color: #f5f5f5;
   min-height: 100vh;
-  padding-bottom: 50px;
+  padding-bottom: 39px;
 }
 
 /* Banner Styling */
 .onboarding-banner {
   background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(' /sc-image.jpg') no-repeat center center/cover;
-  height: 350px; /* Increased height to allow space for text and overlap */
-  border-radius: 40px; /* Rounded corners for the banner itself */
-  margin: 20px;
+  height: 273px; /* Increased height to allow space for text and overlap */
+  border-radius: 31px; /* Rounded corners for the banner itself */
+  margin: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center; /* Centers the text vertically */
@@ -28,30 +28,30 @@
 
 /* Form Container */
 .form-container {
-  max-width: 900px;
-  margin: 0 auto; /* -100px negative margin pulls it UP over the banner */
+  max-width: 702px;
+  margin: 0 auto; /* -78px  negative margin pulls it UP over the banner */
   background: white;
-  border-radius: 30px;
-  padding: 40px;
+  border-radius: 23px;
+  padding: 31px;
   position: relative; /* Required for z-index to work */
 }
 
-.form-section { margin-bottom: 40px; }
+.form-section { margin-bottom: 31px; }
 
 .section-title {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text-dark);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .section-subtitle { font-size: 13px; color: var(--text-gray); margin-bottom: 10px; font-weight: 600;}
 
 /* Profile/Avatar */
-.profile-upload { margin-bottom: 25px; }
+.profile-upload { margin-bottom: 20px; }
 .avatar-wrapper {
-  width: 100px;
-  height: 100px;
+  width: 78px;
+  height: 78px;
   border-radius: 50%;
   overflow: hidden;
   border: 4px solid white;
@@ -60,10 +60,10 @@
 .avatar-img { width: 100%; height: 100%; object-fit: cover; }
 
 /* Inputs */
-.form-row { display: flex; gap: 20px; margin-bottom: 20px; }
+.form-row { display: flex; gap: 16px; margin-bottom: 16px; }
 .input-group { display: flex; flex-direction: column; flex: 1; }
 .input-group.flex-2 { flex: 2; }
-.input-group.full-width { width: 100%; margin-bottom: 20px; }
+.input-group.full-width { width: 100%; margin-bottom: 16px; }
 
 .input-group label {
   font-size: 13px;
@@ -75,13 +75,13 @@
 .input-group input, .input-group textarea {
   background-color: var(--input-bg);
   border: none;
-  padding: 14px 16px;
+  padding: 11px 12px;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 11px;
   color: var(--text-dark);
 }
 
-.input-group textarea { height: 100px; resize: none; }
+.input-group textarea { height: 78px; resize: none; }
 
 /* Custom File Input */
 .file-input-wrapper {
@@ -95,11 +95,11 @@
 .btn-file {
   background: white;
   border: 1px solid #ddd;
-  padding: 8px 15px;
+  padding: 8px 12px;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
-  margin-right: 15px;
+  margin-right: 12px;
   cursor: pointer;
 }
 
@@ -109,7 +109,7 @@
 .checkbox-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
+  gap: 12px;
   margin-top: 5px;
 }
 
@@ -123,8 +123,8 @@
 }
 
 .checkbox-item input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   accent-color: var(--primary-orange);
 }
 
@@ -137,18 +137,18 @@
   background: var(--primary-orange);
   color: white;
   border: none;
-  padding: 8px 20px;
+  padding: 8px 16px;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 700;
-  margin-right: 15px;
+  margin-right: 12px;
   cursor: pointer;
 }
 
-.image-gallery { display: flex; gap: 15px; }
+.image-gallery { display: flex; gap: 12px; }
 .gallery-card {
-  width: 120px;
-  height: 120px;
+  width: 94px;
+  height: 94px;
   position: relative;
   border-radius: 12px;
   overflow: visible;
@@ -173,20 +173,20 @@
 /* Footer & Submit */
 .form-footer {
   border-top: 1px solid #eee;
-  padding-top: 30px;
-  margin-top: 20px;
+  padding-top: 23px;
+  margin-top: 16px;
 }
 
-.checkbox-item.terms { margin-bottom: 30px; }
+.checkbox-item.terms { margin-bottom: 23px; }
 .checkbox-item.terms span { color: var(--text-dark); font-weight: 500; font-size: 12px;}
 
 .btn-submit {
   background-color: var(--primary-orange);
   color: white;
   border: none;
-  padding: 16px 35px;
-  border-radius: 30px;
-  font-size: 16px;
+  padding: 12px 27px;
+  border-radius: 23px;
+  font-size: 12px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -215,8 +215,8 @@
 .avatar-wrapper {
   cursor: pointer;
   display: block;
-  width: 100px;
-  height: 100px;
+  width: 78px;
+  height: 78px;
   border-radius: 50%;
   overflow: hidden;
   border: 2px dashed #ddd; /* Visual indicator for upload area */
@@ -230,9 +230,9 @@
 /* Ensure Gallery looks good with many images */
 .image-gallery {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   flex-wrap: wrap; /* Allows images to go to next line if many are uploaded */
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
 /* Transition for removing images */
@@ -247,10 +247,10 @@
 /* ============================================================
    RESPONSIVE DESIGN - CONTRACTOR REGISTRATION
    ============================================================ */
-@media (max-width: 1024px) {
+@media (max-width: 799px) {
   .form-container {
     max-width: 90%;
-    padding: 30px;
+    padding: 23px;
   }
 
   .checkbox-grid {
@@ -258,16 +258,16 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 599px) {
   .onboarding-banner {
-    height: 200px;
-    border-radius: 25px;
+    height: 156px;
+    border-radius: 20px;
     margin: 12px;
-    padding: 30px 15px;
+    padding: 23px 12px;
   }
 
   .onboarding-banner h1 {
-    font-size: 24px;
+    font-size: 19px;
   }
 
   .onboarding-banner p {
@@ -276,13 +276,13 @@
 
   .form-container {
     max-width: 95%;
-    padding: 25px 15px;
-    border-radius: 24px;
+    padding: 20px 12px;
+    border-radius: 19px;
   }
 
   .form-row {
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
   }
 
   .input-group {
@@ -295,22 +295,22 @@
 
   .input-group input,
   .input-group textarea {
-    padding: 12px 14px;
+    padding: 12px 11px;
     font-size: 13px;
   }
 
   .section-title {
-    font-size: 16px;
-    margin-bottom: 15px;
+    font-size: 12px;
+    margin-bottom: 12px;
   }
 
   .profile-upload {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   .avatar-wrapper {
-    width: 80px;
-    height: 80px;
+    width: 62px;
+    height: 62px;
   }
 
   .checkbox-grid {
@@ -323,8 +323,8 @@
   }
 
   .gallery-card {
-    width: 100px;
-    height: 100px;
+    width: 78px;
+    height: 78px;
   }
 
   .image-gallery {
@@ -347,15 +347,15 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 374px) {
   .onboarding-banner {
-    height: 150px;
+    height: 117px;
     margin: 8px;
-    padding: 20px;
+    padding: 16px;
   }
 
   .onboarding-banner h1 {
-    font-size: 18px;
+    font-size: 14px;
   }
 
   .onboarding-banner p {
@@ -363,7 +363,7 @@
   }
 
   .form-container {
-    padding: 20px 12px;
+    padding: 16px 12px;
   }
 
   .form-row {
@@ -381,18 +381,18 @@
   }
 
   .input-group textarea {
-    height: 80px;
+    height: 62px;
   }
 
   .section-title {
-    font-size: 14px;
+    font-size: 11px;
     margin-bottom: 12px;
   }
 
   .avatar-wrapper {
-    width: 70px;
-    height: 70px;
-    border: 2px dashed #ddd;
+    width: 55px;
+    height: 55px;
+    border: 2px dashed var(--border-color);
   }
 
   .checkbox-item {
@@ -400,8 +400,8 @@
   }
 
   .gallery-card {
-    width: 80px;
-    height: 80px;
+    width: 62px;
+    height: 62px;
   }
 
   .image-gallery {
@@ -415,7 +415,7 @@
   }
 
   .btn-submit {
-    padding: 12px 15px;
+    padding: 12px 12px;
     font-size: 12px;
     width: 100%;
   }
@@ -430,11 +430,11 @@
   }
 
   .submission-confirmation {
-    padding: 20px;
+    padding: 16px;
   }
 
   .submission-confirmation h3 {
-    font-size: 18px;
+    font-size: 14px;
   }
 
   .submission-confirmation p {

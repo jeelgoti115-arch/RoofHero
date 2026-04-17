@@ -6,6 +6,7 @@ import BidCard from '../components/BidCard';
 import Sidebar from '../components/Sidebar';
 import DashboardHeader from '../components/DashboardHeader';
 import Notifications from '../components/Notifications'; // Assuming this exists
+import socket from '../socket';
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,6 +14,7 @@ const Dashboard = () => {
   const [homeownerQuote, setHomeownerQuote] = useState(null);
   const [homeownerLoading, setHomeownerLoading] = useState(true);
   const [homeownerError, setHomeownerError] = useState(null);
+  const [homeownerNotifications, setHomeownerNotifications] = useState([]);
 
   const refreshHomeownerData = async (updatedQuote = null) => {
     if (updatedQuote) {
@@ -49,9 +51,46 @@ const Dashboard = () => {
     }
   };
 
+  const fetchHomeownerNotifications = async () => {
+    const token = window.localStorage.getItem('roofheroToken');
+    if (!token) {
+      setHomeownerNotifications([]);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/homeowner/notifications', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        setHomeownerNotifications([]);
+        return;
+      }
+
+      const data = await response.json();
+      setHomeownerNotifications(Array.isArray(data.notifications) ? data.notifications : []);
+    } catch (error) {
+      setHomeownerNotifications([]);
+    }
+  };
+
   useEffect(() => {
     refreshHomeownerData();
+    fetchHomeownerNotifications();
   }, []);
+
+  useEffect(() => {
+    const handleHomeownerNotificationsUpdate = () => {
+      fetchHomeownerNotifications();
+    }
+
+    socket.on('homeownerNotificationsUpdated', handleHomeownerNotificationsUpdate)
+
+    return () => {
+      socket.off('homeownerNotificationsUpdated', handleHomeownerNotificationsUpdate)
+    }
+  }, [])
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -82,7 +121,7 @@ const Dashboard = () => {
               <div className="section-header-row">
                 <h1 className="page-title">Notifications</h1>
               </div>
-              <Notifications />
+              <Notifications notifications={homeownerNotifications} />
             </div>
           ) : (
             <div className="animate-fade">

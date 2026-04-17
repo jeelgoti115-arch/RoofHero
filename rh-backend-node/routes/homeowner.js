@@ -252,6 +252,31 @@ router.get('/me', authenticate, authorize('homeowner'), async (req, res, next) =
   }
 })
 
+router.get('/notifications', authenticate, authorize('homeowner'), async (req, res, next) => {
+  try {
+    const homeowner = req.user
+    const quotes = await QuoteRequest.find({ homeowner: homeowner._id }).sort({ requestedAt: -1 }).lean()
+
+    const notifications = (quotes || []).flatMap((quote) => {
+      const address = quote.serviceDetails?.propertyAddress || quote.serviceDetails?.address || 'your project'
+      return (quote.assignedContractors || [])
+        .filter((entry) => entry.status === 'Pending Review')
+        .map((entry) => ({
+          id: `newbid-${quote._id}-${entry.id?.toString()}`,
+          subject: 'New bid received for your project',
+          text: 'A new contractor has submitted a bid for your roof job. Review and decide.',
+          buttonText: 'View Bids',
+          buttonUrl: `/project-details?quoteId=${quote._id}`,
+          date: new Date(entry.bidSubmittedAt || quote.requestedAt || Date.now()).toLocaleDateString(),
+        }))
+    })
+
+    return res.json({ notifications })
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.patch('/quote-requests/:id/accept', authenticate, authorize('homeowner'), async (req, res, next) => {
   try {
     const { contractorId } = req.body
