@@ -1,18 +1,3 @@
-/* ============================================================
-   1. GLOBAL VARIABLES & RESET
-   ============================================================ */
-:root {
-  --sidebar-bg: #12201d;       /* Dark Green Sidebar */
-  --body-bg: #f8f9fa;          /* Page Background */
-  --text-dark: #122621;        /* Primary Text */
-  --text-gray: #676767;        /* Secondary Text */
-  --white: #ffffff;
-  --border-color: #eee;
-  --bg-gradient-from: #f8fafc;
-  --primary: #1d3b34;
-  --secondary: #4f7c70;
-  --accent: #fa5a25;
-}
 
 /* ============================================================
    2. MAIN LAYOUT STRUCTURE
@@ -21,7 +6,7 @@
 .dashboard-wrapper {
   display: flex;
   min-height: 100vh;
-  background-color: var(--body-bg);
+  background-color: var(--support);
   font-family: 'Inter', sans-serif;
 }
 
@@ -42,7 +27,11 @@
 .page-title {
   font-size: 16px;
   font-weight: 800;
+<<<<<<< HEAD
   color: var(--text-dark);
+=======
+  color: var(--primary-dark);
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   margin-bottom: 12px;
 }
 
@@ -74,7 +63,7 @@
 .sidebar-container {
   width: 187px;
   height: 100vh;
-  background-color: #FAF8F5;
+  background-color: var(--surface-alt);
   border-right: 1px solid var(--border-color);
   position: fixed;
   left: 0;
@@ -114,7 +103,11 @@
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
+<<<<<<< HEAD
   color: #fff;
+=======
+  color: var(--white);
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   cursor: pointer;
   border-radius: 12px;
   font-size: 11px;
@@ -128,8 +121,8 @@
 
 /* The dark "Dashboard" button style */
 .nav-item.active {
-  background-color: var(--text-dark); /* Matches the dark button in your image */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background-color: var(--primary-dark); /* Matches the dark button in your image */
+  box-shadow: 0 4px 12px var(--shadow-md);
 }
 
 .nav-item span {
@@ -145,7 +138,7 @@
 .logout-btn {
   background: none;
   border: none;
-  color: #FF3B30;
+  color: var(--danger);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -162,7 +155,7 @@
 
 /* Optional: Matching the logout icon color specifically */
 .logout-btn svg {
-  color: #FF3B30;
+  color: var(--danger);
 }
 
 /* ============================================================
@@ -170,7 +163,11 @@
    ============================================================ */
 .dashboard-header {
   height: 50px;
+<<<<<<< HEAD
   background: #FAF8F5;
+=======
+  background: var(--surface-alt);
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -182,7 +179,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--text-dark);
+  color: var(--primary-dark);
 }
 
 .header-right {
@@ -212,7 +209,11 @@
 
 /* The Bell Icon inside the badge */
 .notification-badge svg {
+<<<<<<< HEAD
   color: var(--text-dark); /* Dark forest green color of the bell */
+=======
+  color: var(--primary-dark); /* Dark forest green color of the bell */
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   width: 16px;
   height: 16px;
 }
@@ -289,7 +290,11 @@
 }
 .status-tag {
   background: #e9f7ef;
+<<<<<<< HEAD
   color: #27ae60;
+=======
+  color: var(--success);
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding: 4px 12px;
   border-radius: 16px;
   font-size: 11px;
@@ -384,7 +389,11 @@
 }
 
 .accepted-card {
+<<<<<<< HEAD
   border: 1px solid rgba(250, 90, 37, 0.15);
+=======
+  border: 1px solid var(--accent-fade-soft);
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   border-radius: 16px;
   padding: 17px;
 }
@@ -403,7 +412,7 @@
   letter-spacing: 0.14em;
   font-size: 11px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--success);
   margin-bottom: 8px;
 }
 
@@ -418,7 +427,7 @@
   height: 58px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #f2f2f2;
+  border: 1px solid var(--border-color);
 }
 
 .accepted-contractor-info {
@@ -443,7 +452,11 @@
   gap: 8px;
   font-size: 13px;
   color: #4f4f4f;
+<<<<<<< HEAD
   background: #f8f5f1;
+=======
+  background: var(--surface-soft);
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding: 10px 11px;
   border-radius: 12px;
 }
@@ -486,8 +499,9 @@
 }
 
 .status-accepted {
-  background: #fff0e8;
-  color: #d1571d;
+  background: #e8ffed;
+  color: var(--success);
+  border: 1px solid var(--success);
 }
 
 .accepted-bid-grid {
@@ -501,7 +515,11 @@
   background: var(--white);
   border-radius: 12px;
   padding: 12px;
+<<<<<<< HEAD
   border: 1px solid #f2f2f2;
+=======
+  border: 1px solid var(--border-color);
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 }
 
 .accepted-bid-item label {
@@ -516,14 +534,21 @@
   font-size: 12px;
   font-weight: 800;
   margin: 0;
-  color: var(--text-dark);
+  color: var(--primary-dark);
 }
 
 .accepted-proposal-section {
+<<<<<<< HEAD
   background: white;
   border-radius: 12px;
   padding: 14px;
   border: 1px solid #f2f2f2;
+=======
+  background: var(--white);
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 }
 
 .accepted-proposal-section label {
@@ -592,7 +617,11 @@
 .status-text h3 {
   font-size: 17px;
   font-weight: 800;
+<<<<<<< HEAD
   color: var(--text-dark);
+=======
+  color: var(--primary-dark);
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   margin-bottom: 12px;
 }
 
@@ -619,7 +648,7 @@
 .section-title {
   font-size: 17px;
   font-weight: 800;
-  color: var(--text-dark);
+  color: var(--primary-dark);
 }
 
 /* --- Carousel Buttons --- */
@@ -632,8 +661,8 @@
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  border: 1px solid #ddd;
-  background: white;
+  border: 1px solid var(--border-color);
+  background: var(--white);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -642,7 +671,7 @@
 
 .nav-arrow:hover {
   background: var(--accent);
-  color: white;
+  color: var(--white);
   border: none;
 }
 
@@ -664,10 +693,17 @@
 .bid-card-item {
   min-width: calc(33.333% - 12px); /* Show exactly 3 cards */  
   max-width: 234px;
+<<<<<<< HEAD
   background: white;
   border-radius: 12px;
   padding: 14px;
   border: 1px solid #f0f0f0;
+=======
+  background: var(--white);
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   flex: 0 0 234px ; /* Prevents squishing */
 }
 
@@ -734,7 +770,7 @@
     position: fixed;
     transform: translateX(-100%);
     z-index: 999;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 0 10px var(--shadow-md);
     transition: transform 0.3s ease;
   }
 
@@ -896,7 +932,11 @@
   margin-bottom: 12px;
 }
 
+<<<<<<< HEAD
 .divider { border: 0; border-top: 1px solid #f2f2f2; margin-bottom: 16px; }
+=======
+.divider { border: 0; border-top: 1px solid var(--border-color); margin-bottom: 16px; }
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 
 .card-details-grid {
   display: grid;
@@ -928,7 +968,7 @@
 
 .btn-white {
   flex: 1;
-  background: white;
+  background: var(--white);
   border: 1px solid var(--sidebar-bg);
   border-radius: 39px;
   padding: 10px;
@@ -940,7 +980,7 @@
 .btn-orange {
   flex: 1.3;
   background: var(--accent);
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: 39px;
   padding: 11px;
@@ -963,7 +1003,7 @@
   width: 14px;
   height: 14px;
   background: var(--accent);
-  color: white;
+  color: var(--white);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -978,7 +1018,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* Dim background */
+  background: var(--overlay-dark); /* Dim background */
   backdrop-filter: blur(4px); /* Soft blur effect */
   display: flex;
   align-items: center;
@@ -988,7 +1028,7 @@
 }
 
 .modal-box {
-  background: white;
+  background: var(--white);
   width: 90%;
   max-width: 351px;
   padding: 31px;
@@ -1009,7 +1049,11 @@
 .modal-box h2 {
   font-size: 19px;
   font-weight: 800;
+<<<<<<< HEAD
   color: var(--text-dark);
+=======
+  color: var(--primary-dark);
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   margin-bottom: 12px;
 }
 
@@ -1022,7 +1066,7 @@
 
 .modal-btn {
   background: var(--accent);
-  color: white;
+  color: var(--white);
   border: none;
   width: 100%;
   padding: 11px;
@@ -1056,7 +1100,7 @@
    8. REUSABLE ACCORDION (Shared)
    ============================================================ */
 .accordion-wrapper {
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-strong);
   border-radius: 12px;
   margin-bottom: 12px;
   overflow: hidden;
@@ -1068,13 +1112,13 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  background: #fff;
+  background: var(--white);
 }
 
 .accordion-header h4 {
   font-size: 14px;
   font-weight: 800;
-  color: var(--text-dark);
+  color: var(--primary-dark);
 }
 
 /* Arrow Circle Colors based on State */
@@ -1086,11 +1130,11 @@
   align-items: center;
   justify-content: center;
   background: var(--accent); /* Orange when closed */
-  color: #fff;
+  color: var(--white);
 }
 
 .arrow-circle.active {
-  background: var(--text-dark); /* Dark Green when open */
+  background: var(--primary-dark); /* Dark Green when open */
   transform: rotate(0deg);
 }
 
@@ -1133,7 +1177,7 @@
 
 .quote-row p {
   font-weight: 800;
-  color: var(--text-dark);
+  color: var(--primary-dark);
 }
 
 .quote-row .price, .quote-row .provider {
@@ -1151,8 +1195,8 @@
 .doc-card {
   display: flex;
   align-items: center;
-  background: #fff;
-  border: 1px solid #e0e0e0;
+  background: var(--white);
+  border: 1px solid var(--border-strong);
   border-radius: 12px;
   padding: 12px 12px;
   gap: 12px;
@@ -1209,8 +1253,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  border: 1px solid #f0f0f0;
+  box-shadow: 0 2px 8px var(--shadow-sm);
+  border: 1px solid var(--border-color);
   transition: transform 0.2s ease;
 }
 
@@ -1228,7 +1272,11 @@
 .noti-icon-circle {
   width: 34px;
   height: 34px;
+<<<<<<< HEAD
   background: var(--text-dark); /* Dark green from your image */
+=======
+  background: var(--primary-dark); /* Dark green from your image */
+>>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1264,7 +1312,7 @@
 /* Action Button Styling */
 .noti-action-btn {
   background: var(--accent);
-  color: white;
+  color: var(--white);
   border: none;
   padding: 10px 16px;
   border-radius: 39px; /* Pill shape */

@@ -1,13 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* COLOURS */
+/* 500;600;700&display=swap' */
+
+/* COLOURS */
 :root {
   --bg-gradient-from: #f8fafc;
+  --body-bg: #f8fafc;
   --primary: #1d3b34;
+  --primary-dark: #122621;
   --secondary: #4f7c70;
   --accent: #fa5a25;
+  --accent-strong: #ff6b35;
+  --accent-dark: #e04a1a;
   --support: #f6f2e6;
-  --regular: #ffffff;
+  --surface-alt: #f9f9f9;
+  --surface-soft: #fff5f2;
+  --border-color: #eee;
+  --white: #ffffff;
+  --black: #000000;
+  --text-dark: #122621;
+  --text-gray: #676767;
+  --success: #1dd126;
+  --danger: #ff3b30;
+  --sidebar-bg: #12201d;
+  --input-bg: #f5f3ee;
+  --main-header: #122621;
+  --primary-orange: #fa5a25;
+  --red: #ff3b30;
 }
 
 body{
