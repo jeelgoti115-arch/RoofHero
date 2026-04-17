@@ -19,11 +19,7 @@
 
 .navbar.scrolled {
   height: 62px;
-<<<<<<< HEAD
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-=======
-  box-shadow: 0 4px 16px var(--shadow-sm);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 }
 
 .nav-logo img {
@@ -62,11 +58,7 @@
   position: absolute;
   top: 100%;
   left: 0;
-<<<<<<< HEAD
   background: white;
-=======
-  background: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   min-width: 140px;
   box-shadow: 0 10px 23px rgba(0,0,0,0.15);
   border-radius: 8px;
@@ -94,11 +86,7 @@
 
 .cta-btn-navbar {
   background: var(--accent);
-<<<<<<< HEAD
   color: white;
-=======
-  color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding: 11px 22px;
   border-radius: 39px;
   border: none;
@@ -176,11 +164,7 @@
     justify-content: center;
     align-items: center;
     background: var(--accent);
-<<<<<<< HEAD
     color: white;
-=======
-    color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
     padding: 12px;
     width: calc(100% - 31px);
     font-weight: 700;
@@ -270,11 +254,7 @@
 
 .label p {
   margin: 0;
-<<<<<<< HEAD
   color: white;
-=======
-  color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 11px;
   font-weight: 700;
 }
@@ -293,13 +273,8 @@
 }
 
 .ii { background: var(--accent); top: 15%; right: -18%; }
-<<<<<<< HEAD
 .apa { background: #122621; top: 35%; left: -20%; }
 .nhc { background: #122621; bottom: 30%; right: -12%; }
-=======
-.apa { background: var(--primary-dark); top: 35%; left: -20%; }
-.nhc { background: var(--primary-dark); bottom: 30%; right: -12%; }
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 .mq { background: var(--accent); bottom: 15%; left: -10%; }
 
 @media (min-width: 799px) {
@@ -401,11 +376,7 @@
 }
 
 .header-section h1 {
-<<<<<<< HEAD
   color: #122621;
-=======
-  color: var(--primary-dark);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 28px; 
   font-weight: 800;
   line-height: 1.1;
@@ -437,11 +408,7 @@
 
 .details p {
   font-size: 12px;
-<<<<<<< HEAD
   color: #4a5568;
-=======
-  color: var(--text-gray-dark);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   line-height: 1.5;
   margin: 0;
 }
@@ -456,11 +423,7 @@
 .cta-btn-book {
   background-color: var(--accent);
   height: 34px;
-<<<<<<< HEAD
   color: white;
-=======
-  color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding: 12px 25px;
   border-radius: 39px;
   border: none;
@@ -480,11 +443,7 @@
 
 .phone-icon-bg {
   background-color: var(--primary);
-<<<<<<< HEAD
   color: white;
-=======
-  color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -569,11 +528,7 @@
 }
 
 .sub-quote-header h1 {
-<<<<<<< HEAD
   color: white;
-=======
-  color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 27px;
   font-weight: 700;
   margin: 0;
@@ -608,13 +563,8 @@
 
 .quote-card {
   display: flex;
-<<<<<<< HEAD
   background-color: #122621;
   color: white;
-=======
-  background-color: var(--primary-dark);
-  color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding: 23px;
   border-radius: 78px 23px 23px 78px; 
   gap: 16px;
@@ -759,11 +709,7 @@
 }
 
 .left-p {
-<<<<<<< HEAD
   color: #676767;
-=======
-  color: var(--text-gray);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 12px;
   line-height: 1.6;
   margin: 0;
@@ -951,11 +897,7 @@
 }
 
 .stage-desc p {
-<<<<<<< HEAD
   color: #676767;
-=======
-  color: var(--text-gray);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 12px;
   line-height: 1.5;
   margin: 0;
@@ -977,11 +919,7 @@
 }
 
 .desc-logo-img1 {
-<<<<<<< HEAD
   background-color: #e04a1a;
-=======
-  background-color: var(--accent-dark);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   height: 62px;
   width: 62px;
   border-radius: 16px;
@@ -1057,11 +995,7 @@
 .que {
   width: 100%;
   padding: 62px 16px;
-<<<<<<< HEAD
   background-color: white;
-=======
-  background-color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1279,11 +1213,7 @@
   display: flex;
   justify-content: space-between;
   gap: 47px;
-<<<<<<< HEAD
   color: white;
-=======
-  color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 }
 
 .logo-section {
@@ -1304,11 +1234,7 @@
   font-weight: 600;
   font-size: 19px;
   line-height: 1.4;
-<<<<<<< HEAD
   color: white;
-=======
-  color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   max-width: 390px;
   margin: 0;
 }
@@ -1344,11 +1270,7 @@
 }
 
 .links-column h3 {
-<<<<<<< HEAD
   color: white;
-=======
-  color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 14px;
   font-weight: 600;
   margin: 0 0 20px 0;
@@ -1379,11 +1301,7 @@
 .bottom-section {
   margin-top: 16px;
   padding-top: 23px;
-<<<<<<< HEAD
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-=======
-  border-top: 1px solid var(--white-alpha-10);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 }
 
 .copyright {

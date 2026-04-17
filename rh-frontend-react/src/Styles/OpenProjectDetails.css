@@ -11,13 +11,8 @@
 }
 
 .back-circle-btn {
-<<<<<<< HEAD
   background: white;
   border: 1px solid #ddd;
-=======
-  background: var(--white);
-  border: 1px solid var(--border-color);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -28,7 +23,6 @@
   margin-left: 12px;
 }
 
-<<<<<<< HEAD
 .header-title { font-size: 16px; font-weight: 800; color: #122621; }
 
 .white-card-box {
@@ -37,16 +31,6 @@
   padding: 23px;
   margin-bottom: 20px;
   border: 1px solid #f2f2f2;
-=======
-.header-title { font-size: 16px; font-weight: 800; color: var(--text-dark); }
-
-.white-card-box {
-  background: var(--white);
-  border-radius: 12px;
-  padding: 23px;
-  margin-bottom: 20px;
-  border: 1px solid var(--border-color);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 }
 
 .proposal-split-layout {
@@ -80,20 +64,12 @@
   font-size: 12px; 
   font-weight: 800; 
   margin: 20px 0 12px 0; 
-<<<<<<< HEAD
   color: #122621;
-=======
-  color: var(--text-dark);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 }
 
 .description-wrap p { 
   font-size: 11px; 
-<<<<<<< HEAD
   color: #676767; 
-=======
-  color: var(--text-gray); 
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   line-height: 1.8; 
   margin-bottom: 12px;
 }
@@ -102,11 +78,7 @@
 .proposal-right-pricing {
   width: 234px; /* Fixed width to match Image 2 exactly */
   min-width: 234px;
-<<<<<<< HEAD
   border-left: 1px solid #f0f0f0;
-=======
-  border-left: 1px solid var(--border-color);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding-left: 31px;
   display: flex;
   flex-direction: column;
@@ -128,20 +100,12 @@
 .price-stack span { 
   font-weight: 800; 
   font-size: 14px; 
-<<<<<<< HEAD
   color: #122621;
-=======
-  color: var(--text-dark);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 }
 
 /* The Green Price */
 .val-large-green { 
-<<<<<<< HEAD
   color: #27ae60 !important;  
-=======
-  color: var(--success) !important; 
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 25px !important; 
   font-weight: 900 !important; 
   line-height: 1;
@@ -155,11 +119,7 @@
 /* Action Buttons */
 .accept-quote-btn-lg {
   width: 100%;
-<<<<<<< HEAD
   background: #fa5a25;
-=======
-  background: var(--accent);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   color: var(--white);
   border: none;
   padding: 12px;
@@ -190,11 +150,7 @@
 
 /* --- Full Width Gallery Section (Below the split) --- */
 .project-gallery-section {
-<<<<<<< HEAD
   border-top: 1px solid #f0f0f0;
-=======
-  border-top: 1px solid var(--border-color);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding-top: 16px;
   margin-top: 10px;
 }
@@ -255,21 +211,13 @@
 .modal-box h2 {
   font-size: 19px;
   font-weight: 800;
-<<<<<<< HEAD
   color: #122621;
-=======
-  color: var(--text-dark);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   margin-bottom: 12px;
 }
 
 .modal-box p {
   font-size: 11px;
-<<<<<<< HEAD
   color: #676767;
-=======
-  color: var(--text-gray);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   line-height: 1.6;
   margin-bottom: 23px;
 }
@@ -288,11 +236,7 @@
   align-items: center;
   gap: 10px;
   padding: 12px 0;
-<<<<<<< HEAD
   color: #676767;
-=======
-  color: var(--text-gray);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 12px;
   font-weight: 500;
 }
@@ -303,23 +247,14 @@
   align-items: center;
   gap: 10px;
   padding: 12px 0;
-<<<<<<< HEAD
   color: #2ecc71; /* Green */
-=======
-  color: var(--success); /* Green */
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 12px;
   font-weight: 600;
 }
 
 .success-check {
-<<<<<<< HEAD
   background: #2ecc71;
   color: white;
-=======
-  background: var(--success);
-  color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -434,22 +369,14 @@
   gap: 6px;
   font-weight: 600;
   font-size: 11px;
-<<<<<<< HEAD
   color: #676767;
-=======
-  color: var(--text-gray);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 }
 
 /* --- TABS NAVIGATION --- */
 .custom-tabs-nav {
   display: flex;
   gap: 31px;
-<<<<<<< HEAD
   border-bottom: 1px solid #eee;
-=======
-  border-bottom: 1px solid var(--border-color);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   margin: 23px 0 20px 0;
 }
 
@@ -497,11 +424,7 @@
 .bio-paragraph {
   font-size: 11px;
   line-height: 1.6;
-<<<<<<< HEAD
   color: #676767;
-=======
-  color: var(--text-gray);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   margin-bottom: 20px;
 }
 
@@ -522,11 +445,7 @@
 
 .licence-col span {
   font-size: 11px;
-<<<<<<< HEAD
   color: #676767;
-=======
-  color: var(--text-gray);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 }
 
 .gallery-title {
@@ -556,13 +475,8 @@
 }
 
 .review-card {
-<<<<<<< HEAD
   background: #fff;
   border: 1px solid #f2f2f2;
-=======
-  background: var(--white);
-  border: 1px solid var(--border-color);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.03);
@@ -652,11 +566,7 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-<<<<<<< HEAD
   color: #fa5a25;
-=======
-  color: var(--accent);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 14px;
   cursor: pointer;
 }
@@ -746,11 +656,7 @@
   .proposal-right-pricing {
     width: 100%;
     border-left: none;
-<<<<<<< HEAD
     border-top: 1px solid #f0f0f0;
-=======
-    border-top: 1px solid var(--border-color);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
     padding: 12px 0 0 0;
   }
 

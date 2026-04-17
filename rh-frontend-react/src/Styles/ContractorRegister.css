@@ -8,11 +8,7 @@
 
 /* Banner Styling */
 .onboarding-banner {
-<<<<<<< HEAD
   background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(' /sc-image.jpg') no-repeat center center/cover;
-=======
-  background: linear-gradient(var(--overlay-dark), var(--overlay-dark)), url(' /sc-image.jpg') no-repeat center center/cover;
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   height: 273px; /* Increased height to allow space for text and overlap */
   border-radius: 31px; /* Rounded corners for the banner itself */
   margin: 16px;
@@ -27,13 +23,8 @@
 /* Form Container */
 .form-container {
   max-width: 702px;
-<<<<<<< HEAD
   margin: 0 auto; /* -78px  negative margin pulls it UP over the banner */
   background: white;
-=======
-  margin: 0 auto; /* -78px negative margin pulls it UP over the banner */
-  background: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   border-radius: 23px;
   padding: 31px;
   position: relative; /* Required for z-index to work */
@@ -44,11 +35,7 @@
 .section-title {
   font-size: 14px;
   font-weight: 700;
-<<<<<<< HEAD
   color: var(--text-dark);
-=======
-  color: var(--primary-dark);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   margin-bottom: 16px;
 }
 
@@ -85,11 +72,7 @@
   padding: 11px 12px;
   border-radius: 10px;
   font-size: 11px;
-<<<<<<< HEAD
   color: var(--text-dark);
-=======
-  color: var(--primary-dark);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 }
 
 .input-group textarea { height: 78px; resize: none; }
@@ -104,13 +87,8 @@
 }
 
 .btn-file {
-<<<<<<< HEAD
   background: white;
   border: 1px solid #ddd;
-=======
-  background: var(--white);
-  border: 1px solid var(--border-color);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding: 8px 12px;
   border-radius: 6px;
   font-size: 12px;
@@ -188,21 +166,13 @@
 
 /* Footer & Submit */
 .form-footer {
-<<<<<<< HEAD
   border-top: 1px solid #eee;
-=======
-  border-top: 1px solid var(--border-color);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding-top: 23px;
   margin-top: 16px;
 }
 
 .checkbox-item.terms { margin-bottom: 23px; }
-<<<<<<< HEAD
 .checkbox-item.terms span { color: var(--text-dark); font-weight: 500; font-size: 12px;}
-=======
-.checkbox-item.terms span { color: var(--primary-dark); font-weight: 500; font-size: 12px;}
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 
 .btn-submit {
   background-color: var(--primary-orange);

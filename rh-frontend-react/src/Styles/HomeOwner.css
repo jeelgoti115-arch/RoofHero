@@ -199,11 +199,7 @@ body{
 .sho-section {
   width: 100%;
   padding: 31px 16px;
-<<<<<<< HEAD
   background-color: #ffffff;
-=======
-  background-color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   display: flex;
   justify-content: center;
   box-sizing: border-box;
@@ -245,11 +241,7 @@ body{
 }
 
 .sho-content p {
-<<<<<<< HEAD
   color: #4a5568; 
-=======
-  color: var(--text-gray-dark); 
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 12px;
   line-height: 1.6;
   margin-bottom: 12px;
@@ -268,11 +260,7 @@ body{
 }
 
 .sho-list li {
-<<<<<<< HEAD
   color: #4a5568;
-=======
-  color: var(--text-gray-dark);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 12px;
   line-height: 1.6;
   position: relative;
@@ -322,11 +310,7 @@ body{
 /* assignedservices */
 
 .assigned-section {
-<<<<<<< HEAD
   background-color: #f6f2e6;
-=======
-  background-color: var(--support);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding: 47px 16px;
   width: 100%;
   display: flex;
@@ -350,11 +334,7 @@ body{
 }
 
 .as-header p {
-<<<<<<< HEAD
   color: #676767;
-=======
-  color: var(--text-gray);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 12px;
   font-weight: 500;
   opacity: 0.8;
@@ -393,11 +373,7 @@ body{
 }
 
 .as-card-content p {
-<<<<<<< HEAD
   color: #4a5568;
-=======
-  color: var(--text-gray-dark);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 11px;
   line-height: 1.6;
   margin: 0;
@@ -467,22 +443,14 @@ body{
 }
 
 .companies-header p {
-<<<<<<< HEAD
   color: #676767;
-=======
-  color: var(--text-gray);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 12px;
   line-height: 1.6;
 }
 
 .table-container {
   width: 100%;
-<<<<<<< HEAD
   border: 1px solid #E0E0E0;
-=======
-  border: 1px solid var(--border-strong);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   border-radius: 16px; 
   overflow: hidden; 
 }
@@ -507,15 +475,9 @@ body{
 
 .roofing-table td {
   padding: 16px 23px;
-<<<<<<< HEAD
   color: #676767;
   font-size: 12px;
   border-top: 1px solid #F0F0F0; 
-=======
-  color: var(--text-gray);
-  font-size: 12px;
-  border-top: 1px solid var(--border-color); 
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
 }
 
 .roofing-table tr:first-child td {
@@ -542,11 +504,7 @@ body{
 
 /* Customer Testimonial */
 .ct-section {
-<<<<<<< HEAD
   background-color: #F6F2EC;
-=======
-  background-color: var(--support-cream); 
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding: 78px 16px;
   width: 100%;
   display: flex;
@@ -576,11 +534,7 @@ body{
 }
 
 .ct-header p {
-<<<<<<< HEAD
   color: #676767;
-=======
-  color: var(--text-gray);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 12px;
   line-height: 1.5;
   font-weight: 500;
@@ -594,17 +548,10 @@ body{
 }
 
 .ct-card {
-<<<<<<< HEAD
   background-color: #ffffff;
   padding: 31px;
   border-radius: 19px; 
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);  
-=======
-  background-color: var(--white);
-  padding: 31px;
-  border-radius: 19px; 
-  box-shadow: 0 10px 23px var(--shadow-xs); 
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -612,11 +559,7 @@ body{
 }
 
 .ct-card-desc {
-<<<<<<< HEAD
   color: #4A5568;
-=======
-  color: var(--text-gray-dark);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 12px;
   line-height: 1.6;
   margin-bottom: 20px;
@@ -671,11 +614,7 @@ body{
 }
 
 .sq-top-box h1 {
-<<<<<<< HEAD
   color: #ffffff;
-=======
-  color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 37px;
   font-weight: 800;
   margin-bottom: 16px;
@@ -697,11 +636,7 @@ body{
 }
 
 .sq-item {
-<<<<<<< HEAD
   background-color: #ffffff;
-=======
-  background-color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   border-radius: 16px;
   padding: 23px 31px;
   cursor: pointer;
@@ -740,11 +675,7 @@ body{
 }
 
 .sq-answer-row p {
-<<<<<<< HEAD
   color: #4A5568;
-=======
-  color: var(--text-gray-dark);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 12px;
   line-height: 1.6;
   margin: 0;
@@ -759,11 +690,7 @@ body{
 /* Service Instruction */
 
 .si-section {
-<<<<<<< HEAD
   background-color: #F6F2EC;
-=======
-  background-color: var(--support-cream);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding: 62px 16px;
   width: 100%;
   display: flex;
@@ -807,11 +734,7 @@ body{
 }
 
 .si-header p {
-<<<<<<< HEAD
   color: #676767;
-=======
-  color: var(--text-gray);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 12px;
   font-weight: 500;
 }
@@ -826,11 +749,7 @@ body{
 
 .si-card {
   background-color: var(--primary); 
-<<<<<<< HEAD
   color: #ffffff;
-=======
-  color: var(--white);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   padding: 20px;
   border-radius: 16px;
   text-align: center;
@@ -906,11 +825,7 @@ body{
 }
 
 .left-anp {
-<<<<<<< HEAD
   color: #676767;
-=======
-  color: var(--text-gray);
->>>>>>> ab54e733d5188143f2a68b2ea3c60c77aacbf656
   font-size: 14px;
   line-height: 1.6;
   margin: 0;
