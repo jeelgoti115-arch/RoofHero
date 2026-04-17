@@ -3,7 +3,7 @@
   width: 100%;
   top: 0;
   left: 0;
-  background: var(--regular);
+  background: #ffffff;
   display: flex;
   align-items: center;
 }
@@ -314,7 +314,7 @@
 
 /* Book */
 .book-section {
-  background-color: var(--regular);
+  background-color: #ffffff;
   padding: 100px 0; 
   width: 100%;
   display: flex;
@@ -660,7 +660,7 @@
 /* Solutions */
 .solutions {
   padding: 62px 0;
-  background-color: var(--regular);
+  background-color: #ffffff;
   width: 100%;
 }
 
@@ -938,7 +938,7 @@
 
 .desc-logo-img2 {
   background-color: var(--primary);
-  color: var(--regular);
+  color: #ffffff;
   height: 27px;
   width: 27px;
   border-radius: 50%;
